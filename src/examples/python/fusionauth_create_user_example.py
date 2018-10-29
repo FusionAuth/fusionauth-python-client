@@ -1,10 +1,8 @@
-import json
-
-from com.inversoft.passport_client import PassportClient
+from fusionauth.fusionauth_client import FusionAuthClient
 
 
 #  You must supply your API key and URL here
-client = PassportClient('your-api-key', 'https://your-passport.inversoft.io')
+client = FusionAuthClient('your-api-key', 'https://demo.fusionauth.io')
 
 user_request = {
     'sendSetPasswordEmail': False,
@@ -18,6 +16,6 @@ user_request = {
 client_response = client.create_user(None, user_request)
 
 if client_response.was_successful():
-    print json.dumps(client_response.success_response)
+    print(client_response.success_response)
 else:
-    print json.dumps(client_response.error_response)
+    print(client_response.error_response)

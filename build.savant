@@ -45,7 +45,7 @@ target(name: "compile", description: "No-op") {
 }
 
 target(name: "jar", description: "Builds the project ZIP file", dependsOn: ["compile"]) {
-    file.zip(file: "build/zips/passport-python-client.zip") {
+    file.zip(file: "build/zips/fusionauth-python-client.zip") {
         fileSet(dir: "src/main/python", excludePatterns: [/.*pyc/])
         zipFileSet(dir: "src/examples/python", prefix: "examples", excludePatterns: [/.*pyc/])
     }

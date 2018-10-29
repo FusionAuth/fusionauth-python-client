@@ -1,3 +1,3 @@
-## Python Passport Client 
+## FusionAuth Python Client
 
-For additional information and documentation on Passport refer to [https://www.inversoft.com](https://www.inversoft.com).
+For additional information and documentation on FusionAuth refer to [fusionauth.io](https://fusionauth.io).
