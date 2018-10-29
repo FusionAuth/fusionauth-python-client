@@ -44,11 +44,13 @@ target(name: "compile", description: "No-op") {
     // Nothing
 }
 
-target(name: "jar", description: "Builds the project ZIP file", dependsOn: ["compile"]) {
+target(name: "int", description: "Releases a local integration build of the project", dependsOn: ["compile"]) {
     file.zip(file: "build/zips/fusionauth-python-client.zip") {
         fileSet(dir: "src/main/python", excludePatterns: [/.*pyc/])
         zipFileSet(dir: "src/examples/python", prefix: "examples", excludePatterns: [/.*pyc/])
     }
+
+    dependency.integrate()
 }
 
 target(name: "setup-tests") {
@@ -61,10 +63,6 @@ target(name: "test", description: "Runs the project's tests", dependsOn: ["compi
     if (pb.inheritIO().start().waitFor() != 0) {
         fail("Tests failed")
     }
-}
-
-target(name: "int", description: "Releases a local integration build of the project", dependsOn: ["jar"]) {
-    dependency.integrate()
 }
 
 target(name: "release", description: "Releases a full version of the project", dependsOn: ["int"]) {

@@ -7,6 +7,8 @@
       <sourceFolder url="file://$MODULE_DIR$/src/examples/python" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/test/python" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/migration/python" isTestSource="false" />
+      <excludeFolder url="file://$MODULE_DIR$/build" />
+      <excludeFolder url="file://$MODULE_DIR$/src/test" />
     </content>
     <orderEntry type="jdk" jdkName="Python 3.7" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
