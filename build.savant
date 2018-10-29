@@ -38,9 +38,10 @@ file = loadPlugin(id: "org.savantbuild.plugin:file:${savantVersion}")
 
 target(name: "clean", description: "Cleans the build directory") {
   file.prune(dir: "build/zips")
+  file.prune(dir: "dist")
 }
 
-target(name: "compile", description: "No-op") {
+target(name: "compile", description: "Builds archives of the source and compiled versions of the code.") {
   def proc = "python setup.py sdist bdist_wheel".execute()
   proc.consumeProcessOutput(System.out, System.err)
   proc.waitFor()
@@ -74,7 +75,12 @@ target(name: "setup-python", description: "Gets the python dependencies") {
   proc.waitFor()
 }
 
-target(name: "publish", description: "Publishes source and built versions of the packages to PyPi", dependsOn: ["test"]) {
+/**
+ * You don't need to do this but, if you have trouble logging in, consider using the pypirc file.
+ *
+ * https://docs.python.org/2/distutils/packageindex.html#pypirc
+ */
+target(name: "publish", description: "Publishes source and built versions of the packages to PyPi", dependsOn: ["clean", "test"]) {
   def proc = "twine upload dist/* --verbose".execute()
   proc.consumeProcessOutput(System.out, System.err)
   proc.waitFor()
