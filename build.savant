@@ -56,7 +56,7 @@ target(name: "setup-tests") {
 }
 
 target(name: "test", description: "Runs the project's tests", dependsOn: ["compile"]) {
-    def pb = new ProcessBuilder("python", "src/test/python/io/fusionauth/fusionauth_client_test.py")
+    def pb = new ProcessBuilder("python", "src/test/python/fusionauth/fusionauth_client_test.py")
     pb.environment().put("PYTHONPATH", "src/main/python")
     if (pb.inheritIO().start().waitFor() != 0) {
         fail("Tests failed")

@@ -8,7 +8,7 @@
       <sourceFolder url="file://$MODULE_DIR$/src/test/python" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/migration/python" isTestSource="false" />
     </content>
-    <orderEntry type="inheritedJdk" />
+    <orderEntry type="jdk" jdkName="Python 3.7" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
 </module>

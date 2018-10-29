@@ -15,28 +15,28 @@
 #
 
 import json
-
 import uuid
 
 import unittest2
 
-from com.inversoft.passport_client import PassportClient
+from fusionauth.fusionauth_client import FusionAuthClient
 
 
-class PassportClientTest(unittest2.TestCase):
+def print_json(parsed_json):
+    print(json.dumps(parsed_json, indent=2, sort_keys=True))
+
+
+class FusionAuthClientTest(unittest2.TestCase):
     def setUp(self):
-        self.client = PassportClient('<API_KEY>', 'http://localhost:9011')
+        self.client = FusionAuthClient('<API_KEY>', 'http://localhost:9011')
 
     def runTest(self):
         pass
 
-    def print_json(self, parsed_json):
-        print json.dumps(parsed_json, indent=2, sort_keys=True)
-
     def test_retrieve_applications(self):
         client_response = self.client.retrieve_applications()
         self.assertEqual(client_response.status, 200)
-        self.assertEqual(len(client_response.success_response['applications']), 3)
+        self.assertEqual(len(client_response.success_response['applications']), 2)
 
     def test_create_user_retrieve_user(self):
         # Check if the user already exists.
@@ -73,8 +73,8 @@ class PassportClientTest(unittest2.TestCase):
         user_id = uuid.uuid4()
         client_response = self.client.retrieve_user(user_id)
         self.assertEqual(client_response.status, 404)
-        self.assertEqual(client_response.success_response, None)
-        self.assertIsNotNone(client_response.error_response)
+        self.assertIsNone(client_response.success_response)
+        self.assertIsNone(client_response.error_response)
 
 
 if __name__ == '__main__':

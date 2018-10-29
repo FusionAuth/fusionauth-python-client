@@ -14,63 +14,69 @@
 # language governing permissions and limitations under the License.
 #
 
+import base64
+import json
+
 import requests
+
 
 class RESTClient:
     """The RestClient used to build API calls to CleanSpeak.
 
     Attributes:
         _headers: The headers
-        _method: The method
-        _request: The request body
+        _parameters: The parameters
         _url: The url
-
+        _body_handler: A delegate to get the body of the request
+        _certificate: The certificate
+        _method: The method
     """
 
     def __init__(self):
-        self._headers = {}
-        self._method = None
-        self._parameters = {}
-        self._request = None
-        self._request_file = None
-        self._stream_response = False
         self._url = None
+        self._parameters = {}
+        self._proxy = {}
+        self._headers = {}
+        self._body_handler = None
+        self._certificate = None
+        self._connect_timeout = 1000
+        self._error_response_handler = None
+        self._error_type = None
+        self._method = None
+        self._success_response_handler = None
 
-    def authorization(self, key):
-        self._headers['Authorization'] = key
+    def authorization(self, authorization):
+        self._headers['Authorization'] = authorization
         return self
 
-    def content_type(self, content_type):
-        self._headers['Content-Type'] = content_type
+    def basic_authorization(self, username, password):
+        if username and password:
+            self.header('Authorization', 'Basic ' + base64.urlsafe_b64encode(username + ':' + password))
+        return self
+
+    def body_handler(self, handler):
+        self._body_handler = handler
+        return self
+
+    def certificate(self, certificate):
+        self._certificate = certificate
+        return self
+
+    def connect_timeout(self, connect_timeout):
+        self._connect_timeout = connect_timeout
         return self
 
     def delete(self):
         self._method = 'DELETE'
         return self
 
+    def error_response_handler(self, error_response_handler):
+        self._error_response_handler = error_response_handler
+        return self
+
     def get(self):
         self._method = 'GET'
         return self
-
-    def go(self):
-        if self._method == 'DELETE':
-            return ClientResponse(requests.delete(self._url, headers=self._headers, params=self._parameters))
-        elif self._method == 'GET' and self._stream_response:
-            return ClientResponse(requests.get(self._url, headers=self._headers, params=self._parameters, stream=True), True)
-        elif self._method == 'GET':
-            return ClientResponse(requests.get(self._url, headers=self._headers, params=self._parameters, stream=False))
-        elif self._method == 'POST' and self._headers['Content-Type'] == 'application/json':
-            return ClientResponse(requests.post(self._url, data=None, json=self._request, headers=self._headers, params=self._parameters))
-        elif self._method == 'PUT' and self._headers['Content-Type'] == 'application/json':
-            return ClientResponse(requests.put(self._url, data=None, json=self._request, headers=self._headers, params=self._parameters))
-        elif self._method == 'POST' and self._request_file is not None:
-            with open(self._request_file, 'rb') as f:
-                return ClientResponse(requests.post(self._url, data=f, headers=self._headers, params=self._parameters))
-        elif self._method == 'PUT' and self._request_file is not None:
-            with open(self._request_file, 'rb') as f:
-                return ClientResponse(requests.put(self._url, data=f, headers=self._headers, params=self._parameters))
-        else:
-            raise ValueError('The HTTP method must be set to POST, PUT, GET or DELETE prior to calling go()')
 
     def post(self):
         self._method = 'POST'
@@ -80,17 +86,32 @@ class RESTClient:
         self._method = 'PUT'
         return self
 
-    def request(self, request):
-        self.content_type('application/json')
-        self._request = request
+    def go(self):
+        if self._method is None:
+            raise ValueError('The HTTP method must be set prior to calling go()')
+
+        if self._url is None or len(self._url) == 0:
+            raise ValueError('You must specify a URL')
+
+        if self._body_handler is not None:
+            self._body_handler.set_headers(self._headers)
+
+        data = self._body_handler.get_body() if self._body_handler is not None else None
+
+        return ClientResponse(
+            requests.request(self._method, self._url, headers=self._headers, params=self._parameters, data=data, cert=self._certificate,
+                             timeout=self._connect_timeout, proxies=self._proxy))
+
+    def header(self, key, value):
+        self._headers[key] = value
         return self
 
-    def request_from_file(self, file):
-        self._request_file = file
+    def headers(self, headers):
+        self._headers.update(headers)
         return self
 
-    def stream_response(self):
-        self._stream_response = True
+    def success_response_handler(self, success_response_handler):
+        self._success_response_handler = success_response_handler
         return self
 
     def uri(self, uri):
@@ -99,9 +120,10 @@ class RESTClient:
 
         if self._url.endswith('/') and uri.startswith('/'):
             self._url += uri[:1]
+        elif self._url.endswith('/') and not uri.startswith('/'):
+            self._url += "/" + uri
         else:
             self._url += uri
-
         return self
 
     def url(self, url):
@@ -131,7 +153,7 @@ class RESTClient:
 
 
 class ClientResponse:
-    """The ClientResponse returned from the the CleanSpeak API.
+    """The ClientResponse returned from the the FusionAuth API.
 
     Attributes:
         error_response:
@@ -167,3 +189,15 @@ class ClientResponse:
         with open(file, 'wb') as f:
             for chunk in self.response:
                 f.write(chunk)
+
+
+class JSONBodyHandler:
+    def __init__(self, body_object):
+        self._body = json.dumps(body_object)
+
+    def set_headers(self, headers):
+        headers['Length'] = str(len(self._body.encode('utf-8')))
+        headers['Content-Type'] = "application/json"
+
+    def get_body(self):
+        return self._body
