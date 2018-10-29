@@ -1,7 +1,9 @@
 ## FusionAuth Python Client
 
-Install
--------
+### PyPI
+* https://pypi.org/project/fusionauth-client/
+
+### Install
 To install the FusionAuth Python Client package run:
 
 ```bash
