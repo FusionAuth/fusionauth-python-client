@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2016, Inversoft Inc., All Rights Reserved
+# Copyright (c) 2016-2018, FusionAuth, All Rights Reserved
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -28,7 +28,7 @@ def print_json(parsed_json):
 
 class FusionAuthClientTest(unittest2.TestCase):
     def setUp(self):
-        self.client = FusionAuthClient('<API_KEY>', 'http://localhost:9011')
+        self.client = FusionAuthClient('bf69486b-4733-4470-a592-f1bfce7af580', 'http://localhost:9011')
 
     def runTest(self):
         pass
