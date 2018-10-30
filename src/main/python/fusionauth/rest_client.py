@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2016, Inversoft Inc., All Rights Reserved
+# Copyright (c) 2016-2018, FusionAuth, All Rights Reserved
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -21,7 +21,7 @@ import requests
 
 
 class RESTClient:
-    """The RestClient used to build API calls to CleanSpeak.
+    """The RestClient used to build API calls to FusionAuth.
 
     Attributes:
         _headers: The headers

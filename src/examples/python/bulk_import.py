@@ -5,15 +5,15 @@ import requests
 
 from datetime import date
 
-# Example bulk import script to import users from an existing table into Passport using the bulk import API
+# Example bulk import script to import users from an existing table into FusionAuth using the bulk import API
 #
 # Setup
-# 1. Create a Passport application, make note of the application id.
+# 1. Create a FusionAuth application, make note of the application Id.
 #
 # 2. Add the following roles to the application
 #    - user
 #
-# 3. Add an API key if you don't already have one - Passport --> Settings --> API Keys
+# 3. Add an API key if you don't already have one - FusionAuth --> Settings --> API Keys
 #    - It must at least have [POST] permission to /api/user/import
 #
 # 4. Update the configurable parameters below.

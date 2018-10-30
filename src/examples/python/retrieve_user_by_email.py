@@ -2,7 +2,7 @@ from fusionauth.fusionauth_client import FusionAuthClient
 
 
 #  You must supply your API key and URL here
-client = FusionAuthClient('your-api-key', 'https://demo.fusionauth.io')
+client = FusionAuthClient('api-key', 'http://localhost:9011')
 
 user_request = {
     'sendSetPasswordEmail': False,
@@ -14,7 +14,12 @@ user_request = {
 }
 
 client_response = client.create_user(None, user_request)
+if client_response.was_successful():
+    print(client_response.success_response)
+else:
+    print(client_response.error_response)
 
+client_response = client.retrieve_user_by_email('art@vandaleyindustries.com')
 if client_response.was_successful():
     print(client_response.success_response)
 else:
