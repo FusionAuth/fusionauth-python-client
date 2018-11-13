@@ -600,6 +600,20 @@ class FusionAuthClient:
             .get() \
             .go()
 
+    def identity_provider_login(self, request):
+        """
+        Handles login via third-parties including Social login, external OAuth and OpenID Connect, and other
+        login systems.
+
+        Attributes:
+            request: The third-party login request that contains information from the third-party login
+                    providers that FusionAuth uses to reconcile the user's account.
+        """
+        return self.start().uri('/api/identity-provider/login') \
+            .body_handler(JSONBodyHandler(request)) \
+            .post() \
+            .go()
+
     def import_users(self, request):
         """
         Bulk imports multiple users. This does some validation, but then tries to run batch inserts of users. This reduces
