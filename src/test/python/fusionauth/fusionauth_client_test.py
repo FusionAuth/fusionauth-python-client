@@ -36,7 +36,7 @@ class FusionAuthClientTest(unittest2.TestCase):
     def test_retrieve_applications(self):
         client_response = self.client.retrieve_applications()
         self.assertEqual(client_response.status, 200)
-        self.assertEqual(len(client_response.success_response['applications']), 2)
+        self.assertEqual(len(client_response.success_response['applications']), 1)
 
     def test_create_user_retrieve_user(self):
         # Check if the user already exists.

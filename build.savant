@@ -81,7 +81,7 @@ target(name: "setup-python", description: "Gets the python dependencies") {
  * https://docs.python.org/2/distutils/packageindex.html#pypirc
  */
 target(name: "publish", description: "Publishes source and built versions of the packages to PyPi", dependsOn: ["clean", "test"]) {
-  def proc = "twine upload dist/* --verbose".execute()
+  def proc = "python -m twine upload dist/* --verbose".execute()
   proc.consumeProcessOutput(System.out, System.err)
   proc.waitFor()
 }
