@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2018, FusionAuth, All Rights Reserved
+# Copyright (c) 2018-2019, FusionAuth, All Rights Reserved
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -833,13 +833,41 @@ class FusionAuthClient:
 
     def retrieve_actions(self, user_id):
         """
-        Retrieves all of the actions for the user with the given Id.
+        Retrieves all of the actions for the user with the given Id. This will return all time based actions that are active,
+        and inactive as well as non-time based actions.
 
         Attributes:
             user_id: The Id of the user to fetch the actions for.
         """
         return self.start().uri('/api/user/action') \
             .url_parameter('userId', user_id) \
+            .get() \
+            .go()
+
+    def retrieve_actions_preventing_login(self, user_id):
+        """
+        Retrieves all of the actions for the user with the given Id that are currently preventing the User from logging in.
+
+        Attributes:
+            user_id: The Id of the user to fetch the actions for.
+        """
+        return self.start().uri('/api/user/action') \
+            .url_parameter('userId', user_id) \
+            .url_parameter('preventingLogin', "true") \
+            .get() \
+            .go()
+
+    def retrieve_active_actions(self, user_id):
+        """
+        Retrieves all of the actions for the user with the given Id that are currently active.
+        An active action means one that is time based and has not been canceled, and has not ended.
+
+        Attributes:
+            user_id: The Id of the user to fetch the actions for.
+        """
+        return self.start().uri('/api/user/action') \
+            .url_parameter('userId', user_id) \
+            .url_parameter('active', "true") \
             .get() \
             .go()
 
@@ -1087,6 +1115,20 @@ class FusionAuthClient:
             .get() \
             .go()
 
+    def retrieve_recent_logins(self, offset, limit):
+        """
+        Retrieves the last number of login records.
+
+        Attributes:
+            offset: The initial record. e.g. 0 is the last login, 100 will be the 100th most recent login.
+            limit: (Optional, defaults to 10) The number of records to retrieve.
+        """
+        return self.start().uri('/api/user/recent-login') \
+            .url_parameter('offset', offset) \
+            .url_parameter('limit', limit) \
+            .get() \
+            .go()
+
     def retrieve_refresh_tokens(self, user_id):
         """
         Retrieves the refresh tokens that belong to the user with the given Id.
@@ -1305,7 +1347,45 @@ class FusionAuthClient:
             .get() \
             .go()
 
-    def retrieve_user_login_report(self, user_id, offset, limit):
+    def retrieve_user_login_report(self, application_id, user_id, start, end):
+        """
+        Retrieves the login report between the two instants for a particular user by Id. If you specify an application id, it will only return the
+        login counts for that application.
+
+        Attributes:
+            application_id: (Optional) The application id.
+            user_id: The userId id.
+            start: The start instant as UTC milliseconds since Epoch.
+            end: The end instant as UTC milliseconds since Epoch.
+        """
+        return self.start().uri('/api/report/login') \
+            .url_parameter('applicationId', application_id) \
+            .url_parameter('userId', user_id) \
+            .url_parameter('start', start) \
+            .url_parameter('end', end) \
+            .get() \
+            .go()
+
+    def retrieve_user_login_report_by_login_id(self, application_id, login_id, start, end):
+        """
+        Retrieves the login report between the two instants for a particular user by login Id. If you specify an application id, it will only return the
+        login counts for that application.
+
+        Attributes:
+            application_id: (Optional) The application id.
+            login_id: The userId id.
+            start: The start instant as UTC milliseconds since Epoch.
+            end: The end instant as UTC milliseconds since Epoch.
+        """
+        return self.start().uri('/api/report/login') \
+            .url_parameter('applicationId', application_id) \
+            .url_parameter('loginId', login_id) \
+            .url_parameter('start', start) \
+            .url_parameter('end', end) \
+            .get() \
+            .go()
+
+    def retrieve_user_recent_logins(self, user_id, offset, limit):
         """
         Retrieves the last number of login records for a user.
 
@@ -1314,7 +1394,7 @@ class FusionAuthClient:
             offset: The initial record. e.g. 0 is the last login, 100 will be the 100th most recent login.
             limit: (Optional, defaults to 10) The number of records to retrieve.
         """
-        return self.start().uri('/api/report/user-login') \
+        return self.start().uri('/api/user/recent-login') \
             .url_parameter('userId', user_id) \
             .url_parameter('offset', offset) \
             .url_parameter('limit', limit) \
