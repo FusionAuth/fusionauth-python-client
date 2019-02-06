@@ -1002,6 +1002,20 @@ class FusionAuthClient:
             .get() \
             .go()
 
+    def retrieve_inactive_actions(self, user_id):
+        """
+        Retrieves all of the actions for the user with the given Id that are currently inactive.
+        An inactive action means one that is time based and has been canceled or has expired, or is not time based.
+
+        Attributes:
+            user_id: The Id of the user to fetch the actions for.
+        """
+        return self.start().uri('/api/user/action') \
+            .url_parameter('userId', user_id) \
+            .url_parameter('active', "false") \
+            .get() \
+            .go()
+
     def retrieve_inactive_applications(self):
         """
         Retrieves all of the applications that are currently inactive.
