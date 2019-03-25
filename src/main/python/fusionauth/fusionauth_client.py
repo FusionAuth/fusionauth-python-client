@@ -202,6 +202,20 @@ class FusionAuthClient:
             .post() \
             .go()
 
+    def create_lambda(self, lambda_id, request):
+        """
+        Creates a Lambda. You can optionally specify an Id for the lambda, if not provided one will be generated.
+
+        Attributes:
+            lambda_id: (Optional) The Id for the lambda. If not provided a secure random UUID will be generated.
+            request: The request object that contains all of the information used to create the lambda.
+        """
+        return self.start().uri('/api/lambda') \
+            .url_segment(lambda_id) \
+            .body_handler(JSONBodyHandler(request)) \
+            .post() \
+            .go()
+
     def create_tenant(self, tenant_id, request):
         """
         Creates a tenant. You can optionally specify an Id for the tenant, if not provided one will be generated.
@@ -399,6 +413,18 @@ class FusionAuthClient:
         """
         return self.start().uri('/api/identity-provider') \
             .url_segment(identity_provider_id) \
+            .delete() \
+            .go()
+
+    def delete_lambda(self, lambda_id):
+        """
+        Deletes the lambda for the given Id.
+
+        Attributes:
+            lambda_id: The Id of the lambda to delete.
+        """
+        return self.start().uri('/api/lambda') \
+            .url_segment(lambda_id) \
             .delete() \
             .go()
 
@@ -722,6 +748,18 @@ class FusionAuthClient:
             .url_segment(action_id) \
             .body_handler(JSONBodyHandler(request)) \
             .put() \
+            .go()
+
+    def passwordless_login(self, request):
+        """
+        Complete a login request using a passwordless code
+
+        Attributes:
+            request: The passwordless login request that contains all of the information used to complete login.
+        """
+        return self.start().uri('/api/passwordless/login') \
+            .body_handler(JSONBodyHandler(request)) \
+            .post() \
             .go()
 
     def reactivate_application(self, application_id):
@@ -1069,6 +1107,28 @@ class FusionAuthClient:
         Attributes:
         """
         return self.start().uri('/api/jwt/public-key') \
+            .get() \
+            .go()
+
+    def retrieve_lambda(self, lambda_id):
+        """
+        Retrieves the lambda for the given Id.
+
+        Attributes:
+            lambda_id: The Id of the lambda.
+        """
+        return self.start().uri('/api/lambda') \
+            .url_segment(lambda_id) \
+            .get() \
+            .go()
+
+    def retrieve_lambdas(self):
+        """
+        Retrieves all of the lambdas.
+
+        Attributes:
+        """
+        return self.start().uri('/api/lambda') \
             .get() \
             .go()
 
@@ -1478,6 +1538,18 @@ class FusionAuthClient:
             .post() \
             .go()
 
+    def search_event_logs(self, request):
+        """
+        Searches the event logs with the specified criteria and pagination.
+
+        Attributes:
+            request: The search criteria and pagination information.
+        """
+        return self.start().uri('/api/system/event-log/search') \
+            .body_handler(JSONBodyHandler(request)) \
+            .post() \
+            .go()
+
     def search_users(self, ids):
         """
         Retrieves the users for the given ids. If any id is invalid, it is ignored.
@@ -1514,6 +1586,18 @@ class FusionAuthClient:
         """
         return self.start().uri('/api/email/send') \
             .url_segment(email_template_id) \
+            .body_handler(JSONBodyHandler(request)) \
+            .post() \
+            .go()
+
+    def send_passwordless_code(self, request):
+        """
+        Send a passwordless authentication code in an email to complete login.
+
+        Attributes:
+            request: The passwordless send request that contains all of the information used to send an email containing a code.
+        """
+        return self.start().uri('/api/passwordless/send') \
             .body_handler(JSONBodyHandler(request)) \
             .post() \
             .go()
@@ -1635,6 +1719,20 @@ class FusionAuthClient:
             request: The request that contains all of the new integration information.
         """
         return self.start().uri('/api/integration') \
+            .body_handler(JSONBodyHandler(request)) \
+            .put() \
+            .go()
+
+    def update_lambda(self, lambda_id, request):
+        """
+        Updates the lambda with the given Id.
+
+        Attributes:
+            lambda_id: The Id of the lambda to update.
+            request: The request that contains all of the new lambda information.
+        """
+        return self.start().uri('/api/lambda') \
+            .url_segment(lambda_id) \
             .body_handler(JSONBodyHandler(request)) \
             .put() \
             .go()
