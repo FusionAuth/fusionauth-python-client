@@ -416,6 +416,18 @@ class FusionAuthClient:
             .delete() \
             .go()
 
+    def delete_key(self, key_od):
+        """
+        Deletes the key for the given Id.
+
+        Attributes:
+            key_od: The Id of the key to delete.
+        """
+        return self.start().uri('/api/key') \
+            .url_segment(key_od) \
+            .delete() \
+            .go()
+
     def delete_lambda(self, lambda_id):
         """
         Deletes the lambda for the given Id.
@@ -584,6 +596,20 @@ class FusionAuthClient:
             .put() \
             .go()
 
+    def generate_key(self, key_id, request):
+        """
+        Generate a new RSA or EC key pair or an HMAC secret.
+
+        Attributes:
+            key_id: (Optional) The Id for the key. If not provided a secure random UUID will be generated.
+            request: The request object that contains all of the information used to create the key.
+        """
+        return self.start().uri('/api/key/generate') \
+            .url_segment(key_id) \
+            .body_handler(JSONBodyHandler(request)) \
+            .post() \
+            .go()
+
     def generate_registration_verification_id(self, email, application_id):
         """
         Generate a new Application Registration Verification Id to be used with the Verify Registration API. This API will not attempt to send an
@@ -636,6 +662,20 @@ class FusionAuthClient:
                     providers that FusionAuth uses to reconcile the user's account.
         """
         return self.start().uri('/api/identity-provider/login') \
+            .body_handler(JSONBodyHandler(request)) \
+            .post() \
+            .go()
+
+    def import_key(self, key_id, request):
+        """
+        Import an existing RSA or EC key pair or an HMAC secret.
+
+        Attributes:
+            key_id: (Optional) The Id for the key. If not provided a secure random UUID will be generated.
+            request: The request object that contains all of the information used to create the key.
+        """
+        return self.start().uri('/api/key/import') \
+            .url_segment(key_id) \
             .body_handler(JSONBodyHandler(request)) \
             .post() \
             .go()
@@ -996,6 +1036,18 @@ class FusionAuthClient:
             .get() \
             .go()
 
+    def retrieve_event_log(self, event_log_id):
+        """
+        Retrieves a single event log for the given Id.
+
+        Attributes:
+            event_log_id: The Id of the event log to retrieve.
+        """
+        return self.start().uri('/api/system/event-log') \
+            .url_segment(event_log_id) \
+            .get() \
+            .go()
+
     def retrieve_group(self, group_id):
         """
         Retrieves the group for the given Id.
@@ -1110,6 +1162,28 @@ class FusionAuthClient:
             .get() \
             .go()
 
+    def retrieve_key(self, key_id):
+        """
+        Retrieves the key for the given Id.
+
+        Attributes:
+            key_id: The Id of the key.
+        """
+        return self.start().uri('/api/key') \
+            .url_segment(key_id) \
+            .get() \
+            .go()
+
+    def retrieve_keys(self):
+        """
+        Retrieves all of the keys.
+
+        Attributes:
+        """
+        return self.start().uri('/api/key') \
+            .get() \
+            .go()
+
     def retrieve_lambda(self, lambda_id):
         """
         Retrieves the lambda for the given Id.
@@ -1129,6 +1203,18 @@ class FusionAuthClient:
         Attributes:
         """
         return self.start().uri('/api/lambda') \
+            .get() \
+            .go()
+
+    def retrieve_lambdas_by_type(self, type):
+        """
+        Retrieves all of the lambdas for the provided type.
+
+        Attributes:
+            type: The type of the lambda to return.
+        """
+        return self.start().uri('/api/lambda') \
+            .url_parameter('type', type) \
             .get() \
             .go()
 
@@ -1719,6 +1805,20 @@ class FusionAuthClient:
             request: The request that contains all of the new integration information.
         """
         return self.start().uri('/api/integration') \
+            .body_handler(JSONBodyHandler(request)) \
+            .put() \
+            .go()
+
+    def update_key(self, key_id, request):
+        """
+        Updates the key with the given Id.
+
+        Attributes:
+            key_id: The Id of the key to update.
+            request: The request that contains all of the new key information.
+        """
+        return self.start().uri('/api/key') \
+            .url_segment(key_id) \
             .body_handler(JSONBodyHandler(request)) \
             .put() \
             .go()
