@@ -1,9 +1,9 @@
-import setuptools
+from setuptools import setup, find_packages
 
 with open("README.md", "r") as fh:
     long_description = fh.read()
 
-setuptools.setup(
+setup(
     name="fusionauth-client",
     version="1.6.1",
     author="Tyler Scott",
@@ -12,7 +12,9 @@ setuptools.setup(
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/FusionAuth/fusionauth-python-client",
-    packages=setuptools.find_packages(),
+    packages=find_packages(where='src/main/python'),
+    namespace_packages=["fusionauth"],
+    package_dir={'': 'src/main/python'},
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: Apache Software License",
