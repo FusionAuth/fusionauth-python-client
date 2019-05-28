@@ -15,7 +15,7 @@
  */
 savantVersion = "1.0.0"
 
-project(group: "io.fusionauth", name: "fusionauth-python-client", version: "1.6.1", licenses: ["ApacheV2_0"]) {
+project(group: "io.fusionauth", name: "fusionauth-python-client", version: "1.6.2", licenses: ["ApacheV2_0"]) {
   workflow {
     standard()
   }
@@ -81,7 +81,7 @@ target(name: "setup-python", description: "Gets the python dependencies") {
  * https://docs.python.org/2/distutils/packageindex.html#pypirc
  */
 target(name: "publish", description: "Publishes source and built versions of the packages to PyPi", dependsOn: ["clean", "test"]) {
-  def proc = "python -m twine upload dist/* --verbose".execute()
+  def proc = "python3 -m twine upload dist/* --verbose".execute()
   proc.consumeProcessOutput(System.out, System.err)
   proc.waitFor()
 }
