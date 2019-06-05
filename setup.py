@@ -19,6 +19,9 @@ setup(
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: Apache Software License",
         "Operating System :: OS Independent",
-        "Topic :: Software Development :: Libraries"
+        "Topic :: Software Development :: Libraries",
+    ],
+    install_requires=[
+        'requests',
     ]
 )
