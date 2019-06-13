@@ -47,6 +47,20 @@ class FusionAuthClient:
             .post() \
             .go()
 
+    def add_user_to_family(self, family_id, request):
+        """
+        Adds a user to an existing family. The family id must be specified.
+
+        Attributes:
+            family_id: The id of the family.
+            request: The request object that contains all of the information used to determine which user to add to the family.
+        """
+        return self.start().uri('/api/user/family') \
+            .url_segment(family_id) \
+            .body_handler(JSONBodyHandler(request)) \
+            .put() \
+            .go()
+
     def cancel_action(self, action_id, request):
         """
         Cancels the user action.
@@ -148,6 +162,20 @@ class FusionAuthClient:
             .post() \
             .go()
 
+    def create_consent(self, consent_id, request):
+        """
+        Creates a user consent type. You can optionally specify an Id for the consent type, if not provided one will be generated.
+
+        Attributes:
+            consent_id: (Optional) The Id for the consent. If not provided a secure random UUID will be generated.
+            request: The request object that contains all of the information used to create the consent.
+        """
+        return self.start().uri('/api/consent') \
+            .url_segment(consent_id) \
+            .body_handler(JSONBodyHandler(request)) \
+            .post() \
+            .go()
+
     def create_email_template(self, email_template_id, request):
         """
         Creates an email template. You can optionally specify an Id for the template, if not provided one will be generated.
@@ -158,6 +186,21 @@ class FusionAuthClient:
         """
         return self.start().uri('/api/email/template') \
             .url_segment(email_template_id) \
+            .body_handler(JSONBodyHandler(request)) \
+            .post() \
+            .go()
+
+    def create_family(self, family_id, request):
+        """
+        Creates a family with the user id in the request as the owner and sole member of the family. You can optionally specify an id for the
+        family, if not provided one will be generated.
+
+        Attributes:
+            family_id: (Optional) The id for the family. If not provided a secure random UUID will be generated.
+            request: The request object that contains all of the information used to create the family.
+        """
+        return self.start().uri('/api/user/family') \
+            .url_segment(family_id) \
             .body_handler(JSONBodyHandler(request)) \
             .post() \
             .go()
@@ -274,6 +317,20 @@ class FusionAuthClient:
             .post() \
             .go()
 
+    def create_user_consent(self, user_consent_id, request):
+        """
+        Creates a single User consent.
+
+        Attributes:
+            user_consent_id: (Optional) The Id for the User consent. If not provided a secure random UUID will be generated.
+            request: The request that contains the user consent information.
+        """
+        return self.start().uri('/api/user/consent') \
+            .url_segment(user_consent_id) \
+            .body_handler(JSONBodyHandler(request)) \
+            .post() \
+            .go()
+
     def create_webhook(self, webhook_id, request):
         """
         Creates a webhook. You can optionally specify an Id for the webhook, if not provided one will be generated.
@@ -365,6 +422,18 @@ class FusionAuthClient:
             .url_segment(application_id) \
             .url_segment("role") \
             .url_segment(role_id) \
+            .delete() \
+            .go()
+
+    def delete_consent(self, consent_id):
+        """
+        Deletes the consent for the given Id.
+
+        Attributes:
+            consent_id: The Id of the consent to delete.
+        """
+        return self.start().uri('/api/consent') \
+            .url_segment(consent_id) \
             .delete() \
             .go()
 
@@ -871,6 +940,20 @@ class FusionAuthClient:
             .post() \
             .go()
 
+    def remove_user_from_family(self, family_id, user_id):
+        """
+        Removes a user from the family with the given id.
+
+        Attributes:
+            family_id: The id of the family to remove the user from.
+            user_id: The id of the user to remove from the family.
+        """
+        return self.start().uri('/api/user/family') \
+            .url_segment(family_id) \
+            .url_segment(user_id) \
+            .delete() \
+            .go()
+
     def resend_email_verification(self, email):
         """
         Re-sends the verification email to the user.
@@ -983,6 +1066,28 @@ class FusionAuthClient:
             .get() \
             .go()
 
+    def retrieve_consent(self, consent_id):
+        """
+        Retrieves the Consent for the given Id.
+
+        Attributes:
+            consent_id: The Id of the consent.
+        """
+        return self.start().uri('/api/consent') \
+            .url_segment(consent_id) \
+            .get() \
+            .go()
+
+    def retrieve_consents(self):
+        """
+        Retrieves all of the consent.
+
+        Attributes:
+        """
+        return self.start().uri('/api/consent') \
+            .get() \
+            .go()
+
     def retrieve_daily_active_report(self, application_id, start, end):
         """
         Retrieves the daily active user report between the two instants. If you specify an application id, it will only
@@ -1045,6 +1150,30 @@ class FusionAuthClient:
         """
         return self.start().uri('/api/system/event-log') \
             .url_segment(event_log_id) \
+            .get() \
+            .go()
+
+    def retrieve_families(self, user_id):
+        """
+        Retrieves all of the families that a user belongs to.
+
+        Attributes:
+            user_id: The User's id
+        """
+        return self.start().uri('/api/user/family') \
+            .url_parameter('userId', user_id) \
+            .get() \
+            .go()
+
+    def retrieve_family_members_by_family_id(self, family_id):
+        """
+        Retrieves all of the members of a family by the unique Family Id.
+
+        Attributes:
+            family_id: The unique Id of the Family.
+        """
+        return self.start().uri('/api/user/family') \
+            .url_segment(family_id) \
             .get() \
             .go()
 
@@ -1272,6 +1401,18 @@ class FusionAuthClient:
         Attributes:
         """
         return self.start().uri('/api/system-configuration/password-validation-rules') \
+            .get() \
+            .go()
+
+    def retrieve_pending_children(self, parent_email):
+        """
+        Retrieves all of the children for the given parent email address.
+
+        Attributes:
+            parent_email: The email of the parent.
+        """
+        return self.start().uri('/api/user/family/pending') \
+            .url_parameter('parentEmail', parent_email) \
             .get() \
             .go()
 
@@ -1507,6 +1648,30 @@ class FusionAuthClient:
             .get() \
             .go()
 
+    def retrieve_user_consent(self, user_consent_id):
+        """
+        Retrieve a single User consent by Id.
+
+        Attributes:
+            user_consent_id: The User consent Id
+        """
+        return self.start().uri('/api/user/consent') \
+            .url_segment(user_consent_id) \
+            .get() \
+            .go()
+
+    def retrieve_user_consents(self, user_id):
+        """
+        Retrieves all of the consents for a User.
+
+        Attributes:
+            user_id: The User's Id
+        """
+        return self.start().uri('/api/user/consent') \
+            .url_parameter('userId', user_id) \
+            .get() \
+            .go()
+
     def retrieve_user_login_report(self, application_id, user_id, start, end):
         """
         Retrieves the login report between the two instants for a particular user by Id. If you specify an application id, it will only return the
@@ -1612,6 +1777,18 @@ class FusionAuthClient:
             .delete() \
             .go()
 
+    def revoke_user_consent(self, user_consent_id):
+        """
+        Revokes a single User consent by Id.
+
+        Attributes:
+            user_consent_id: The User Consent Id
+        """
+        return self.start().uri('/api/user/consent') \
+            .url_segment(user_consent_id) \
+            .delete() \
+            .go()
+
     def search_audit_logs(self, request):
         """
         Searches the audit logs with the specified criteria and pagination.
@@ -1632,6 +1809,18 @@ class FusionAuthClient:
             request: The search criteria and pagination information.
         """
         return self.start().uri('/api/system/event-log/search') \
+            .body_handler(JSONBodyHandler(request)) \
+            .post() \
+            .go()
+
+    def search_login_records(self, request):
+        """
+        Searches the login records with the specified criteria and pagination.
+
+        Attributes:
+            request: The search criteria and pagination information.
+        """
+        return self.start().uri('/api/system/login-record/search') \
             .body_handler(JSONBodyHandler(request)) \
             .post() \
             .go()
@@ -1672,6 +1861,18 @@ class FusionAuthClient:
         """
         return self.start().uri('/api/email/send') \
             .url_segment(email_template_id) \
+            .body_handler(JSONBodyHandler(request)) \
+            .post() \
+            .go()
+
+    def send_family_request_email(self, request):
+        """
+        Sends out an email to a parent that they need to register and create a family or need to log in and add a child to their existing family.
+
+        Attributes:
+            request: The request object that contains the parent email.
+        """
+        return self.start().uri('/api/user/family/request') \
             .body_handler(JSONBodyHandler(request)) \
             .post() \
             .go()
@@ -1751,6 +1952,20 @@ class FusionAuthClient:
             .url_segment(application_id) \
             .url_segment("role") \
             .url_segment(role_id) \
+            .body_handler(JSONBodyHandler(request)) \
+            .put() \
+            .go()
+
+    def update_consent(self, consent_id, request):
+        """
+        Updates the consent with the given Id.
+
+        Attributes:
+            consent_id: The Id of the consent to update.
+            request: The request that contains all of the new consent information.
+        """
+        return self.start().uri('/api/consent') \
+            .url_segment(consent_id) \
             .body_handler(JSONBodyHandler(request)) \
             .put() \
             .go()
@@ -1915,6 +2130,20 @@ class FusionAuthClient:
         """
         return self.start().uri('/api/user-action-reason') \
             .url_segment(user_action_reason_id) \
+            .body_handler(JSONBodyHandler(request)) \
+            .put() \
+            .go()
+
+    def update_user_consent(self, user_consent_id, request):
+        """
+        Updates a single User consent by Id.
+
+        Attributes:
+            user_consent_id: The User Consent Id
+            request: The request that contains the user consent information.
+        """
+        return self.start().uri('/api/user/consent') \
+            .url_segment(user_consent_id) \
             .body_handler(JSONBodyHandler(request)) \
             .put() \
             .go()
