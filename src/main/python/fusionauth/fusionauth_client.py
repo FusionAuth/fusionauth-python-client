@@ -717,7 +717,7 @@ class FusionAuthClient:
             encoded_jwt: The encoded JWT (access token).
         """
         return self.start().uri('/api/two-factor/secret') \
-            .authorization("_jwt " + encoded_jwt) \
+            .authorization("JWT " + encoded_jwt) \
             .get() \
             .go()
 
@@ -776,7 +776,7 @@ class FusionAuthClient:
             encoded_jwt: The encoded JWT (access token).
         """
         return self.start().uri('/api/jwt/issue') \
-            .authorization("_jwt " + encoded_jwt) \
+            .authorization("JWT " + encoded_jwt) \
             .url_parameter('applicationId', application_id) \
             .get() \
             .go()
@@ -1734,7 +1734,7 @@ class FusionAuthClient:
             encoded_jwt: The encoded JWT (access token).
         """
         return self.start().uri('/api/user') \
-            .authorization("_jwt " + encoded_jwt) \
+            .authorization("JWT " + encoded_jwt) \
             .get() \
             .go()
 
@@ -2173,7 +2173,7 @@ class FusionAuthClient:
             encoded_jwt: The encoded JWT (access token).
         """
         return self.start().uri('/api/jwt/validate') \
-            .authorization("_jwt " + encoded_jwt) \
+            .authorization("JWT " + encoded_jwt) \
             .get() \
             .go()
 
