@@ -2173,7 +2173,7 @@ class FusionAuthClient:
             encoded_jwt: The encoded JWT (access token).
         """
         return self.start().uri('/api/jwt/validate') \
-            .authorization("_jwt " + encoded_jwt) \
+            .authorization("JWT " + encoded_jwt) \
             .get() \
             .go()
 
