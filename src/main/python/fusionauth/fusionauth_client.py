@@ -16,6 +16,7 @@
 
 from fusionauth.rest_client import RESTClient, JSONBodyHandler
 
+__version__ = "1.7.2"
 
 class FusionAuthClient:
     """The FusionAuthClient provides easy access to the FusionAuth API."""
