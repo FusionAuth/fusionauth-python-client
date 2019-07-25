@@ -16,7 +16,6 @@
 
 from fusionauth.rest_client import RESTClient, JSONBodyHandler
 
-__version__ = "1.7.2"
 
 class FusionAuthClient:
     """The FusionAuthClient provides easy access to the FusionAuth API."""
@@ -270,6 +269,20 @@ class FusionAuthClient:
         """
         return self.start().uri('/api/tenant') \
             .url_segment(tenant_id) \
+            .body_handler(JSONBodyHandler(request)) \
+            .post() \
+            .go()
+
+    def create_theme(self, theme_id, request):
+        """
+        Creates a Theme. You can optionally specify an Id for the theme, if not provided one will be generated.
+
+        Attributes:
+            theme_id: (Optional) The Id for the theme. If not provided a secure random UUID will be generated.
+            request: The request object that contains all of the information used to create the theme.
+        """
+        return self.start().uri('/api/theme') \
+            .url_segment(theme_id) \
             .body_handler(JSONBodyHandler(request)) \
             .post() \
             .go()
@@ -536,6 +549,18 @@ class FusionAuthClient:
             .delete() \
             .go()
 
+    def delete_theme(self, theme_id):
+        """
+        Deletes the theme for the given Id.
+
+        Attributes:
+            theme_id: The Id of the theme to delete.
+        """
+        return self.start().uri('/api/theme') \
+            .url_segment(theme_id) \
+            .delete() \
+            .go()
+
     def delete_user(self, user_id):
         """
         Deletes the user for the given Id. This permanently deletes all information, metrics, reports and data associated
@@ -718,7 +743,7 @@ class FusionAuthClient:
             encoded_jwt: The encoded JWT (access token).
         """
         return self.start().uri('/api/two-factor/secret') \
-            .authorization("JWT " + encoded_jwt) \
+            .authorization("_jwt " + encoded_jwt) \
             .get() \
             .go()
 
@@ -777,7 +802,7 @@ class FusionAuthClient:
             encoded_jwt: The encoded JWT (access token).
         """
         return self.start().uri('/api/jwt/issue') \
-            .authorization("JWT " + encoded_jwt) \
+            .authorization("_jwt " + encoded_jwt) \
             .url_parameter('applicationId', application_id) \
             .get() \
             .go()
@@ -921,6 +946,19 @@ class FusionAuthClient:
         return self.start().uri('/api/jwt/reconcile') \
             .body_handler(JSONBodyHandler(request)) \
             .post() \
+            .go()
+
+    def refresh_user_search_index(self):
+        """
+        Request a refresh of the User search index. This API is not generally necessary and the search index will become consistent in a
+        reasonable amount of time. There may be scenarios where you may wish to manually request an index refresh. One example may be 
+        if you are using the Search API or Delete Tenant API immediately following a User Create etc, you may wish to request a refresh to
+         ensure the index immediately current before making a query request to the search index.
+
+        Attributes:
+        """
+        return self.start().uri('/api/user/search') \
+            .put() \
             .go()
 
     def register(self, user_id, request):
@@ -1270,15 +1308,25 @@ class FusionAuthClient:
 
     def retrieve_jwt_public_key(self, key_id):
         """
-        Retrieves the Public Key configured for verifying JSON Web Tokens (JWT) by the key Id. If the key Id is provided a
-        single public key will be returned if one is found by that id. If the optional parameter key Id is not provided all
-        public keys will be returned.
+        Retrieves the Public Key configured for verifying JSON Web Tokens (JWT) by the key Id (kid).
 
         Attributes:
-            key_id: (Optional) The Id of the public key.
+            key_id: The Id of the public key (kid).
         """
         return self.start().uri('/api/jwt/public-key') \
-            .url_segment(key_id) \
+            .url_parameter('kid', key_id) \
+            .get() \
+            .go()
+
+    def retrieve_jwt_public_key_by_application_id(self, application_id):
+        """
+        Retrieves the Public Key configured for verifying the JSON Web Tokens (JWT) issued by the Login API by the Application Id.
+
+        Attributes:
+            application_id: The Id of the Application for which this key is used.
+        """
+        return self.start().uri('/api/jwt/public-key') \
+            .url_parameter('applicationId', application_id) \
             .get() \
             .go()
 
@@ -1503,6 +1551,28 @@ class FusionAuthClient:
         Attributes:
         """
         return self.start().uri('/api/tenant') \
+            .get() \
+            .go()
+
+    def retrieve_theme(self, theme_id):
+        """
+        Retrieves the theme for the given Id.
+
+        Attributes:
+            theme_id: The Id of the theme.
+        """
+        return self.start().uri('/api/theme') \
+            .url_segment(theme_id) \
+            .get() \
+            .go()
+
+    def retrieve_themes(self):
+        """
+        Retrieves all of the themes.
+
+        Attributes:
+        """
+        return self.start().uri('/api/theme') \
             .get() \
             .go()
 
@@ -1735,7 +1805,7 @@ class FusionAuthClient:
             encoded_jwt: The encoded JWT (access token).
         """
         return self.start().uri('/api/user') \
-            .authorization("JWT " + encoded_jwt) \
+            .authorization("_jwt " + encoded_jwt) \
             .get() \
             .go()
 
@@ -2093,6 +2163,20 @@ class FusionAuthClient:
             .put() \
             .go()
 
+    def update_theme(self, theme_id, request):
+        """
+        Updates the theme with the given Id.
+
+        Attributes:
+            theme_id: The Id of the theme to update.
+            request: The request that contains all of the new theme information.
+        """
+        return self.start().uri('/api/theme') \
+            .url_segment(theme_id) \
+            .body_handler(JSONBodyHandler(request)) \
+            .put() \
+            .go()
+
     def update_user(self, user_id, request):
         """
         Updates the user with the given Id.
@@ -2174,7 +2258,7 @@ class FusionAuthClient:
             encoded_jwt: The encoded JWT (access token).
         """
         return self.start().uri('/api/jwt/validate') \
-            .authorization("JWT " + encoded_jwt) \
+            .authorization("_jwt " + encoded_jwt) \
             .get() \
             .go()
 
