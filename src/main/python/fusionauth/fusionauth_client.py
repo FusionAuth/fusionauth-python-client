@@ -687,7 +687,7 @@ class FusionAuthClient:
         """
         return self.start().uri('/api/user/verify-email') \
             .url_parameter('email', email) \
-            .url_parameter('sendVerifyPasswordEmail', "false") \
+            .url_parameter('sendVerifyEmail', "false") \
             .put() \
             .go()
 
@@ -743,7 +743,7 @@ class FusionAuthClient:
             encoded_jwt: The encoded JWT (access token).
         """
         return self.start().uri('/api/two-factor/secret') \
-            .authorization("_jwt " + encoded_jwt) \
+            .authorization("JWT " + encoded_jwt)
             .get() \
             .go()
 
@@ -802,14 +802,16 @@ class FusionAuthClient:
             encoded_jwt: The encoded JWT (access token).
         """
         return self.start().uri('/api/jwt/issue') \
-            .authorization("_jwt " + encoded_jwt) \
+            .authorization("JWT " + encoded_jwt)
             .url_parameter('applicationId', application_id) \
             .get() \
             .go()
 
     def login(self, request):
         """
-        Logs a user in.
+        Authenticates a user to FusionAuth. 
+        
+        This API optionally requires an API key. See <code>Application.loginConfiguration.requireAuthentication</code>.
 
         Attributes:
             request: The login request that contains the user credentials used to log them in.
@@ -1445,11 +1447,28 @@ class FusionAuthClient:
 
     def retrieve_password_validation_rules(self):
         """
-        Retrieves the password validation rules.
+        Retrieves the password validation rules for a specific tenant. This method requires a tenantId to be provided 
+        through the use of a Tenant scoped API key or an HTTP header X-FusionAuth-TenantId to specify the Tenant Id.
+        
+        This API does not require an API key.
 
         Attributes:
         """
-        return self.start().uri('/api/system-configuration/password-validation-rules') \
+        return self.start().uri('/api/tenant/password-validation-rules') \
+            .get() \
+            .go()
+
+    def retrieve_password_validation_rules_with_tenant_id(self, tenant_id):
+        """
+        Retrieves the password validation rules for a specific tenant.
+        
+        This API does not require an API key.
+
+        Attributes:
+            tenant_id: The Id of the tenant.
+        """
+        return self.start().uri('/api/tenant/password-validation-rules') \
+            .url_segment(tenant_id) \
             .get() \
             .go()
 
@@ -1805,7 +1824,7 @@ class FusionAuthClient:
             encoded_jwt: The encoded JWT (access token).
         """
         return self.start().uri('/api/user') \
-            .authorization("_jwt " + encoded_jwt) \
+            .authorization("JWT " + encoded_jwt)
             .get() \
             .go()
 
@@ -2258,7 +2277,7 @@ class FusionAuthClient:
             encoded_jwt: The encoded JWT (access token).
         """
         return self.start().uri('/api/jwt/validate') \
-            .authorization("_jwt " + encoded_jwt) \
+            .authorization("JWT " + encoded_jwt)
             .get() \
             .go()
 
