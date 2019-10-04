@@ -34,6 +34,7 @@ project(group: "io.fusionauth", name: "fusionauth-python-client", version: "1.10
 // Plugins
 release = loadPlugin(id: "org.savantbuild.plugin:release-git:${savantVersion}")
 dependency = loadPlugin(id: "org.savantbuild.plugin:dependency:1.0.2")
+idea = loadPlugin(id: "org.savantbuild.plugin:idea:1.0.1")
 file = loadPlugin(id: "org.savantbuild.plugin:file:1.0.2")
 
 target(name: "clean", description: "Cleans the build directory") {
@@ -80,7 +81,7 @@ target(name: "setup-python", description: "Gets the python dependencies") {
  *
  * https://docs.python.org/2/distutils/packageindex.html#pypirc
  */
-target(name: "publish", description: "Publishes source and built versions of the packages to PyPi", dependsOn: ["clean", "test"]) {
+target(name: "publish", description: "Publishes source and built versions of the packages to PyPi", dependsOn: ["clean", "compile"]) {
   def proc = "python3 -m twine upload dist/* --verbose".execute()
   proc.consumeProcessOutput(System.out, System.err)
   proc.waitFor()
@@ -91,5 +92,5 @@ target(name: "release", description: "Releases a full version of the project", d
 }
 
 target(name: "idea", description: "Updates the IntelliJ IDEA module file") {
-//    idea.iml()
+    idea.iml()
 }
