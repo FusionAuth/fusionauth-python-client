@@ -2003,6 +2003,19 @@ class FusionAuthClient:
             .post() \
             .go()
 
+    def start_passwordless_login(self, request):
+        """
+        Start a passwordless login request by generating a passwordless code. This code can be sent to the User using the Send
+        Passwordless Code API or using a mechanism outside of FusionAuth. The passwordless login is completed by using the Passwordless Login API with this code.
+
+        Attributes:
+            request: The passwordless start request that contains all of the information used to begin the passwordless login request.
+        """
+        return self.start().uri('/api/passwordless/start') \
+            .body_handler(JSONBodyHandler(request)) \
+            .post() \
+            .go()
+
     def two_factor_login(self, request):
         """
         Complete login using a 2FA challenge
