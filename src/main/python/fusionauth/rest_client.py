@@ -78,6 +78,10 @@ class RESTClient:
         self._method = 'GET'
         return self
 
+    def patch(self):
+        self._method = 'PATCH'
+        return self
+
     def post(self):
         self._method = 'POST'
         return self
@@ -198,6 +202,16 @@ class JSONBodyHandler:
     def set_headers(self, headers):
         headers['Length'] = str(len(self._body.encode('utf-8')))
         headers['Content-Type'] = "application/json"
+
+    def get_body(self):
+        return self._body
+
+class FormDataBodyHandler:
+    def __init__(self, body_object):
+        self._body = body_object
+
+    def set_headers(self, headers):
+        headers['Content-Type'] = "application/x-www-form-urlencoded"
 
     def get_body(self):
         return self._body
