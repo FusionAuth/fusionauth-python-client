@@ -2326,6 +2326,19 @@ class FusionAuthClient:
             .post() \
             .go()
 
+    def start_identity_provider_login(self, request):
+        """
+        Begins a login request for a 3rd party login that requires user interaction such as HYPR.
+
+        Attributes:
+            request: The third-party login request that contains information from the third-party login
+                    providers that FusionAuth uses to reconcile the user's account.
+        """
+        return self.start().uri('/api/identity-provider/start') \
+            .body_handler(JSONBodyHandler(request)) \
+            .post() \
+            .go()
+
     def start_passwordless_login(self, request):
         """
         Start a passwordless login request by generating a passwordless code. This code can be sent to the User using the Send
