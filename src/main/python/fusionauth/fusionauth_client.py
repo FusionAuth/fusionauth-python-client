@@ -409,6 +409,23 @@ class FusionAuthClient:
         """
         return self.start().uri('/api/user/bulk') \
             .url_parameter('userId', user_ids) \
+            .url_parameter('dryRun', "false") \
+            .url_parameter('hardDelete', "false") \
+            .delete() \
+            .go()
+
+    def deactivate_users_by_query(self, query_string, dry_run):
+        """
+        Deactivates the users found with the given search query string.
+
+        Attributes:
+            query_string: The search query string.
+            dry_run: Whether to preview or deactivate the users found by the queryString
+        """
+        return self.start().uri('/api/user/bulk') \
+            .url_parameter('queryString', query_string) \
+            .url_parameter('dryRun', dry_run) \
+            .url_parameter('hardDelete', "false") \
             .delete() \
             .go()
 
@@ -608,13 +625,30 @@ class FusionAuthClient:
 
     def delete_users(self, request):
         """
-        Deletes the users with the given ids.
+        Deletes the users with the given ids, or users matching the provided queryString.
+        If you provide both userIds and queryString, the userIds will be honored.  This can be used to deactivate or hard-delete 
+        a user based on the hardDelete request body parameter.
 
         Attributes:
-            request: The ids of the users to delete.
+            request: The UserDeleteRequest.
         """
         return self.start().uri('/api/user/bulk') \
             .body_handler(JSONBodyHandler(request)) \
+            .delete() \
+            .go()
+
+    def delete_users_by_query(self, query_string, dry_run):
+        """
+        Delete the users found with the given search query string.
+
+        Attributes:
+            query_string: The search query string.
+            dry_run: Whether to preview or delete the users found by the queryString
+        """
+        return self.start().uri('/api/user/bulk') \
+            .url_parameter('queryString', query_string) \
+            .url_parameter('dryRun', dry_run) \
+            .url_parameter('hardDelete', "true") \
             .delete() \
             .go()
 
