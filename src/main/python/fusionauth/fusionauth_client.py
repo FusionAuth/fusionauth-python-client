@@ -1352,7 +1352,7 @@ class FusionAuthClient:
             email: The email address of the user that needs a new verification email.
             application_id: The Id of the application to be verified.
         """
-        return self.start_anonymous().uri('/api/user/verify-registration') \
+        return self.start().uri('/api/user/verify-registration') \
             .url_parameter('email', email) \
             .url_parameter('applicationId', application_id) \
             .put() \
