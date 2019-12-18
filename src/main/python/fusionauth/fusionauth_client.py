@@ -400,6 +400,7 @@ class FusionAuthClient:
             .delete() \
             .go()
 
+    @deprecated(reason="This method has been renamed to deactivate_users_by_ids, use this method instead.")
     def deactivate_users(self, user_ids):
         """
         Deactivates the users with the given ids.
@@ -414,17 +415,16 @@ class FusionAuthClient:
             .delete() \
             .go()
 
-    def deactivate_users_by_query(self, query_string, dry_run):
+    def deactivate_users_by_ids(self, user_ids):
         """
-        Deactivates the users found with the given search query string.
+        Deactivates the users with the given ids.
 
         Attributes:
-            query_string: The search query string.
-            dry_run: Whether to preview or deactivate the users found by the queryString
+            user_ids: The ids of the users to deactivate.
         """
         return self.start().uri('/api/user/bulk') \
-            .url_parameter('queryString', query_string) \
-            .url_parameter('dryRun', dry_run) \
+            .url_parameter('userId', user_ids) \
+            .url_parameter('dryRun', "false") \
             .url_parameter('hardDelete', "false") \
             .delete() \
             .go()
@@ -623,11 +623,14 @@ class FusionAuthClient:
             .delete() \
             .go()
 
+    @deprecated(reason="This method has been renamed to delete_users_by_query, use this method instead.")
     def delete_users(self, request):
         """
-        Deletes the users with the given ids, or users matching the provided queryString.
-        If you provide both userIds and queryString, the userIds will be honored.  This can be used to deactivate or hard-delete 
-        a user based on the hardDelete request body parameter.
+        Deletes the users with the given ids, or users matching the provided JSON query or queryString.
+        The order of preference is ids, query and then queryString, it is recommended to only provide one of the three for the request.
+        
+        This method can be used to deactivate or permanently delete (hard-delete) users based upon the hardDelete boolean in the request body.
+        Using the dryRun parameter you may also request the result of the action without actually deleting or deactivating any users.
 
         Attributes:
             request: The UserDeleteRequest.
@@ -637,18 +640,19 @@ class FusionAuthClient:
             .delete() \
             .go()
 
-    def delete_users_by_query(self, query_string, dry_run):
+    def delete_users_by_query(self, request):
         """
-        Delete the users found with the given search query string.
+        Deletes the users with the given ids, or users matching the provided JSON query or queryString.
+        The order of preference is ids, query and then queryString, it is recommended to only provide one of the three for the request.
+        
+        This method can be used to deactivate or permanently delete (hard-delete) users based upon the hardDelete boolean in the request body.
+        Using the dryRun parameter you may also request the result of the action without actually deleting or deactivating any users.
 
         Attributes:
-            query_string: The search query string.
-            dry_run: Whether to preview or delete the users found by the queryString
+            request: The UserDeleteRequest.
         """
         return self.start().uri('/api/user/bulk') \
-            .url_parameter('queryString', query_string) \
-            .url_parameter('dryRun', dry_run) \
-            .url_parameter('hardDelete', "true") \
+            .body_handler(JSONBodyHandler(request)) \
             .delete() \
             .go()
 
@@ -2272,6 +2276,7 @@ class FusionAuthClient:
             .post() \
             .go()
 
+    @deprecated(reason="This method has been renamed to search_users_by_ids, use this method instead.")
     def search_users(self, ids):
         """
         Retrieves the users for the given ids. If any id is invalid, it is ignored.
@@ -2284,13 +2289,39 @@ class FusionAuthClient:
             .get() \
             .go()
 
+    def search_users_by_ids(self, ids):
+        """
+        Retrieves the users for the given ids. If any id is invalid, it is ignored.
+
+        Attributes:
+            ids: The user ids to search for.
+        """
+        return self.start().uri('/api/user/search') \
+            .url_parameter('ids', ids) \
+            .get() \
+            .go()
+
+    def search_users_by_query(self, request):
+        """
+        Retrieves the users for the given search criteria and pagination.
+
+        Attributes:
+            request: The search criteria and pagination constraints. Fields used: ids, query, queryString, numberOfResults, orderBy, startRow,
+                    and sortFields.
+        """
+        return self.start().uri('/api/user/search') \
+            .body_handler(JSONBodyHandler(request)) \
+            .post() \
+            .go()
+
+    @deprecated(reason="This method has been renamed to search_users_by_query, use this method instead.")
     def search_users_by_query_string(self, request):
         """
         Retrieves the users for the given search criteria and pagination.
 
         Attributes:
-            request: The search criteria and pagination constraints. Fields used: queryString, numberOfResults, startRow,
-                    and sort fields.
+            request: The search criteria and pagination constraints. Fields used: ids, query, queryString, numberOfResults, orderBy, startRow,
+                    and sortFields.
         """
         return self.start().uri('/api/user/search') \
             .body_handler(JSONBodyHandler(request)) \
