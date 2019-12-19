@@ -14,6 +14,7 @@
 # language governing permissions and limitations under the License.
 #
 
+from deprecated import deprecated
 from fusionauth.rest_client import RESTClient, JSONBodyHandler, FormDataBodyHandler
 
 
@@ -400,7 +401,7 @@ class FusionAuthClient:
             .delete() \
             .go()
 
-    @deprecated(reason="This method has been renamed to deactivate_users_by_ids, use this method instead.")
+    @deprecated("This method has been renamed to deactivate_users_by_ids, use that method instead.")
     def deactivate_users(self, user_ids):
         """
         Deactivates the users with the given ids.
@@ -623,7 +624,7 @@ class FusionAuthClient:
             .delete() \
             .go()
 
-    @deprecated(reason="This method has been renamed to delete_users_by_query, use this method instead.")
+    @deprecated("This method has been renamed to delete_users_by_query, use that method instead.")
     def delete_users(self, request):
         """
         Deletes the users with the given ids, or users matching the provided JSON query or queryString.
@@ -2276,7 +2277,7 @@ class FusionAuthClient:
             .post() \
             .go()
 
-    @deprecated(reason="This method has been renamed to search_users_by_ids, use this method instead.")
+    @deprecated("This method has been renamed to search_users_by_ids, use that method instead.")
     def search_users(self, ids):
         """
         Retrieves the users for the given ids. If any id is invalid, it is ignored.
@@ -2314,7 +2315,7 @@ class FusionAuthClient:
             .post() \
             .go()
 
-    @deprecated(reason="This method has been renamed to search_users_by_query, use this method instead.")
+    @deprecated("This method has been renamed to search_users_by_query, use that method instead.")
     def search_users_by_query_string(self, request):
         """
         Retrieves the users for the given search criteria and pagination.

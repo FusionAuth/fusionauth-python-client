@@ -29,6 +29,8 @@ def print_json(parsed_json):
 class FusionAuthClientTest(unittest2.TestCase):
     def setUp(self):
         self.client = FusionAuthClient('bf69486b-4733-4470-a592-f1bfce7af580', 'http://localhost:9011')
+        # Uncomment and set tenant Id if running against a multi-tenant system
+        self.client.set_tenant_id('37633362-3633-3531-3564-373335636537')
 
     def runTest(self):
         pass

@@ -22,6 +22,6 @@ setup(
         "Topic :: Software Development :: Libraries",
     ],
     install_requires=[
-        'requests',
+        'deprecated', 'requests',
     ]
 )
