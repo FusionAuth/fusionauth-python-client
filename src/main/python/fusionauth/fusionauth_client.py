@@ -36,19 +36,16 @@ class FusionAuthClient:
       """Sets the tenant_id on the client"""
       self.tenant_id = tenant_id
 
-    def action_user(self, actionee_user_id, request):
+    def action_user(self, request):
         """
         Takes an action on a user. The user being actioned is called the "actionee" and the user taking the action is called the
-        "actioner". Both user ids are required. You pass the actionee's user id into the method and the actioner's is put into the
-        request object.
+        "actioner". Both user ids are required in the request object.
 
         Attributes:
-            actionee_user_id: The actionee's user id.
             request: The action request that includes all of the information about the action being taken including
                     the id of the action, any options and the duration (if applicable).
         """
         return self.start().uri('/api/user/action') \
-            .url_segment(actionee_user_id) \
             .body_handler(JSONBodyHandler(request)) \
             .post() \
             .go()
