@@ -119,7 +119,7 @@ class FusionAuthClient:
             .post() \
             .go()
 
-    def create_application(self, application_id, request):
+    def create_application(self, request, application_id=None):
         """
         Creates an application. You can optionally specify an Id for the application, if not provided one will be generated.
 
@@ -133,7 +133,7 @@ class FusionAuthClient:
             .post() \
             .go()
 
-    def create_application_role(self, application_id, role_id, request):
+    def create_application_role(self, application_id, request, role_id=None):
         """
         Creates a new role for an application. You must specify the id of the application you are creating the role for.
         You can optionally specify an Id for the role inside the ApplicationRole object itself, if not provided one will be generated.
@@ -165,7 +165,7 @@ class FusionAuthClient:
             .post() \
             .go()
 
-    def create_consent(self, consent_id, request):
+    def create_consent(self, request, consent_id=None):
         """
         Creates a user consent type. You can optionally specify an Id for the consent type, if not provided one will be generated.
 
@@ -179,7 +179,7 @@ class FusionAuthClient:
             .post() \
             .go()
 
-    def create_email_template(self, email_template_id, request):
+    def create_email_template(self, request, email_template_id=None):
         """
         Creates an email template. You can optionally specify an Id for the template, if not provided one will be generated.
 
@@ -193,7 +193,7 @@ class FusionAuthClient:
             .post() \
             .go()
 
-    def create_family(self, family_id, request):
+    def create_family(self, request, family_id=None):
         """
         Creates a family with the user id in the request as the owner and sole member of the family. You can optionally specify an id for the
         family, if not provided one will be generated.
@@ -208,7 +208,7 @@ class FusionAuthClient:
             .post() \
             .go()
 
-    def create_group(self, group_id, request):
+    def create_group(self, request, group_id=None):
         """
         Creates a group. You can optionally specify an Id for the group, if not provided one will be generated.
 
@@ -234,7 +234,7 @@ class FusionAuthClient:
             .post() \
             .go()
 
-    def create_identity_provider(self, identity_provider_id, request):
+    def create_identity_provider(self, request, identity_provider_id=None):
         """
         Creates an identity provider. You can optionally specify an Id for the identity provider, if not provided one will be generated.
 
@@ -248,7 +248,7 @@ class FusionAuthClient:
             .post() \
             .go()
 
-    def create_lambda(self, lambda_id, request):
+    def create_lambda(self, request, lambda_id=None):
         """
         Creates a Lambda. You can optionally specify an Id for the lambda, if not provided one will be generated.
 
@@ -262,7 +262,7 @@ class FusionAuthClient:
             .post() \
             .go()
 
-    def create_tenant(self, tenant_id, request):
+    def create_tenant(self, request, tenant_id=None):
         """
         Creates a tenant. You can optionally specify an Id for the tenant, if not provided one will be generated.
 
@@ -276,7 +276,7 @@ class FusionAuthClient:
             .post() \
             .go()
 
-    def create_theme(self, theme_id, request):
+    def create_theme(self, request, theme_id=None):
         """
         Creates a Theme. You can optionally specify an Id for the theme, if not provided one will be generated.
 
@@ -290,7 +290,7 @@ class FusionAuthClient:
             .post() \
             .go()
 
-    def create_user(self, user_id, request):
+    def create_user(self, request, user_id=None):
         """
         Creates a user. You can optionally specify an Id for the user, if not provided one will be generated.
 
@@ -304,7 +304,7 @@ class FusionAuthClient:
             .post() \
             .go()
 
-    def create_user_action(self, user_action_id, request):
+    def create_user_action(self, request, user_action_id=None):
         """
         Creates a user action. This action cannot be taken on a user until this call successfully returns. Anytime after
         that the user action can be applied to any user.
@@ -319,7 +319,7 @@ class FusionAuthClient:
             .post() \
             .go()
 
-    def create_user_action_reason(self, user_action_reason_id, request):
+    def create_user_action_reason(self, request, user_action_reason_id=None):
         """
         Creates a user reason. This user action reason cannot be used when actioning a user until this call completes
         successfully. Anytime after that the user action reason can be used.
@@ -334,7 +334,7 @@ class FusionAuthClient:
             .post() \
             .go()
 
-    def create_user_consent(self, user_consent_id, request):
+    def create_user_consent(self, request, user_consent_id=None):
         """
         Creates a single User consent.
 
@@ -348,7 +348,7 @@ class FusionAuthClient:
             .post() \
             .go()
 
-    def create_webhook(self, webhook_id, request):
+    def create_webhook(self, request, webhook_id=None):
         """
         Creates a webhook. You can optionally specify an Id for the webhook, if not provided one will be generated.
 
@@ -694,7 +694,7 @@ class FusionAuthClient:
             .post() \
             .go()
 
-    def exchange_o_auth_code_for_access_token(self, code, client_id, client_secret, redirect_uri):
+    def exchange_o_auth_code_for_access_token(self, code, redirect_uri, client_id=None, client_secret=None):
         """
         Exchanges an OAuth authorization code for an access token.
         If you will be using the Authorization Code grant, you will make a request to the Token endpoint to exchange the authorization code returned from the Authorize endpoint for an access token.
@@ -717,7 +717,7 @@ class FusionAuthClient:
             .post() \
             .go()
 
-    def exchange_refresh_token_for_access_token(self, refresh_token, client_id, client_secret, scope, user_code):
+    def exchange_refresh_token_for_access_token(self, refresh_token, client_id=None, client_secret=None, scope=None, user_code=None):
         """
         Exchange a Refresh Token for an Access Token.
         If you will be using the Refresh Token Grant, you will make a request to the Token endpoint to exchange the user’s refresh token for an access token.
@@ -754,7 +754,7 @@ class FusionAuthClient:
             .post() \
             .go()
 
-    def exchange_user_credentials_for_access_token(self, username, password, client_id, client_secret, scope, user_code):
+    def exchange_user_credentials_for_access_token(self, username, password, client_id=None, client_secret=None, scope=None, user_code=None):
         """
         Exchange User Credentials for a Token.
         If you will be using the Resource Owner Password Credential Grant, you will make a request to the Token endpoint to exchange the user’s email and password for an access token.
@@ -807,7 +807,7 @@ class FusionAuthClient:
             .put() \
             .go()
 
-    def generate_key(self, key_id, request):
+    def generate_key(self, request, key_id=None):
         """
         Generate a new RSA or EC key pair or an HMAC secret.
 
@@ -877,7 +877,7 @@ class FusionAuthClient:
             .post() \
             .go()
 
-    def import_key(self, key_id, request):
+    def import_key(self, request, key_id=None):
         """
         Import an existing RSA or EC key pair or an HMAC secret.
 
@@ -905,7 +905,7 @@ class FusionAuthClient:
             .post() \
             .go()
 
-    def issue_jwt(self, application_id, encoded_jwt):
+    def issue_jwt(self, application_id, encoded_jwt, refresh_token=None):
         """
         Issue a new access token (JWT) for the requested Application after ensuring the provided JWT is valid. A valid
         access token is properly signed and not expired.
@@ -916,10 +916,14 @@ class FusionAuthClient:
         Attributes:
             application_id: The Application Id for which you are requesting a new access token be issued.
             encoded_jwt: The encoded JWT (access token).
+            refresh_token: (Optional) An existing refresh token used to request a refresh token in addition to a JWT in the response.
+                    <p>The target application represented by the applicationid request parameter must have refresh 
+                    tokens enabled in order to receive a refresh token in the response.</p>
         """
         return self.start().uri('/api/jwt/issue') \
             .authorization("JWT " + encoded_jwt) \
             .url_parameter('applicationId', application_id) \
+            .url_parameter('refreshToken', refresh_token) \
             .get() \
             .go()
 
@@ -937,7 +941,7 @@ class FusionAuthClient:
             .post() \
             .go()
 
-    def login_ping(self, user_id, application_id, caller_ip_address):
+    def login_ping(self, user_id, application_id, caller_ip_address=None):
         """
         Sends a ping to FusionAuth indicating that the user was automatically logged into an application. When using
         FusionAuth's SSO or your own, you should call this if the user is already logged in centrally, but accesses an
@@ -957,7 +961,7 @@ class FusionAuthClient:
             .put() \
             .go()
 
-    def logout(self, _global, refresh_token):
+    def logout(self, _global, refresh_token=None):
         """
         The Logout API is intended to be used to remove the refresh token and access token cookies if they exist on the
         client and revoke the refresh token stored. This API does nothing if the request does not contain an access
@@ -1302,7 +1306,7 @@ class FusionAuthClient:
             .put() \
             .go()
 
-    def register(self, user_id, request):
+    def register(self, request, user_id=None):
         """
         Registers a user for an application. If you provide the User and the UserRegistration object on this request, it
         will create the user as well as register them for the application. This is called a Full Registration. However, if
@@ -1412,7 +1416,7 @@ class FusionAuthClient:
             .get() \
             .go()
 
-    def retrieve_application(self, application_id):
+    def retrieve_application(self, application_id=None):
         """
         Retrieves the application for the given id or all of the applications if the id is null.
 
@@ -1468,7 +1472,7 @@ class FusionAuthClient:
             .get() \
             .go()
 
-    def retrieve_daily_active_report(self, application_id, start, end):
+    def retrieve_daily_active_report(self, start, end, application_id=None):
         """
         Retrieves the daily active user report between the two instants. If you specify an application id, it will only
         return the daily active counts for that application.
@@ -1485,7 +1489,7 @@ class FusionAuthClient:
             .get() \
             .go()
 
-    def retrieve_email_template(self, email_template_id):
+    def retrieve_email_template(self, email_template_id=None):
         """
         Retrieves the email template for the given Id. If you don't specify the id, this will return all of the email templates.
 
@@ -1579,7 +1583,7 @@ class FusionAuthClient:
             .get() \
             .go()
 
-    def retrieve_identity_provider(self, identity_provider_id):
+    def retrieve_identity_provider(self, identity_provider_id=None):
         """
         Retrieves the identity provider for the given id or all of the identity providers if the id is null.
 
@@ -1747,7 +1751,7 @@ class FusionAuthClient:
             .get() \
             .go()
 
-    def retrieve_login_report(self, application_id, start, end):
+    def retrieve_login_report(self, start, end, application_id=None):
         """
         Retrieves the login report between the two instants. If you specify an application id, it will only return the
         login counts for that application.
@@ -1764,7 +1768,7 @@ class FusionAuthClient:
             .get() \
             .go()
 
-    def retrieve_monthly_active_report(self, application_id, start, end):
+    def retrieve_monthly_active_report(self, start, end, application_id=None):
         """
         Retrieves the monthly active user report between the two instants. If you specify an application id, it will only
         return the monthly active counts for that application.
@@ -1883,7 +1887,7 @@ class FusionAuthClient:
             .get() \
             .go()
 
-    def retrieve_registration_report(self, application_id, start, end):
+    def retrieve_registration_report(self, start, end, application_id=None):
         """
         Retrieves the registration report between the two instants. If you specify an application id, it will only return
         the registration counts for that application.
@@ -1977,7 +1981,7 @@ class FusionAuthClient:
             .get() \
             .go()
 
-    def retrieve_user_action(self, user_action_id):
+    def retrieve_user_action(self, user_action_id=None):
         """
         Retrieves the user action for the given Id. If you pass in null for the id, this will return all of the user
         actions.
@@ -1990,7 +1994,7 @@ class FusionAuthClient:
             .get() \
             .go()
 
-    def retrieve_user_action_reason(self, user_action_reason_id):
+    def retrieve_user_action_reason(self, user_action_reason_id=None):
         """
         Retrieves the user action reason for the given Id. If you pass in null for the id, this will return all of the user
         action reasons.
@@ -2121,7 +2125,7 @@ class FusionAuthClient:
             .get() \
             .go()
 
-    def retrieve_user_login_report(self, application_id, user_id, start, end):
+    def retrieve_user_login_report(self, user_id, start, end, application_id=None):
         """
         Retrieves the login report between the two instants for a particular user by Id. If you specify an application id, it will only return the
         login counts for that application.
@@ -2140,7 +2144,7 @@ class FusionAuthClient:
             .get() \
             .go()
 
-    def retrieve_user_login_report_by_login_id(self, application_id, login_id, start, end):
+    def retrieve_user_login_report_by_login_id(self, login_id, start, end, application_id=None):
         """
         Retrieves the login report between the two instants for a particular user by login Id. If you specify an application id, it will only return the
         login counts for that application.
@@ -2187,7 +2191,7 @@ class FusionAuthClient:
             .get() \
             .go()
 
-    def retrieve_webhook(self, webhook_id):
+    def retrieve_webhook(self, webhook_id=None):
         """
         Retrieves the webhook for the given Id. If you pass in null for the id, this will return all the webhooks.
 
@@ -2209,7 +2213,7 @@ class FusionAuthClient:
             .get() \
             .go()
 
-    def revoke_refresh_token(self, token, user_id, application_id):
+    def revoke_refresh_token(self, token=None, user_id=None, application_id=None):
         """
         Revokes a single refresh token, all tokens for a user or all tokens for an application. If you provide a user id
         and an application id, this will delete all the refresh tokens for that user for that application.
