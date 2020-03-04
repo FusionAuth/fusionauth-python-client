@@ -15,6 +15,7 @@
 #
 
 import json
+import os
 import uuid
 
 import unittest2
@@ -28,7 +29,9 @@ def print_json(parsed_json):
 
 class FusionAuthClientTest(unittest2.TestCase):
     def setUp(self):
-        self.client = FusionAuthClient('bf69486b-4733-4470-a592-f1bfce7af580', 'http://localhost:9011')
+        fusionauth_url = os.getenv('FUSIONAUTH_URL') if 'FUSIONAUTH_URL' in os.environ else 'http://localhost:9011'
+        fusionauth_api_key = os.getenv('FUSIONAUTH_API_KEY') if 'FUSIONAUTH_API_KEY' in os.environ else 'bf69486b-4733-4470-a592-f1bfce7af580'
+        self.client = FusionAuthClient(fusionauth_api_key, fusionauth_url)
         # Uncomment and set tenant Id if running against a multi-tenant system
         self.client.set_tenant_id('37633362-3633-3531-3564-373335636537')
 
