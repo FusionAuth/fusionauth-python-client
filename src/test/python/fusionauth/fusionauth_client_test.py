@@ -33,7 +33,7 @@ class FusionAuthClientTest(unittest2.TestCase):
         fusionauth_api_key = os.getenv('FUSIONAUTH_API_KEY') if 'FUSIONAUTH_API_KEY' in os.environ else 'bf69486b-4733-4470-a592-f1bfce7af580'
         self.client = FusionAuthClient(fusionauth_api_key, fusionauth_url)
         # Uncomment and set tenant Id if running against a multi-tenant system
-        self.client.set_tenant_id('37633362-3633-3531-3564-373335636537')
+        #self.client.set_tenant_id('37633362-3633-3531-3564-373335636537')
 
     def runTest(self):
         pass
@@ -61,7 +61,7 @@ class FusionAuthClientTest(unittest2.TestCase):
                 'password': 'password'
             }
         }
-        create_user_response = self.client.create_user(None, user_request)
+        create_user_response = self.client.create_user(user_request)
         self.assertEqual(create_user_response.status, 200, create_user_response.error_response)
 
         # Retrieve the user
