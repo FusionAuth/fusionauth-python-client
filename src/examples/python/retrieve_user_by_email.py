@@ -13,7 +13,7 @@ user_request = {
     }
 }
 
-client_response = client.create_user(None, user_request)
+client_response = client.create_user(user_request)
 if client_response.was_successful():
     print(client_response.success_response)
 else:
