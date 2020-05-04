@@ -30,7 +30,7 @@ user_registration_request = {
     'skipVerification': False
 }
 
-client_response = client.register(None, user_registration_request)
+client_response = client.register(user_registration_request)
 if client_response.was_successful():
     print(client_response.success_response)
 else:
