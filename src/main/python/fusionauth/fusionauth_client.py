@@ -519,15 +519,15 @@ class FusionAuthClient:
             .delete() \
             .go()
 
-    def delete_key(self, key_od):
+    def delete_key(self, key_id):
         """
         Deletes the key for the given Id.
 
         Attributes:
-            key_od: The Id of the key to delete.
+            key_id: The Id of the key to delete.
         """
         return self.start().uri('/api/key') \
-            .url_segment(key_od) \
+            .url_segment(key_id) \
             .delete() \
             .go()
 
