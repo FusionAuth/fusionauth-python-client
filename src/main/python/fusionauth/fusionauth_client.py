@@ -165,6 +165,20 @@ class FusionAuthClient:
             .post() \
             .go()
 
+    def create_connector(self, request, connector_id=None):
+        """
+        Creates a connector.  You can optionally specify an Id for the connector, if not provided one will be generated.
+
+        Attributes:
+            connector_id: (Optional) The Id for the connector. If not provided a secure random UUID will be generated.
+            request: The request object that contains all of the information used to create the connector.
+        """
+        return self.start().uri('/api/connector') \
+            .url_segment(connector_id) \
+            .body_handler(JSONBodyHandler(request)) \
+            .post() \
+            .go()
+
     def create_consent(self, request, consent_id=None):
         """
         Creates a user consent type. You can optionally specify an Id for the consent type, if not provided one will be generated.
@@ -204,6 +218,34 @@ class FusionAuthClient:
         """
         return self.start().uri('/api/user/family') \
             .url_segment(family_id) \
+            .body_handler(JSONBodyHandler(request)) \
+            .post() \
+            .go()
+
+    def create_form(self, request, form_id=None):
+        """
+        Creates a form.  You can optionally specify an Id for the form, if not provided one will be generated.
+
+        Attributes:
+            form_id: (Optional) The Id for the form. If not provided a secure random UUID will be generated.
+            request: The request object that contains all of the information used to create the form.
+        """
+        return self.start().uri('/api/form') \
+            .url_segment(form_id) \
+            .body_handler(JSONBodyHandler(request)) \
+            .post() \
+            .go()
+
+    def create_form_field(self, request, field_id=None):
+        """
+        Creates a form field.  You can optionally specify an Id for the form, if not provided one will be generated.
+
+        Attributes:
+            field_id: (Optional) The Id for the form field. If not provided a secure random UUID will be generated.
+            request: The request object that contains all of the information used to create the form field.
+        """
+        return self.start().uri('/api/form/field') \
+            .url_segment(field_id) \
             .body_handler(JSONBodyHandler(request)) \
             .post() \
             .go()
@@ -459,6 +501,18 @@ class FusionAuthClient:
             .delete() \
             .go()
 
+    def delete_connector(self, connector_id):
+        """
+        Deletes the connector for the given Id.
+
+        Attributes:
+            connector_id: The Id of the connector to delete.
+        """
+        return self.start().uri('/api/connector') \
+            .url_segment(connector_id) \
+            .delete() \
+            .go()
+
     def delete_consent(self, consent_id):
         """
         Deletes the consent for the given Id.
@@ -480,6 +534,30 @@ class FusionAuthClient:
         """
         return self.start().uri('/api/email/template') \
             .url_segment(email_template_id) \
+            .delete() \
+            .go()
+
+    def delete_form(self, form_id):
+        """
+        Deletes the form for the given Id.
+
+        Attributes:
+            form_id: The Id of the form to delete.
+        """
+        return self.start().uri('/api/form') \
+            .url_segment(form_id) \
+            .delete() \
+            .go()
+
+    def delete_form_field(self, field_id):
+        """
+        Deletes the form field for the given Id.
+
+        Attributes:
+            field_id: The Id of the form field to delete.
+        """
+        return self.start().uri('/api/form/field') \
+            .url_segment(field_id) \
             .delete() \
             .go()
 
@@ -1050,6 +1128,20 @@ class FusionAuthClient:
             .patch() \
             .go()
 
+    def patch_connector(self, connector_id, request):
+        """
+        Updates, via PATCH, the connector with the given Id.
+
+        Attributes:
+            connector_id: The Id of the connector to update.
+            request: The request that contains just the new connector information.
+        """
+        return self.start().uri('/api/connector') \
+            .url_segment(connector_id) \
+            .body_handler(JSONBodyHandler(request)) \
+            .patch() \
+            .go()
+
     def patch_consent(self, consent_id, request):
         """
         Updates, via PATCH, the consent with the given Id.
@@ -1450,6 +1542,28 @@ class FusionAuthClient:
             .get() \
             .go()
 
+    def retrieve_connector(self, connector_id):
+        """
+        Retrieves the connector with the given Id.
+
+        Attributes:
+            connector_id: The Id of the connector.
+        """
+        return self.start().uri('/api/connector') \
+            .url_segment(connector_id) \
+            .get() \
+            .go()
+
+    def retrieve_connectors(self):
+        """
+        Retrieves all of the connectors.
+
+        Attributes:
+        """
+        return self.start().uri('/api/connector') \
+            .get() \
+            .go()
+
     def retrieve_consent(self, consent_id):
         """
         Retrieves the Consent for the given Id.
@@ -1558,6 +1672,50 @@ class FusionAuthClient:
         """
         return self.start().uri('/api/user/family') \
             .url_segment(family_id) \
+            .get() \
+            .go()
+
+    def retrieve_form(self, form_id):
+        """
+        Retrieves the form with the given Id.
+
+        Attributes:
+            form_id: The Id of the form.
+        """
+        return self.start().uri('/api/form') \
+            .url_segment(form_id) \
+            .get() \
+            .go()
+
+    def retrieve_form_field(self, field_id):
+        """
+        Retrieves the form field with the given Id.
+
+        Attributes:
+            field_id: The Id of the form field.
+        """
+        return self.start().uri('/api/form/field') \
+            .url_segment(field_id) \
+            .get() \
+            .go()
+
+    def retrieve_form_fields(self):
+        """
+        Retrieves all of the forms fields
+
+        Attributes:
+        """
+        return self.start().uri('/api/form/field') \
+            .get() \
+            .go()
+
+    def retrieve_forms(self):
+        """
+        Retrieves all of the forms.
+
+        Attributes:
+        """
+        return self.start().uri('/api/form') \
             .get() \
             .go()
 
@@ -2462,6 +2620,20 @@ class FusionAuthClient:
             .put() \
             .go()
 
+    def update_connector(self, connector_id, request):
+        """
+        Updates the connector with the given Id.
+
+        Attributes:
+            connector_id: The Id of the connector to update.
+            request: The request object that contains all of the new connector information.
+        """
+        return self.start().uri('/api/connector') \
+            .url_segment(connector_id) \
+            .body_handler(JSONBodyHandler(request)) \
+            .put() \
+            .go()
+
     def update_consent(self, consent_id, request):
         """
         Updates the consent with the given Id.
@@ -2486,6 +2658,34 @@ class FusionAuthClient:
         """
         return self.start().uri('/api/email/template') \
             .url_segment(email_template_id) \
+            .body_handler(JSONBodyHandler(request)) \
+            .put() \
+            .go()
+
+    def update_form(self, form_id, request):
+        """
+        Updates the form with the given Id.
+
+        Attributes:
+            form_id: The Id of the form to update.
+            request: The request object that contains all of the new form information.
+        """
+        return self.start().uri('/api/form') \
+            .url_segment(form_id) \
+            .body_handler(JSONBodyHandler(request)) \
+            .put() \
+            .go()
+
+    def update_form_field(self, field_id, request):
+        """
+        Updates the form field with the given Id.
+
+        Attributes:
+            field_id: The Id of the form field to update.
+            request: The request object that contains all of the new form field information.
+        """
+        return self.start().uri('/api/form/field') \
+            .url_segment(field_id) \
             .body_handler(JSONBodyHandler(request)) \
             .put() \
             .go()
