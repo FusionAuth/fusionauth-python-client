@@ -772,15 +772,15 @@ class FusionAuthClient:
             .post() \
             .go()
 
-    def exchange_o_auth_code_for_access_token(self, code, redirect_uri, client_id=None, client_secret=None):
+    def exchange_o_auth_code_for_access_token(self, code, client_id, redirect_uri, client_secret=None):
         """
         Exchanges an OAuth authorization code for an access token.
         If you will be using the Authorization Code grant, you will make a request to the Token endpoint to exchange the authorization code returned from the Authorize endpoint for an access token.
 
         Attributes:
             code: The authorization code returned on the /oauth2/authorize response.
-            client_id: (Optional) The unique client identifier. The client Id is the Id of the FusionAuth Application in which you you are attempting to authenticate. This parameter is optional when the Authorization header is provided.
-            client_secret: (Optional) The client secret. This value may optionally be provided in the request body instead of the Authorization header.
+            client_id: The unique client identifier. The client Id is the Id of the FusionAuth Application in which you you are attempting to authenticate.
+            client_secret: (Optional) The client secret. This value will be required if client authentication is enabled.
             redirect_uri: The URI to redirect to upon a successful request.
         """
         body = {
