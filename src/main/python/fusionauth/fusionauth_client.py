@@ -1466,6 +1466,21 @@ class FusionAuthClient:
             .put() \
             .go()
 
+    def resend_email_verification_with_application_template(self, application_id, email):
+        """
+        Re-sends the verification email to the user. If the Application has configured a specific email template this will be used
+        instead of the tenant configuration.
+
+        Attributes:
+            application_id: The unique Application Id to used to resolve an application specific email template.
+            email: The email address of the user that needs a new verification email.
+        """
+        return self.start().uri('/api/user/verify-email') \
+            .url_parameter('applicationId', application_id) \
+            .url_parameter('email', email) \
+            .put() \
+            .go()
+
     def resend_registration_verification(self, email, application_id):
         """
         Re-sends the application registration verification email to the user.
