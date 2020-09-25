@@ -1109,6 +1109,23 @@ class FusionAuthClient:
             .put() \
             .go()
 
+    def oauth2_introspect(self, client_id, token):
+        """
+        Inspect an access token issued by FusionAuth.
+
+        Attributes:
+            client_id: The unique client identifier. The client Id is the Id of the FusionAuth Application for which this token was generated.
+            token: The access token returned by this OAuth provider as the result of a successful authentication.
+        """
+        body = {
+            "client_id": client_id,
+            "token": token,
+        }
+        return self.start_anonymous().uri('/oauth2/introspect') \
+            .body_handler(FormDataBodyHandler(body)) \
+            .post() \
+            .go()
+
     def passwordless_login(self, request):
         """
         Complete a login request using a passwordless code
