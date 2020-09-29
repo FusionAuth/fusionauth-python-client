@@ -2339,6 +2339,18 @@ class FusionAuthClient:
             .get() \
             .go()
 
+    def retrieve_user_info_from_access_token(self, encoded_jwt):
+        """
+        Call the UserInfo endpoint to retrieve User Claims from the access token issued by FusionAuth.
+
+        Attributes:
+            encoded_jwt: The encoded JWT (access token).
+        """
+        return self.start_anonymous().uri('/oauth2/userinfo') \
+            .authorization("Bearer " + encoded_jwt) \
+            .get() \
+            .go()
+
     def retrieve_user_login_report(self, user_id, start, end, application_id=None):
         """
         Retrieves the login report between the two instants for a particular user by Id. If you specify an application id, it will only return the
@@ -2936,18 +2948,6 @@ class FusionAuthClient:
             .url_segment(webhook_id) \
             .body_handler(JSONBodyHandler(request)) \
             .put() \
-            .go()
-
-    def user_info(self, encoded_jwt):
-        """
-        Call the UserInfo endpoint to retrieve User Claims from the access token issued by FusionAuth.
-
-        Attributes:
-            encoded_jwt: The encoded JWT (access token).
-        """
-        return self.start_anonymous().uri('/oauth2/userinfo') \
-            .authorization("Bearer " + encoded_jwt) \
-            .post() \
             .go()
 
     def validate_device(self, user_code, client_id):
