@@ -936,8 +936,8 @@ class FusionAuthClient:
         Attributes:
             encoded_jwt: The encoded JWT (access token).
         """
-        return self.start().uri('/api/two-factor/secret') \
-            .authorization("JWT " + encoded_jwt) \
+        return self.start_anonymous().uri('/api/two-factor/secret') \
+            .authorization("Bearer " + encoded_jwt) \
             .get() \
             .go()
 
@@ -1039,8 +1039,8 @@ class FusionAuthClient:
                     <p>The target application represented by the applicationId request parameter must have refresh
                     tokens enabled in order to receive a refresh token in the response.</p>
         """
-        return self.start().uri('/api/jwt/issue') \
-            .authorization("JWT " + encoded_jwt) \
+        return self.start_anonymous().uri('/api/jwt/issue') \
+            .authorization("Bearer " + encoded_jwt) \
             .url_parameter('applicationId', application_id) \
             .url_parameter('refreshToken', refresh_token) \
             .get() \
@@ -2401,7 +2401,7 @@ class FusionAuthClient:
             encoded_jwt: The encoded JWT (access token).
         """
         return self.start_anonymous().uri('/api/user') \
-            .authorization("JWT " + encoded_jwt) \
+            .authorization("Bearer " + encoded_jwt) \
             .get() \
             .go()
 
@@ -2938,6 +2938,18 @@ class FusionAuthClient:
             .put() \
             .go()
 
+    def user_info(self, encoded_jwt):
+        """
+        Call the UserInfo endpoint to retrieve User Claims from the access token issued by FusionAuth.
+
+        Attributes:
+            encoded_jwt: The encoded JWT (access token).
+        """
+        return self.start_anonymous().uri('/oauth2/userinfo') \
+            .authorization("Bearer " + encoded_jwt) \
+            .post() \
+            .go()
+
     def validate_device(self, user_code, client_id):
         """
         Validates the end-user provided user_code from the user-interaction of the Device Authorization Grant.
@@ -2964,7 +2976,7 @@ class FusionAuthClient:
             encoded_jwt: The encoded JWT (access token).
         """
         return self.start_anonymous().uri('/api/jwt/validate') \
-            .authorization("JWT " + encoded_jwt) \
+            .authorization("Bearer " + encoded_jwt) \
             .get() \
             .go()
 
