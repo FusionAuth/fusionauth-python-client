@@ -775,7 +775,7 @@ class FusionAuthClient:
     def exchange_o_auth_code_for_access_token(self, code, client_id, redirect_uri, client_secret=None):
         """
         Exchanges an OAuth authorization code for an access token.
-        If you will be using the Authorization Code grant, you will make a request to the Token endpoint to exchange the authorization code returned from the Authorize endpoint for an access token.
+        Makes a request to the Token endpoint to exchange the authorization code returned from the Authorize endpoint for an access token.
 
         Attributes:
             code: The authorization code returned on the /oauth2/authorize response.
@@ -789,6 +789,31 @@ class FusionAuthClient:
             "client_secret": client_secret,
             "grant_type": "authorization_code",
             "redirect_uri": redirect_uri,
+        }
+        return self.start_anonymous().uri('/oauth2/token') \
+            .body_handler(FormDataBodyHandler(body)) \
+            .post() \
+            .go()
+
+    def exchange_o_auth_code_for_access_token_using_pkce(self, code, redirect_uri, code_verifier, client_id=None, client_secret=None):
+        """
+        Exchanges an OAuth authorization code and code_verifier for an access token.
+        Makes a request to the Token endpoint to exchange the authorization code returned from the Authorize endpoint and a code_verifier for an access token.
+
+        Attributes:
+            code: The authorization code returned on the /oauth2/authorize response.
+            client_id: (Optional) The unique client identifier. The client Id is the Id of the FusionAuth Application in which you you are attempting to authenticate. This parameter is optional when the Authorization header is provided.
+            client_secret: (Optional) The client secret. This value may optionally be provided in the request body instead of the Authorization header.
+            redirect_uri: The URI to redirect to upon a successful request.
+            code_verifier: The random string generated previously. Will be compared with the code_challenge sent previously, which allows the OAuth provider to authenticate your app.
+        """
+        body = {
+            "code": code,
+            "client_id": client_id,
+            "client_secret": client_secret,
+            "grant_type": "authorization_code",
+            "redirect_uri": redirect_uri,
+            "code_verifier": code_verifier,
         }
         return self.start_anonymous().uri('/oauth2/token') \
             .body_handler(FormDataBodyHandler(body)) \
