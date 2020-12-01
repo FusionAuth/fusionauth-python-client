@@ -647,6 +647,20 @@ class FusionAuthClient:
             .delete() \
             .go()
 
+    def delete_tenant_async(self, tenant_id):
+        """
+        Deletes the tenant for the given Id asynchronously.
+        This method is helpful if you do not want to wait for the delete operation to complete.
+
+        Attributes:
+            tenant_id: The Id of the tenant to delete.
+        """
+        return self.start().uri('/api/tenant') \
+            .url_segment(tenant_id) \
+            .url_parameter('async', "true") \
+            .delete() \
+            .go()
+
     def delete_theme(self, theme_id):
         """
         Deletes the theme for the given Id.
