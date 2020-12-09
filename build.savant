@@ -77,9 +77,15 @@ target(name: "setup-python", description: "Gets the python dependencies") {
 }
 
 /**
- * You don't need to do this but, if you have trouble logging in, consider using the pypirc file.
+ * You don't need to do this but, if you have trouble logging in, consider using the .pypirc file.
  *
  * https://docs.python.org/2/distutils/packageindex.html#pypirc
+ *
+ * <code>
+ * [pypi]
+ * username = <your username>
+ * password = <your password>
+ * </code>
  */
 target(name: "publish", description: "Publishes source and built versions of the packages to PyPi", dependsOn: ["clean", "compile"]) {
   ProcessBuilder pb = new ProcessBuilder(
