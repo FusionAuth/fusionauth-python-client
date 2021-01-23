@@ -29,3 +29,7 @@ client = FusionAuthClient('6b87a398-39f2-4692-927b-13188a81a9a3', 'http://localh
 Each method in the client library includes documentation to describe the use and parameters. In addition to this resource, review the API documentation. https://fusionauth.io/docs/v1/tech/apis/
 
 If you encounter issues with this library, please open an issue.
+
+### Gotchas
+
+If you need to pass a boolean to any methods, such as `logout`, pass a lowercase string value: `"true"` for `True`, `"false"` for `False`. See https://github.com/FusionAuth/fusionauth-python-client/issues/10 for more info on this issue.
