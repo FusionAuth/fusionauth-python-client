@@ -28,4 +28,20 @@ client = FusionAuthClient('6b87a398-39f2-4692-927b-13188a81a9a3', 'http://localh
 
 Each method in the client library includes documentation to describe the use and parameters. In addition to this resource, review the API documentation. https://fusionauth.io/docs/v1/tech/apis/
 
-If you encounter issues with this library, please open an issue.
+If you encounter a bug with this library, please open an issue.
+
+## Questions and support
+
+If you have a question or support issue regarding this client library, we'd love to hear from you.
+
+If you have a paid edition with support included, please [open a ticket with via your account portal](https://account.fusionauth.io/account/support/). Learn more about [paid editions here](https://fusionauth.io/pricing/).
+
+Otherwise, please [post your question in the community forum](https://fusionauth.io/community/forum/).
+
+## Contributing
+
+Bug reports and pull requests are welcome on GitHub at https://github.com/FusionAuth/fusionauth-python-client.
+
+## License
+
+This code is available as open source under the terms of the [Apache v2.0 License](https://opensource.org/licenses/Apache-2.0).
