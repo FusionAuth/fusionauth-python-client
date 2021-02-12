@@ -2114,6 +2114,18 @@ class FusionAuthClient:
             .get() \
             .go()
 
+    def retrieve_refresh_token_by_id(self, user_id):
+        """
+        Retrieves a single refresh token by unique Id. This is not the same thing as the string value of the refresh token, if you have that, you already have what you need..
+
+        Attributes:
+            user_id: The Id of the user.
+        """
+        return self.start().uri('/api/jwt/refresh') \
+            .url_segment(user_id) \
+            .get() \
+            .go()
+
     def retrieve_refresh_tokens(self, user_id):
         """
         Retrieves the refresh tokens that belong to the user with the given Id.
