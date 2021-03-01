@@ -1848,6 +1848,18 @@ class FusionAuthClient:
             .get() \
             .go()
 
+    def retrieve_identity_provider_by_type(self, identity_type):
+        """
+        Retrieves the identity provider for the given identity_type .
+
+        Attributes:
+            identity_type:  The type of the identity provider (type).
+        """
+        return self.start().uri('/api/identity-provider') \
+            .url_parameter('type', identity_type) \
+            .get() \
+            .go()
+
     def retrieve_identity_providers(self):
         """
         Retrieves all of the identity providers.
