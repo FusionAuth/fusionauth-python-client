@@ -1836,15 +1836,29 @@ class FusionAuthClient:
             .get() \
             .go()
 
-    def retrieve_identity_provider(self, identity_provider_id=None):
+    def retrieve_identity_provider(self, identity_provider_id):
         """
         Retrieves the identity provider for the given id or all of the identity providers if the id is null.
 
         Attributes:
-            identity_provider_id: (Optional) The identity provider id.
+            identity_provider_id: The identity provider Id.
         """
         return self.start().uri('/api/identity-provider') \
             .url_segment(identity_provider_id) \
+            .get() \
+            .go()
+
+    def retrieve_identity_provider_by_type(self, _type):
+        """
+        Retrieves one or more identity provider for the given type. For types such as Google, Facebook, Twitter and LinkedIn, only a single 
+        identity provider can exist. For types such as OpenID Connect and SAMLv2 more than one identity provider can be configured so this request 
+        may return multiple identity providers.
+
+        Attributes:
+            _type: The type of the identity provider.
+        """
+        return self.start().uri('/api/identity-provider') \
+            .url_parameter('type', _type) \
             .get() \
             .go()
 
@@ -1992,15 +2006,15 @@ class FusionAuthClient:
             .get() \
             .go()
 
-    def retrieve_lambdas_by_type(self, type):
+    def retrieve_lambdas_by_type(self, _type):
         """
         Retrieves all of the lambdas for the provided type.
 
         Attributes:
-            type: The type of the lambda to return.
+            _type: The type of the lambda to return.
         """
         return self.start().uri('/api/lambda') \
-            .url_parameter('type', type) \
+            .url_parameter('type', _type) \
             .get() \
             .go()
 
