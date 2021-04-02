@@ -50,6 +50,20 @@ class FusionAuthClient:
             .post() \
             .go()
 
+    def activate_reactor(self, license_id, request):
+        """
+        Activates the FusionAuth Reactor using a license id and optionally a license text (for air-gapped deployments)
+
+        Attributes:
+            license_id: The license id
+            request: An optional request that contains the license text to activate Reactor (useful for air-gap deployments of FusionAuth).
+        """
+        return self.start().uri('/api/reactor') \
+            .url_segment(license_id) \
+            .body_handler(JSONBodyHandler(request)) \
+            .post() \
+            .go()
+
     def add_user_to_family(self, family_id, request):
         """
         Adds a user to an existing family. The family id must be specified.
@@ -203,6 +217,52 @@ class FusionAuthClient:
         """
         return self.start().uri('/api/email/template') \
             .url_segment(email_template_id) \
+            .body_handler(JSONBodyHandler(request)) \
+            .post() \
+            .go()
+
+    def create_entity(self, request, entity_id=None):
+        """
+        Creates an Entity. You can optionally specify an Id for the Entity. If not provided one will be generated.
+
+        Attributes:
+            entity_id: (Optional) The Id for the Entity. If not provided a secure random UUID will be generated.
+            request: The request object that contains all of the information used to create the Entity.
+        """
+        return self.start().uri('/api/entity') \
+            .url_segment(entity_id) \
+            .body_handler(JSONBodyHandler(request)) \
+            .post() \
+            .go()
+
+    def create_entity_type(self, request, entity_type_id=None):
+        """
+        Creates a Entity Type. You can optionally specify an Id for the Entity Type, if not provided one will be generated.
+
+        Attributes:
+            entity_type_id: (Optional) The Id for the Entity Type. If not provided a secure random UUID will be generated.
+            request: The request object that contains all of the information used to create the Entity Type.
+        """
+        return self.start().uri('/api/entity/type') \
+            .url_segment(entity_type_id) \
+            .body_handler(JSONBodyHandler(request)) \
+            .post() \
+            .go()
+
+    def create_entity_type_permission(self, entity_type_id, request, permission_id=None):
+        """
+        Creates a new permission for an entity type. You must specify the id of the entity type you are creating the permission for.
+        You can optionally specify an Id for the permission inside the EntityTypePermission object itself, if not provided one will be generated.
+
+        Attributes:
+            entity_type_id: The Id of the entity type to create the permission on.
+            permission_id: (Optional) The Id of the permission. If not provided a secure random UUID will be generated.
+            request: The request object that contains all of the information used to create the permission.
+        """
+        return self.start().uri('/api/entity/type') \
+            .url_segment(entity_type_id) \
+            .url_segment("permission") \
+            .url_segment(permission_id) \
             .body_handler(JSONBodyHandler(request)) \
             .post() \
             .go()
@@ -416,6 +476,16 @@ class FusionAuthClient:
             .delete() \
             .go()
 
+    def deactivate_reactor(self):
+        """
+        Deactivates the FusionAuth Reactor.
+
+        Attributes:
+        """
+        return self.start().uri('/api/reactor') \
+            .delete() \
+            .go()
+
     def deactivate_user(self, user_id):
         """
         Deactivates the user with the given Id.
@@ -534,6 +604,46 @@ class FusionAuthClient:
         """
         return self.start().uri('/api/email/template') \
             .url_segment(email_template_id) \
+            .delete() \
+            .go()
+
+    def delete_entity(self, entity_id):
+        """
+        Deletes the Entity for the given Id.
+
+        Attributes:
+            entity_id: The Id of the Entity to delete.
+        """
+        return self.start().uri('/api/entity') \
+            .url_segment(entity_id) \
+            .delete() \
+            .go()
+
+    def delete_entity_type(self, entity_type_id):
+        """
+        Deletes the Entity Type for the given Id.
+
+        Attributes:
+            entity_type_id: The Id of the Entity Type to delete.
+        """
+        return self.start().uri('/api/entity/type') \
+            .url_segment(entity_type_id) \
+            .delete() \
+            .go()
+
+    def delete_entity_type_permission(self, entity_type_id, permission_id):
+        """
+        Hard deletes a permission. This is a dangerous operation and should not be used in most circumstances. This
+        permanently removes the given permission from all grants that had it.
+
+        Attributes:
+            entity_type_id: The Id of the entityType the the permission belongs to.
+            permission_id: The Id of the permission to delete.
+        """
+        return self.start().uri('/api/entity/type') \
+            .url_segment(entity_type_id) \
+            .url_segment("permission") \
+            .url_segment(permission_id) \
             .delete() \
             .go()
 
@@ -1250,6 +1360,20 @@ class FusionAuthClient:
             .patch() \
             .go()
 
+    def patch_entity_type(self, entity_type_id, request):
+        """
+        Updates, via PATCH, the Entity Type with the given Id.
+
+        Attributes:
+            entity_type_id: The Id of the Entity Type to update.
+            request: The request that contains just the new Entity Type information.
+        """
+        return self.start().uri('/api/entity/type') \
+            .url_segment(entity_type_id) \
+            .body_handler(JSONBodyHandler(request)) \
+            .patch() \
+            .go()
+
     def patch_group(self, group_id, request):
         """
         Updates, via PATCH, the group with the given Id.
@@ -1465,6 +1589,19 @@ class FusionAuthClient:
             .post() \
             .go()
 
+    def refresh_entity_search_index(self):
+        """
+        Request a refresh of the Entity search index. This API is not generally necessary and the search index will become consistent in a
+        reasonable amount of time. There may be scenarios where you may wish to manually request an index refresh. One example may be 
+        if you are using the Search API or Delete Tenant API immediately following a Entity Create etc, you may wish to request a refresh to
+         ensure the index immediately current before making a query request to the search index.
+
+        Attributes:
+        """
+        return self.start().uri('/api/entity/search') \
+            .put() \
+            .go()
+
     def refresh_user_search_index(self):
         """
         Request a refresh of the User search index. This API is not generally necessary and the search index will become consistent in a
@@ -1475,6 +1612,16 @@ class FusionAuthClient:
         Attributes:
         """
         return self.start().uri('/api/user/search') \
+            .put() \
+            .go()
+
+    def regenerate_reactor_keys(self):
+        """
+        Regenerates any keys that are used by the FusionAuth Reactor.
+
+        Attributes:
+        """
+        return self.start().uri('/api/reactor') \
             .put() \
             .go()
 
@@ -1731,6 +1878,40 @@ class FusionAuthClient:
         Attributes:
         """
         return self.start().uri('/api/email/template') \
+            .get() \
+            .go()
+
+    def retrieve_entity(self, entity_id):
+        """
+        Retrieves the Entity for the given Id.
+
+        Attributes:
+            entity_id: The Id of the Entity.
+        """
+        return self.start().uri('/api/entity') \
+            .url_segment(entity_id) \
+            .get() \
+            .go()
+
+    def retrieve_entity_type(self, entity_type_id):
+        """
+        Retrieves the Entity Type for the given Id.
+
+        Attributes:
+            entity_type_id: The Id of the Entity Type.
+        """
+        return self.start().uri('/api/entity/type') \
+            .url_segment(entity_type_id) \
+            .get() \
+            .go()
+
+    def retrieve_entity_types(self):
+        """
+        Retrieves all of the Entity Types.
+
+        Attributes:
+        """
+        return self.start().uri('/api/entity/type') \
             .get() \
             .go()
 
@@ -2111,6 +2292,16 @@ class FusionAuthClient:
         """
         return self.start().uri('/api/user/family/pending') \
             .url_parameter('parentEmail', parent_email) \
+            .get() \
+            .go()
+
+    def retrieve_reactor_status(self):
+        """
+        Retrieves the FusionAuth Reactor status.
+
+        Attributes:
+        """
+        return self.start().uri('/api/reactor') \
             .get() \
             .go()
 
@@ -2629,6 +2820,42 @@ class FusionAuthClient:
             .post() \
             .go()
 
+    def search_entities(self, request):
+        """
+        Searches entities with the specified criteria and pagination.
+
+        Attributes:
+            request: The search criteria and pagination information.
+        """
+        return self.start().uri('/api/entity/search') \
+            .body_handler(JSONBodyHandler(request)) \
+            .post() \
+            .go()
+
+    def search_entities_by_ids(self, ids):
+        """
+        Retrieves the entities for the given ids. If any id is invalid, it is ignored.
+
+        Attributes:
+            ids: The entity ids to search for.
+        """
+        return self.start().uri('/api/entity/search') \
+            .url_parameter('ids', ids) \
+            .get() \
+            .go()
+
+    def search_entity_types(self, request):
+        """
+        Searches the entity types with the specified criteria and pagination.
+
+        Attributes:
+            request: The search criteria and pagination information.
+        """
+        return self.start().uri('/api/entity/type/search') \
+            .body_handler(JSONBodyHandler(request)) \
+            .post() \
+            .go()
+
     def search_event_logs(self, request):
         """
         Searches the event logs with the specified criteria and pagination.
@@ -2875,6 +3102,51 @@ class FusionAuthClient:
         """
         return self.start().uri('/api/email/template') \
             .url_segment(email_template_id) \
+            .body_handler(JSONBodyHandler(request)) \
+            .put() \
+            .go()
+
+    def update_entity(self, entity_id, request):
+        """
+        Updates the Entity with the given Id.
+
+        Attributes:
+            entity_id: The Id of the Entity to update.
+            request: The request that contains all of the new Entity information.
+        """
+        return self.start().uri('/api/entity') \
+            .url_segment(entity_id) \
+            .body_handler(JSONBodyHandler(request)) \
+            .put() \
+            .go()
+
+    def update_entity_type(self, entity_type_id, request):
+        """
+        Updates the Entity Type with the given Id.
+
+        Attributes:
+            entity_type_id: The Id of the Entity Type to update.
+            request: The request that contains all of the new Entity Type information.
+        """
+        return self.start().uri('/api/entity/type') \
+            .url_segment(entity_type_id) \
+            .body_handler(JSONBodyHandler(request)) \
+            .put() \
+            .go()
+
+    def update_entity_type_permission(self, entity_type_id, permission_id, request):
+        """
+        Updates the permission with the given id for the entity type.
+
+        Attributes:
+            entity_type_id: The Id of the entityType that the permission belongs to.
+            permission_id: The Id of the permission to update.
+            request: The request that contains all of the new permission information.
+        """
+        return self.start().uri('/api/entity/type') \
+            .url_segment(entity_type_id) \
+            .url_segment("permission") \
+            .url_segment(permission_id) \
             .body_handler(JSONBodyHandler(request)) \
             .put() \
             .go()
