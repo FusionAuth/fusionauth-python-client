@@ -647,6 +647,23 @@ class FusionAuthClient:
             .delete() \
             .go()
 
+    def delete_entity_grant(self, entity_id, recipient_entity_id=None, user_id=None):
+        """
+        Deletes an Entity Grant for the given User or Entity.
+
+        Attributes:
+            entity_id: The Id of the Entity that the Entity Grant is being deleted for.
+            recipient_entity_id: (Optional) The Id of the Entity that the Entity Grant is for.
+            user_id: (Optional) The Id of the User that the Entity Grant is for.
+        """
+        return self.start().uri('/api/entity') \
+            .url_segment(entity_id) \
+            .url_segment("grant") \
+            .url_parameter('recipientEntityId', recipient_entity_id) \
+            .url_parameter('userId', user_id) \
+            .delete() \
+            .go()
+
     def delete_entity_type(self, entity_type_id):
         """
         Deletes the Entity Type for the given Id.
@@ -1987,6 +2004,23 @@ class FusionAuthClient:
             .get() \
             .go()
 
+    def retrieve_entity_grant(self, entity_id, recipient_entity_id=None, user_id=None):
+        """
+        Retrieves an Entity Grant for the given Entity and User/Entity.
+
+        Attributes:
+            entity_id: The Id of the Entity.
+            recipient_entity_id: (Optional) The Id of the Entity that the Entity Grant is for.
+            user_id: (Optional) The Id of the User that the Entity Grant is for.
+        """
+        return self.start().uri('/api/entity') \
+            .url_segment(entity_id) \
+            .url_segment("grant") \
+            .url_parameter('recipientEntityId', recipient_entity_id) \
+            .url_parameter('userId', user_id) \
+            .get() \
+            .go()
+
     def retrieve_entity_type(self, entity_type_id):
         """
         Retrieves the Entity Type for the given Id.
@@ -3006,6 +3040,18 @@ class FusionAuthClient:
             .get() \
             .go()
 
+    def search_entity_grants(self, request):
+        """
+        Searches Entity Grants with the specified criteria and pagination.
+
+        Attributes:
+            request: The search criteria and pagination information.
+        """
+        return self.start().uri('/api/entity/grant/search') \
+            .body_handler(JSONBodyHandler(request)) \
+            .post() \
+            .go()
+
     def search_entity_types(self, request):
         """
         Searches the entity types with the specified criteria and pagination.
@@ -3604,6 +3650,21 @@ class FusionAuthClient:
             .url_segment(webhook_id) \
             .body_handler(JSONBodyHandler(request)) \
             .put() \
+            .go()
+
+    def upsert_entity_grant(self, entity_id, request):
+        """
+        Creates or updates an Entity Grant. This is when a User/Entity is granted permissions to an Entity.
+
+        Attributes:
+            entity_id: The Id of the Entity that the User/Entity is being granted access to.
+            request: The request object that contains all of the information used to create the Entity Grant.
+        """
+        return self.start().uri('/api/entity') \
+            .url_segment(entity_id) \
+            .url_segment("grant") \
+            .body_handler(JSONBodyHandler(request)) \
+            .post() \
             .go()
 
     def validate_device(self, user_code, client_id):
