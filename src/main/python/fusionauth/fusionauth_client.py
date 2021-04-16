@@ -364,6 +364,34 @@ class FusionAuthClient:
             .post() \
             .go()
 
+    def create_message_template(self, request, message_template_id=None):
+        """
+        Creates an message template. You can optionally specify an Id for the template, if not provided one will be generated.
+
+        Attributes:
+            message_template_id: (Optional) The Id for the template. If not provided a secure random UUID will be generated.
+            request: The request object that contains all of the information used to create the message template.
+        """
+        return self.start().uri('/api/message/template') \
+            .url_segment(message_template_id) \
+            .body_handler(JSONBodyHandler(request)) \
+            .post() \
+            .go()
+
+    def create_messenger(self, request, messenger_id=None):
+        """
+        Creates a messenger.  You can optionally specify an Id for the messenger, if not provided one will be generated.
+
+        Attributes:
+            messenger_id: (Optional) The Id for the messenger. If not provided a secure random UUID will be generated.
+            request: The request object that contains all of the information used to create the messenger.
+        """
+        return self.start().uri('/api/messenger') \
+            .url_segment(messenger_id) \
+            .body_handler(JSONBodyHandler(request)) \
+            .post() \
+            .go()
+
     def create_tenant(self, request, tenant_id=None):
         """
         Creates a tenant. You can optionally specify an Id for the tenant, if not provided one will be generated.
@@ -731,6 +759,30 @@ class FusionAuthClient:
             .delete() \
             .go()
 
+    def delete_message_template(self, message_template_id):
+        """
+        Deletes the message template for the given Id.
+
+        Attributes:
+            message_template_id: The Id of the message template to delete.
+        """
+        return self.start().uri('/api/message/template') \
+            .url_segment(message_template_id) \
+            .delete() \
+            .go()
+
+    def delete_messenger(self, messenger_id):
+        """
+        Deletes the messenger for the given Id.
+
+        Attributes:
+            messenger_id: The Id of the messenger to delete.
+        """
+        return self.start().uri('/api/messenger') \
+            .url_segment(messenger_id) \
+            .delete() \
+            .go()
+
     def delete_registration(self, user_id, application_id):
         """
         Deletes the user registration for the given user and application.
@@ -868,16 +920,18 @@ class FusionAuthClient:
             .delete() \
             .go()
 
-    def disable_two_factor(self, user_id, code):
+    def disable_two_factor(self, user_id, method_id, code):
         """
         Disable Two Factor authentication for a user.
 
         Attributes:
             user_id: The Id of the User for which you're disabling Two Factor authentication.
+            method_id: The two-factor method identifier you wish to disable
             code: The Two Factor code used verify the the caller knows the Two Factor secret.
         """
         return self.start().uri('/api/user/two-factor') \
             .url_parameter('userId', user_id) \
+            .url_parameter('methodId', method_id) \
             .url_parameter('code', code) \
             .delete() \
             .go()
@@ -1062,6 +1116,18 @@ class FusionAuthClient:
             .url_parameter('sendVerifyPasswordEmail', "false") \
             .url_parameter('applicationId', application_id) \
             .put() \
+            .go()
+
+    def generate_two_factor_recovery_codes(self, user_id):
+        """
+        Generate two-factor recovery codes for a user. Generating two-factor recovery codes will invalidate any existing recovery codes. 
+
+        Attributes:
+            user_id: The Id of the user to generate new Two Factor recovery codes.
+        """
+        return self.start().uri('/api/user/two-factor/recovery-code') \
+            .url_segment(user_id) \
+            .post() \
             .go()
 
     def generate_two_factor_secret(self):
@@ -1424,6 +1490,34 @@ class FusionAuthClient:
         """
         return self.start().uri('/api/lambda') \
             .url_segment(lambda_id) \
+            .body_handler(JSONBodyHandler(request)) \
+            .patch() \
+            .go()
+
+    def patch_message_template(self, message_template_id, request):
+        """
+        Updates, via PATCH, the message template with the given Id.
+
+        Attributes:
+            message_template_id: The Id of the message template to update.
+            request: The request that contains just the new message template information.
+        """
+        return self.start().uri('/api/message/template') \
+            .url_segment(message_template_id) \
+            .body_handler(JSONBodyHandler(request)) \
+            .patch() \
+            .go()
+
+    def patch_messenger(self, messenger_id, request):
+        """
+        Updates, via PATCH, the messenger with the given Id.
+
+        Attributes:
+            messenger_id: The Id of the messenger to update.
+            request: The request that contains just the new messenger information.
+        """
+        return self.start().uri('/api/messenger') \
+            .url_segment(messenger_id) \
             .body_handler(JSONBodyHandler(request)) \
             .patch() \
             .go()
@@ -2216,6 +2310,62 @@ class FusionAuthClient:
             .get() \
             .go()
 
+    def retrieve_message_template(self, message_template_id=None):
+        """
+        Retrieves the message template for the given Id. If you don't specify the id, this will return all of the message templates.
+
+        Attributes:
+            message_template_id: (Optional) The Id of the message template.
+        """
+        return self.start().uri('/api/message/template') \
+            .url_segment(message_template_id) \
+            .get() \
+            .go()
+
+    def retrieve_message_template_preview(self, request):
+        """
+        Creates a preview of the message template provided in the request, normalized to a given locale.
+
+        Attributes:
+            request: The request that contains the email template and optionally a locale to render it in.
+        """
+        return self.start().uri('/api/message/template/preview') \
+            .body_handler(JSONBodyHandler(request)) \
+            .post() \
+            .go()
+
+    def retrieve_message_templates(self):
+        """
+        Retrieves all of the message templates.
+
+        Attributes:
+        """
+        return self.start().uri('/api/message/template') \
+            .get() \
+            .go()
+
+    def retrieve_messenger(self, messenger_id):
+        """
+        Retrieves the messenger with the given Id.
+
+        Attributes:
+            messenger_id: The Id of the messenger.
+        """
+        return self.start().uri('/api/messenger') \
+            .url_segment(messenger_id) \
+            .get() \
+            .go()
+
+    def retrieve_messengers(self):
+        """
+        Retrieves all of the messengers.
+
+        Attributes:
+        """
+        return self.start().uri('/api/messenger') \
+            .get() \
+            .go()
+
     def retrieve_monthly_active_report(self, start, end, application_id=None):
         """
         Retrieves the monthly active user report between the two instants. If you specify an application id, it will only
@@ -2436,6 +2586,18 @@ class FusionAuthClient:
         Attributes:
         """
         return self.start().uri('/api/report/totals') \
+            .get() \
+            .go()
+
+    def retrieve_two_factor_recovery_codes(self, user_id):
+        """
+        Retrieve two-factor recovery codes for a user.
+
+        Attributes:
+            user_id: The Id of the user to retrieve Two Factor recovery codes.
+        """
+        return self.start().uri('/api/user/two-factor/recovery-code') \
+            .url_segment(user_id) \
             .get() \
             .go()
 
@@ -2971,6 +3133,7 @@ class FusionAuthClient:
             .post() \
             .go()
 
+    @deprecated("This method has been renamed to send_two_factor_code_for_enable_disable, use that method instead.")
     def send_two_factor_code(self, request):
         """
         Send a Two Factor authentication code to assist in setting up Two Factor authentication or disabling.
@@ -2983,6 +3146,19 @@ class FusionAuthClient:
             .post() \
             .go()
 
+    def send_two_factor_code_for_enable_disable(self, request):
+        """
+        Send a Two Factor authentication code to assist in setting up Two Factor authentication or disabling.
+
+        Attributes:
+            request: The request object that contains all of the information used to send the code.
+        """
+        return self.start().uri('/api/two-factor/send') \
+            .body_handler(JSONBodyHandler(request)) \
+            .post() \
+            .go()
+
+    @deprecated("This method has been renamed to send_two_factor_code_for_login_using_method, use that method instead.")
     def send_two_factor_code_for_login(self, two_factor_id):
         """
         Send a Two Factor authentication code to allow the completion of Two Factor authentication.
@@ -2992,6 +3168,20 @@ class FusionAuthClient:
         """
         return self.start_anonymous().uri('/api/two-factor/send') \
             .url_segment(two_factor_id) \
+            .post() \
+            .go()
+
+    def send_two_factor_code_for_login_using_method(self, two_factor_id, request):
+        """
+        Send a Two Factor authentication code to allow the completion of Two Factor authentication.
+
+        Attributes:
+            two_factor_id: The Id returned by the Login API necessary to complete Two Factor authentication.
+            request: The Two Factor send request that contains all of the information used to send the Two Factor code to the user.
+        """
+        return self.start_anonymous().uri('/api/two-factor/send') \
+            .url_segment(two_factor_id) \
+            .body_handler(JSONBodyHandler(request)) \
             .post() \
             .go()
 
@@ -3017,6 +3207,23 @@ class FusionAuthClient:
             request: The passwordless start request that contains all of the information used to begin the passwordless login request.
         """
         return self.start().uri('/api/passwordless/start') \
+            .body_handler(JSONBodyHandler(request)) \
+            .post() \
+            .go()
+
+    def start_two_factor_login(self, request):
+        """
+        Start a Two-Factor login request by generating a two-factor identifier. This code can then be sent to the Two Factor Send 
+        API (/api/two-factor/send)in order to send a one-time use code to a user. You can also use one-time use code returned 
+        to send the code out-of-band. The Two-Factor login is completed by making a request to the Two-Factor Login 
+        API (/api/two-factor/login). with the two-factor identifier and the one-time use code.
+        
+        This API is intended to allow you to begin a Two-Factor login outside of a normal login that originated from the Login API (/api/login).
+
+        Attributes:
+            request: The Two-Factor start request that contains all of the information used to begin the Two-Factor login request.
+        """
+        return self.start().uri('/api/two-factor/start') \
             .body_handler(JSONBodyHandler(request)) \
             .post() \
             .go()
@@ -3243,6 +3450,34 @@ class FusionAuthClient:
         """
         return self.start().uri('/api/lambda') \
             .url_segment(lambda_id) \
+            .body_handler(JSONBodyHandler(request)) \
+            .put() \
+            .go()
+
+    def update_message_template(self, message_template_id, request):
+        """
+        Updates the message template with the given Id.
+
+        Attributes:
+            message_template_id: The Id of the message template to update.
+            request: The request that contains all of the new message template information.
+        """
+        return self.start().uri('/api/message/template') \
+            .url_segment(message_template_id) \
+            .body_handler(JSONBodyHandler(request)) \
+            .put() \
+            .go()
+
+    def update_messenger(self, messenger_id, request):
+        """
+        Updates the messenger with the given Id.
+
+        Attributes:
+            messenger_id: The Id of the messenger to update.
+            request: The request object that contains all of the new messenger information.
+        """
+        return self.start().uri('/api/messenger') \
+            .url_segment(messenger_id) \
             .body_handler(JSONBodyHandler(request)) \
             .put() \
             .go()
