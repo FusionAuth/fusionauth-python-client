@@ -133,6 +133,24 @@ class FusionAuthClient:
             .post() \
             .go()
 
+    def create_api_key(self, request, key_id=None):
+        """
+        Creates an API key. You can optionally specify a unique Id for the key, if not provided one will be generated.
+        an API key can only be created with equal or lesser authority. An API key cannot create another API key unless it is granted 
+        to that API key.
+        
+        If an API key is locked to a tenant, it can only create API Keys for that same tenant.
+
+        Attributes:
+            key_id: (Optional) The unique Id of the API key. If not provided a secure random Id will be generated.
+            request: The request object that contains all of the information needed to create the APIKey.
+        """
+        return self.start().uri('/api/api-key') \
+            .url_segment(key_id) \
+            .body_handler(JSONBodyHandler(request)) \
+            .post() \
+            .go()
+
     def create_application(self, request, application_id=None):
         """
         Creates an application. You can optionally specify an Id for the application, if not provided one will be generated.
@@ -564,6 +582,18 @@ class FusionAuthClient:
             .url_parameter('userId', user_ids) \
             .url_parameter('dryRun', "false") \
             .url_parameter('hardDelete', "false") \
+            .delete() \
+            .go()
+
+    def delete_api_key(self, key_id):
+        """
+        Deletes the API key for the given Id.
+
+        Attributes:
+            key_id: The Id of the authentication API key to delete.
+        """
+        return self.start().uri('/api/api-key') \
+            .url_segment(key_id) \
             .delete() \
             .go()
 
@@ -1370,6 +1400,20 @@ class FusionAuthClient:
             .post() \
             .go()
 
+    def patch_api_key(self, key_id, request):
+        """
+        Updates an authentication API key by given id
+
+        Attributes:
+            key_id: The Id of the authentication key. If not provided a secure random api key will be generated.
+            request: The request object that contains all of the information needed to create the APIKey.
+        """
+        return self.start().uri('/api/api-key') \
+            .url_segment(key_id) \
+            .body_handler(JSONBodyHandler(request)) \
+            .post() \
+            .go()
+
     def patch_application(self, application_id, request):
         """
         Updates, via PATCH, the application with the given Id.
@@ -1807,6 +1851,18 @@ class FusionAuthClient:
             .url_parameter('email', email) \
             .url_parameter('applicationId', application_id) \
             .put() \
+            .go()
+
+    def retrieve_api_key(self, key_id):
+        """
+        Retrieves an authentication API key for the given id
+
+        Attributes:
+            key_id: The Id of the API key to retrieve.
+        """
+        return self.start().uri('/api/api-key') \
+            .url_segment(key_id) \
+            .get() \
             .go()
 
     def retrieve_action(self, action_id):
@@ -3284,6 +3340,20 @@ class FusionAuthClient:
         return self.start_anonymous().uri('/api/two-factor/login') \
             .body_handler(JSONBodyHandler(request)) \
             .post() \
+            .go()
+
+    def update_api_key(self, api_key_id, request):
+        """
+        Updates an API key by given id
+
+        Attributes:
+            api_key_id: The Id of the API key to update.
+            request: The request object that contains all of the information used to create the API Key.
+        """
+        return self.start().uri('/api/api-key') \
+            .url_segment(api_key_id) \
+            .body_handler(JSONBodyHandler(request)) \
+            .put() \
             .go()
 
     def update_application(self, application_id, request):
