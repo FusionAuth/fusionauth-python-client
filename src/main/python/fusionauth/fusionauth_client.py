@@ -2925,6 +2925,16 @@ class FusionAuthClient:
             .get() \
             .go()
 
+    def retrieve_version(self):
+        """
+        Retrieves the FusionAuth version string.
+
+        Attributes:
+        """
+        return self.start().uri('/api/system/version') \
+            .get() \
+            .go()
+
     def retrieve_webhook(self, webhook_id=None):
         """
         Retrieves the webhook for the given Id. If you pass in null for the id, this will return all the webhooks.
@@ -3767,6 +3777,7 @@ class FusionAuthClient:
             .get() \
             .go()
 
+    @deprecated("This method has been renamed to verify_email_address and changed to take a JSON request body, use that method instead.")
     def verify_email(self, verification_id):
         """
         Confirms a email verification. The Id given is usually from an email sent to the user.
@@ -3779,6 +3790,24 @@ class FusionAuthClient:
             .post() \
             .go()
 
+    def verify_email_address(self, request):
+        """
+        Confirms a user's email address. 
+        
+        The request body will contain the verificationId. You may also be required to send a one-time use code based upon your configuration. When 
+        the tenant is configured to gate a user until their email address is verified, this procedures requires two values instead of one. 
+        The verificationId is a high entropy value and the one-time use code is a low entropy value that is easily entered in a user interactive form. The 
+        two values together are able to confirm a user's email address and mark the user's email address as verified.
+
+        Attributes:
+            request: The request that contains the verificationId and optional one-time use code paired with the verificationId.
+        """
+        return self.start_anonymous().uri('/api/user/verify-email') \
+            .body_handler(JSONBodyHandler(request)) \
+            .post() \
+            .go()
+
+    @deprecated("This method has been renamed to verify_user_registration and changed to take a JSON request body, use that method instead.")
     def verify_registration(self, verification_id):
         """
         Confirms an application registration. The Id given is usually from an email sent to the user.
@@ -3788,6 +3817,23 @@ class FusionAuthClient:
         """
         return self.start_anonymous().uri('/api/user/verify-registration') \
             .url_segment(verification_id) \
+            .post() \
+            .go()
+
+    def verify_user_registration(self, request):
+        """
+        Confirms a user's registration. 
+        
+        The request body will contain the verificationId. You may also be required to send a one-time use code based upon your configuration. When 
+        the application is configured to gate a user until their registration is verified, this procedures requires two values instead of one. 
+        The verificationId is a high entropy value and the one-time use code is a low entropy value that is easily entered in a user interactive form. The 
+        two values together are able to confirm a user's registration and mark the user's registration as verified.
+
+        Attributes:
+            request: The request that contains the verificationId and optional one-time use code paired with the verificationId.
+        """
+        return self.start_anonymous().uri('/api/user/verify-registration') \
+            .body_handler(JSONBodyHandler(request)) \
             .post() \
             .go()
 
