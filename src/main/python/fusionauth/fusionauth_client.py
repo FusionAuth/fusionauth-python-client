@@ -50,16 +50,14 @@ class FusionAuthClient:
             .post() \
             .go()
 
-    def activate_reactor(self, license_id, request):
+    def activate_reactor(self, request):
         """
         Activates the FusionAuth Reactor using a license id and optionally a license text (for air-gapped deployments)
 
         Attributes:
-            license_id: The license id
             request: An optional request that contains the license text to activate Reactor (useful for air-gap deployments of FusionAuth).
         """
         return self.start().uri('/api/reactor') \
-            .url_segment(license_id) \
             .body_handler(JSONBodyHandler(request)) \
             .post() \
             .go()
