@@ -494,6 +494,18 @@ class FusionAuthClient:
             .post() \
             .go()
 
+    def create_user_link(self, request):
+        """
+        Link an external user from a 3rd party identity provider to a FusionAuth user.
+
+        Attributes:
+            request: The request object that contains all of the information used to link the FusionAuth user.
+        """
+        return self.start().uri('/api/identity-provider/link') \
+            .body_handler(JSONBodyHandler(request)) \
+            .post() \
+            .go()
+
     def create_webhook(self, request, webhook_id=None):
         """
         Creates a webhook. You can optionally specify an Id for the webhook, if not provided one will be generated.
@@ -917,6 +929,22 @@ class FusionAuthClient:
         """
         return self.start().uri('/api/user-action-reason') \
             .url_segment(user_action_reason_id) \
+            .delete() \
+            .go()
+
+    def delete_user_link(self, identity_provider_id, identity_provider_user_id, user_id):
+        """
+        Remove an existing link that has been made from a 3rd party identity provider to a FusionAuth user.
+
+        Attributes:
+            identity_provider_id: The unique Id of the identity provider.
+            identity_provider_user_id: The unique Id of the user in the 3rd party identity provider to unlink.
+            user_id: The unique Id of the FusionAuth user to unlink.
+        """
+        return self.start().uri('/api/identity-provider/link') \
+            .url_parameter('identityProviderId', identity_provider_id) \
+            .url_parameter('identityProviderUserId', identity_provider_user_id) \
+            .url_parameter('userId', user_id) \
             .delete() \
             .go()
 
@@ -1796,6 +1824,22 @@ class FusionAuthClient:
             .post() \
             .go()
 
+    def reindex(self, request):
+        """
+        Requests Elasticsearch to delete and rebuild the index for FusionAuth users or entities. Be very careful when running this request as it will 
+        increase the CPU and I/O load on your database until the operation completes. Generally speaking you do not ever need to run this operation unless 
+        instructed by FusionAuth support, or if you are migrating a database another system and you are not brining along the Elasticsearch index. 
+        
+        You have been warned.
+
+        Attributes:
+            request: The request that contains the index name.
+        """
+        return self.start().uri('/api/system/reindex') \
+            .body_handler(JSONBodyHandler(request)) \
+            .post() \
+            .go()
+
     def remove_user_from_family(self, family_id, user_id):
         """
         Removes a user from the family with the given id.
@@ -2612,6 +2656,17 @@ class FusionAuthClient:
             .get() \
             .go()
 
+    def retrieve_reindex_status(self):
+        """
+        Retrieve the status of a re-index process. A status code of 200 indicates the re-index is in progress, a status code of  
+        404 indicates no re-index is in progress.
+
+        Attributes:
+        """
+        return self.start().uri('/api/system/reindex') \
+            .get() \
+            .go()
+
     def retrieve_system_configuration(self):
         """
         Retrieves the system configuration.
@@ -2854,6 +2909,36 @@ class FusionAuthClient:
         """
         return self.start_anonymous().uri('/oauth2/userinfo') \
             .authorization("Bearer " + encoded_jwt) \
+            .get() \
+            .go()
+
+    def retrieve_user_link(self, identity_provider_id, identity_provider_user_id, user_id):
+        """
+        Retrieve a single Identity Provider user (link).
+
+        Attributes:
+            identity_provider_id: The unique Id of the identity provider.
+            identity_provider_user_id: The unique Id of the user in the 3rd party identity provider.
+            user_id: The unique Id of the FusionAuth user.
+        """
+        return self.start().uri('/api/identity-provider/link') \
+            .url_parameter('identityProviderId', identity_provider_id) \
+            .url_parameter('identityProviderUserId', identity_provider_user_id) \
+            .url_parameter('userId', user_id) \
+            .get() \
+            .go()
+
+    def retrieve_user_links_by_user_id(self, user_id, identity_provider_id=None):
+        """
+        Retrieve all Identity Provider users (links) for the user. Specify the optional identityProviderId to retrieve links for a particular IdP.
+
+        Attributes:
+            identity_provider_id: (Optional) The unique Id of the identity provider. Specify this value to reduce the links returned to those for a particular IdP.
+            user_id: The unique Id of the user.
+        """
+        return self.start().uri('/api/identity-provider/link') \
+            .url_parameter('identityProviderId', identity_provider_id) \
+            .url_parameter('userId', user_id) \
             .get() \
             .go()
 
