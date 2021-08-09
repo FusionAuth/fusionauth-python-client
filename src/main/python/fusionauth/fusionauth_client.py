@@ -352,6 +352,20 @@ class FusionAuthClient:
             .post() \
             .go()
 
+    def create_ip_access_control_list(self, request, access_control_list_id=None):
+        """
+        Creates an IP Access Control List. You can optionally specify an Id on this create request, if one is not provided one will be generated.
+
+        Attributes:
+            access_control_list_id: (Optional) The Id for the IP Access Control List. If not provided a secure random UUID will be generated.
+            request: The request object that contains all of the information used to create the IP Access Control List.
+        """
+        return self.start().uri('/api/ip-acl') \
+            .url_segment(access_control_list_id) \
+            .body_handler(JSONBodyHandler(request)) \
+            .post() \
+            .go()
+
     def create_identity_provider(self, request, identity_provider_id=None):
         """
         Creates an identity provider. You can optionally specify an Id for the identity provider, if not provided one will be generated.
@@ -780,6 +794,18 @@ class FusionAuthClient:
             .delete() \
             .go()
 
+    def delete_ip_access_control_list(self, ip_access_control_list_id):
+        """
+        Deletes the IP Access Control List for the given Id.
+
+        Attributes:
+            ip_access_control_list_id: The Id of the IP Access Control List to delete.
+        """
+        return self.start().uri('/api/ip-acl') \
+            .url_segment(ip_access_control_list_id) \
+            .delete() \
+            .go()
+
     def delete_identity_provider(self, identity_provider_id):
         """
         Deletes the identity provider for the given Id.
@@ -854,9 +880,26 @@ class FusionAuthClient:
             .delete() \
             .go()
 
+    def delete_registration_with_request(self, user_id, application_id, request):
+        """
+        Deletes the user registration for the given user and application along with the given JSON body that contains the event information.
+
+        Attributes:
+            user_id: The Id of the user whose registration is being deleted.
+            application_id: The Id of the application to remove the registration for.
+            request: The request body that contains the event information.
+        """
+        return self.start().uri('/api/user/registration') \
+            .url_segment(user_id) \
+            .url_segment(application_id) \
+            .body_handler(JSONBodyHandler(request)) \
+            .delete() \
+            .go()
+
     def delete_tenant(self, tenant_id):
         """
-        Deletes the tenant for the given Id.
+        Deletes the tenant based on the given Id on the URL. This permanently deletes all information, metrics, reports and data associated
+        with the tenant and everything under the tenant (applications, users, etc).
 
         Attributes:
             tenant_id: The Id of the tenant to delete.
@@ -877,6 +920,21 @@ class FusionAuthClient:
         return self.start().uri('/api/tenant') \
             .url_segment(tenant_id) \
             .url_parameter('async', "true") \
+            .delete() \
+            .go()
+
+    def delete_tenant_with_request(self, tenant_id, request):
+        """
+        Deletes the tenant based on the given request (sent to the API as JSON). This permanently deletes all information, metrics, reports and data associated
+        with the tenant and everything under the tenant (applications, users, etc).
+
+        Attributes:
+            tenant_id: The Id of the tenant to delete.
+            request: The request object that contains all of the information used to delete the user.
+        """
+        return self.start().uri('/api/tenant') \
+            .url_segment(tenant_id) \
+            .body_handler(JSONBodyHandler(request)) \
             .delete() \
             .go()
 
@@ -948,6 +1006,21 @@ class FusionAuthClient:
             .delete() \
             .go()
 
+    def delete_user_with_request(self, user_id, request):
+        """
+        Deletes the user based on the given request (sent to the API as JSON). This permanently deletes all information, metrics, reports and data associated
+        with the user.
+
+        Attributes:
+            user_id: The Id of the user to delete (required).
+            request: The request object that contains all of the information used to delete the user.
+        """
+        return self.start().uri('/api/user') \
+            .url_segment(user_id) \
+            .body_handler(JSONBodyHandler(request)) \
+            .delete() \
+            .go()
+
     @deprecated("This method has been renamed to delete_users_by_query, use that method instead.")
     def delete_users(self, request):
         """
@@ -1003,9 +1076,23 @@ class FusionAuthClient:
             code: The Two Factor code used verify the the caller knows the Two Factor secret.
         """
         return self.start().uri('/api/user/two-factor') \
-            .url_parameter('userId', user_id) \
+            .url_segment(user_id) \
             .url_parameter('methodId', method_id) \
             .url_parameter('code', code) \
+            .delete() \
+            .go()
+
+    def disable_two_factor_with_request(self, user_id, request):
+        """
+        Disable Two Factor authentication for a user using a JSON body rather than URL parameters.
+
+        Attributes:
+            user_id: The Id of the User for which you're disabling Two Factor authentication.
+            request: The request information that contains the code and methodId along with any event information.
+        """
+        return self.start().uri('/api/user/two-factor') \
+            .url_segment(user_id) \
+            .body_handler(JSONBodyHandler(request)) \
             .delete() \
             .go()
 
@@ -1383,6 +1470,19 @@ class FusionAuthClient:
         return self.start_anonymous().uri('/api/logout') \
             .url_parameter('global', _global) \
             .url_parameter('refreshToken', refresh_token) \
+            .post() \
+            .go()
+
+    def logout_with_request(self, request):
+        """
+        The Logout API is intended to be used to remove the refresh token and access token cookies if they exist on the
+        client and revoke the refresh token stored. This API takes the refresh token in the JSON body.
+
+        Attributes:
+            request: The request object that contains all of the information used to logout the user.
+        """
+        return self.start_anonymous().uri('/api/logout') \
+            .body_handler(JSONBodyHandler(request)) \
             .post() \
             .go()
 
@@ -2240,6 +2340,18 @@ class FusionAuthClient:
         Attributes:
         """
         return self.start().uri('/api/group') \
+            .get() \
+            .go()
+
+    def retrieve_ip_access_control_list(self, ip_access_control_list_id):
+        """
+        Retrieves the IP Access Control List with the given Id.
+
+        Attributes:
+            ip_access_control_list_id: The Id of the IP Access Control List.
+        """
+        return self.start().uri('/api/ip-acl') \
+            .url_segment(ip_access_control_list_id) \
             .get() \
             .go()
 
@@ -3141,6 +3253,19 @@ class FusionAuthClient:
             .delete() \
             .go()
 
+    def revoke_refresh_tokens_with_request(self, request):
+        """
+        Revokes refresh tokens using the information in the JSON body. The handling for this method is the same as the revokeRefreshToken method
+        and is based on the information you provide in the RefreshDeleteRequest object. See that method for additional information.
+
+        Attributes:
+            request: The request information used to revoke the refresh tokens.
+        """
+        return self.start().uri('/api/jwt/refresh') \
+            .body_handler(JSONBodyHandler(request)) \
+            .delete() \
+            .go()
+
     def revoke_user_consent(self, user_consent_id):
         """
         Revokes a single User consent by Id.
@@ -3221,6 +3346,18 @@ class FusionAuthClient:
             request: The search criteria and pagination information.
         """
         return self.start().uri('/api/system/event-log/search') \
+            .body_handler(JSONBodyHandler(request)) \
+            .post() \
+            .go()
+
+    def search_ip_access_control_lists(self, request):
+        """
+        Searches the IP Access Control Lists with the specified criteria and pagination.
+
+        Attributes:
+            request: The search criteria and pagination information.
+        """
+        return self.start().uri('/api/ip-acl/search') \
             .body_handler(JSONBodyHandler(request)) \
             .post() \
             .go()
@@ -3609,6 +3746,20 @@ class FusionAuthClient:
             .put() \
             .go()
 
+    def update_ip_access_control_list(self, access_control_list_id, request):
+        """
+        Updates the IP Access Control List with the given Id.
+
+        Attributes:
+            access_control_list_id: The Id of the IP Access Control List to update.
+            request: The request that contains all of the new IP Access Control List information.
+        """
+        return self.start().uri('/api/ip-acl') \
+            .url_segment(access_control_list_id) \
+            .body_handler(JSONBodyHandler(request)) \
+            .put() \
+            .go()
+
     def update_identity_provider(self, identity_provider_id, request):
         """
         Updates the identity provider with the given Id.
@@ -3858,6 +4009,26 @@ class FusionAuthClient:
         return self.start_anonymous().uri('/api/jwt/validate') \
             .authorization("Bearer " + encoded_jwt) \
             .get() \
+            .go()
+
+    def vend_jwt(self, request):
+        """
+        It's a JWT vending machine!
+        
+        Issue a new access token (JWT) with the provided claims in the request. This JWT is not scoped to a tenant or user, it is a free form 
+        token that will contain what claims you provide.
+        <p>
+        The iat, exp and jti claims will be added by FusionAuth, all other claims must be provided by the caller.
+        
+        If a TTL is not provided in the request, the TTL will be retrieved from the default Tenant or the Tenant specified on the request either 
+        by way of the X-FusionAuth-TenantId request header, or a tenant scoped API key.
+
+        Attributes:
+            request: The request that contains all of the claims for this JWT.
+        """
+        return self.start().uri('/api/jwt/vend') \
+            .body_handler(JSONBodyHandler(request)) \
+            .post() \
             .go()
 
     @deprecated("This method has been renamed to verify_email_address and changed to take a JSON request body, use that method instead.")
