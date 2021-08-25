@@ -2689,6 +2689,16 @@ class FusionAuthClient:
             .get() \
             .go()
 
+    def retrieve_reactor_metrics(self):
+        """
+        Retrieves the FusionAuth Reactor metrics.
+
+        Attributes:
+        """
+        return self.start().uri('/api/reactor/metrics') \
+            .get() \
+            .go()
+
     def retrieve_reactor_status(self):
         """
         Retrieves the FusionAuth Reactor status.
