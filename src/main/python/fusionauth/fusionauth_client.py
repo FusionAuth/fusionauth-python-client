@@ -68,7 +68,7 @@ class FusionAuthClient:
 
         Attributes:
             family_id: The id of the family.
-            request: The request object that contains all of the information used to determine which user to add to the family.
+            request: The request object that contains all the information used to determine which user to add to the family.
         """
         return self.start().uri('/api/user/family') \
             .url_segment(family_id) \
@@ -124,7 +124,7 @@ class FusionAuthClient:
         Adds a comment to the user's account.
 
         Attributes:
-            request: The request object that contains all of the information used to create the user comment.
+            request: The request object that contains all the information used to create the user comment.
         """
         return self.start().uri('/api/user/comment') \
             .body_handler(JSONBodyHandler(request)) \
@@ -155,7 +155,7 @@ class FusionAuthClient:
 
         Attributes:
             application_id: (Optional) The Id to use for the application. If not provided a secure random UUID will be generated.
-            request: The request object that contains all of the information used to create the application.
+            request: The request object that contains all the information used to create the application.
         """
         return self.start().uri('/api/application') \
             .url_segment(application_id) \
@@ -171,7 +171,7 @@ class FusionAuthClient:
         Attributes:
             application_id: The Id of the application to create the role on.
             role_id: (Optional) The Id of the role. If not provided a secure random UUID will be generated.
-            request: The request object that contains all of the information used to create the application role.
+            request: The request object that contains all the information used to create the application role.
         """
         return self.start().uri('/api/application') \
             .url_segment(application_id) \
@@ -188,7 +188,7 @@ class FusionAuthClient:
         written to the audit log. However, if you are accessing the API, you must write the audit logs yourself.
 
         Attributes:
-            request: The request object that contains all of the information used to create the audit log entry.
+            request: The request object that contains all the information used to create the audit log entry.
         """
         return self.start().uri('/api/system/audit-log') \
             .body_handler(JSONBodyHandler(request)) \
@@ -201,7 +201,7 @@ class FusionAuthClient:
 
         Attributes:
             connector_id: (Optional) The Id for the connector. If not provided a secure random UUID will be generated.
-            request: The request object that contains all of the information used to create the connector.
+            request: The request object that contains all the information used to create the connector.
         """
         return self.start().uri('/api/connector') \
             .url_segment(connector_id) \
@@ -215,7 +215,7 @@ class FusionAuthClient:
 
         Attributes:
             consent_id: (Optional) The Id for the consent. If not provided a secure random UUID will be generated.
-            request: The request object that contains all of the information used to create the consent.
+            request: The request object that contains all the information used to create the consent.
         """
         return self.start().uri('/api/consent') \
             .url_segment(consent_id) \
@@ -229,7 +229,7 @@ class FusionAuthClient:
 
         Attributes:
             email_template_id: (Optional) The Id for the template. If not provided a secure random UUID will be generated.
-            request: The request object that contains all of the information used to create the email template.
+            request: The request object that contains all the information used to create the email template.
         """
         return self.start().uri('/api/email/template') \
             .url_segment(email_template_id) \
@@ -243,7 +243,7 @@ class FusionAuthClient:
 
         Attributes:
             entity_id: (Optional) The Id for the Entity. If not provided a secure random UUID will be generated.
-            request: The request object that contains all of the information used to create the Entity.
+            request: The request object that contains all the information used to create the Entity.
         """
         return self.start().uri('/api/entity') \
             .url_segment(entity_id) \
@@ -257,7 +257,7 @@ class FusionAuthClient:
 
         Attributes:
             entity_type_id: (Optional) The Id for the Entity Type. If not provided a secure random UUID will be generated.
-            request: The request object that contains all of the information used to create the Entity Type.
+            request: The request object that contains all the information used to create the Entity Type.
         """
         return self.start().uri('/api/entity/type') \
             .url_segment(entity_type_id) \
@@ -273,7 +273,7 @@ class FusionAuthClient:
         Attributes:
             entity_type_id: The Id of the entity type to create the permission on.
             permission_id: (Optional) The Id of the permission. If not provided a secure random UUID will be generated.
-            request: The request object that contains all of the information used to create the permission.
+            request: The request object that contains all the information used to create the permission.
         """
         return self.start().uri('/api/entity/type') \
             .url_segment(entity_type_id) \
@@ -290,7 +290,7 @@ class FusionAuthClient:
 
         Attributes:
             family_id: (Optional) The id for the family. If not provided a secure random UUID will be generated.
-            request: The request object that contains all of the information used to create the family.
+            request: The request object that contains all the information used to create the family.
         """
         return self.start().uri('/api/user/family') \
             .url_segment(family_id) \
@@ -304,7 +304,7 @@ class FusionAuthClient:
 
         Attributes:
             form_id: (Optional) The Id for the form. If not provided a secure random UUID will be generated.
-            request: The request object that contains all of the information used to create the form.
+            request: The request object that contains all the information used to create the form.
         """
         return self.start().uri('/api/form') \
             .url_segment(form_id) \
@@ -318,7 +318,7 @@ class FusionAuthClient:
 
         Attributes:
             field_id: (Optional) The Id for the form field. If not provided a secure random UUID will be generated.
-            request: The request object that contains all of the information used to create the form field.
+            request: The request object that contains all the information used to create the form field.
         """
         return self.start().uri('/api/form/field') \
             .url_segment(field_id) \
@@ -332,7 +332,7 @@ class FusionAuthClient:
 
         Attributes:
             group_id: (Optional) The Id for the group. If not provided a secure random UUID will be generated.
-            request: The request object that contains all of the information used to create the group.
+            request: The request object that contains all the information used to create the group.
         """
         return self.start().uri('/api/group') \
             .url_segment(group_id) \
@@ -345,7 +345,7 @@ class FusionAuthClient:
         Creates a member in a group.
 
         Attributes:
-            request: The request object that contains all of the information used to create the group member(s).
+            request: The request object that contains all the information used to create the group member(s).
         """
         return self.start().uri('/api/group/member') \
             .body_handler(JSONBodyHandler(request)) \
@@ -358,7 +358,7 @@ class FusionAuthClient:
 
         Attributes:
             access_control_list_id: (Optional) The Id for the IP Access Control List. If not provided a secure random UUID will be generated.
-            request: The request object that contains all of the information used to create the IP Access Control List.
+            request: The request object that contains all the information used to create the IP Access Control List.
         """
         return self.start().uri('/api/ip-acl') \
             .url_segment(access_control_list_id) \
@@ -372,7 +372,7 @@ class FusionAuthClient:
 
         Attributes:
             identity_provider_id: (Optional) The Id of the identity provider. If not provided a secure random UUID will be generated.
-            request: The request object that contains all of the information used to create the identity provider.
+            request: The request object that contains all the information used to create the identity provider.
         """
         return self.start().uri('/api/identity-provider') \
             .url_segment(identity_provider_id) \
@@ -386,7 +386,7 @@ class FusionAuthClient:
 
         Attributes:
             lambda_id: (Optional) The Id for the lambda. If not provided a secure random UUID will be generated.
-            request: The request object that contains all of the information used to create the lambda.
+            request: The request object that contains all the information used to create the lambda.
         """
         return self.start().uri('/api/lambda') \
             .url_segment(lambda_id) \
@@ -400,7 +400,7 @@ class FusionAuthClient:
 
         Attributes:
             message_template_id: (Optional) The Id for the template. If not provided a secure random UUID will be generated.
-            request: The request object that contains all of the information used to create the message template.
+            request: The request object that contains all the information used to create the message template.
         """
         return self.start().uri('/api/message/template') \
             .url_segment(message_template_id) \
@@ -414,7 +414,7 @@ class FusionAuthClient:
 
         Attributes:
             messenger_id: (Optional) The Id for the messenger. If not provided a secure random UUID will be generated.
-            request: The request object that contains all of the information used to create the messenger.
+            request: The request object that contains all the information used to create the messenger.
         """
         return self.start().uri('/api/messenger') \
             .url_segment(messenger_id) \
@@ -428,7 +428,7 @@ class FusionAuthClient:
 
         Attributes:
             tenant_id: (Optional) The Id for the tenant. If not provided a secure random UUID will be generated.
-            request: The request object that contains all of the information used to create the tenant.
+            request: The request object that contains all the information used to create the tenant.
         """
         return self.start().uri('/api/tenant') \
             .url_segment(tenant_id) \
@@ -442,7 +442,7 @@ class FusionAuthClient:
 
         Attributes:
             theme_id: (Optional) The Id for the theme. If not provided a secure random UUID will be generated.
-            request: The request object that contains all of the information used to create the theme.
+            request: The request object that contains all the information used to create the theme.
         """
         return self.start().uri('/api/theme') \
             .url_segment(theme_id) \
@@ -456,7 +456,7 @@ class FusionAuthClient:
 
         Attributes:
             user_id: (Optional) The Id for the user. If not provided a secure random UUID will be generated.
-            request: The request object that contains all of the information used to create the user.
+            request: The request object that contains all the information used to create the user.
         """
         return self.start().uri('/api/user') \
             .url_segment(user_id) \
@@ -471,7 +471,7 @@ class FusionAuthClient:
 
         Attributes:
             user_action_id: (Optional) The Id for the user action. If not provided a secure random UUID will be generated.
-            request: The request object that contains all of the information used to create the user action.
+            request: The request object that contains all the information used to create the user action.
         """
         return self.start().uri('/api/user-action') \
             .url_segment(user_action_id) \
@@ -486,7 +486,7 @@ class FusionAuthClient:
 
         Attributes:
             user_action_reason_id: (Optional) The Id for the user action reason. If not provided a secure random UUID will be generated.
-            request: The request object that contains all of the information used to create the user action reason.
+            request: The request object that contains all the information used to create the user action reason.
         """
         return self.start().uri('/api/user-action-reason') \
             .url_segment(user_action_reason_id) \
@@ -513,7 +513,7 @@ class FusionAuthClient:
         Link an external user from a 3rd party identity provider to a FusionAuth user.
 
         Attributes:
-            request: The request object that contains all of the information used to link the FusionAuth user.
+            request: The request object that contains all the information used to link the FusionAuth user.
         """
         return self.start().uri('/api/identity-provider/link') \
             .body_handler(JSONBodyHandler(request)) \
@@ -526,7 +526,7 @@ class FusionAuthClient:
 
         Attributes:
             webhook_id: (Optional) The Id for the webhook. If not provided a secure random UUID will be generated.
-            request: The request object that contains all of the information used to create the webhook.
+            request: The request object that contains all the information used to create the webhook.
         """
         return self.start().uri('/api/webhook') \
             .url_segment(webhook_id) \
@@ -930,7 +930,7 @@ class FusionAuthClient:
 
         Attributes:
             tenant_id: The Id of the tenant to delete.
-            request: The request object that contains all of the information used to delete the user.
+            request: The request object that contains all the information used to delete the user.
         """
         return self.start().uri('/api/tenant') \
             .url_segment(tenant_id) \
@@ -1013,7 +1013,7 @@ class FusionAuthClient:
 
         Attributes:
             user_id: The Id of the user to delete (required).
-            request: The request object that contains all of the information used to delete the user.
+            request: The request object that contains all the information used to delete the user.
         """
         return self.start().uri('/api/user') \
             .url_segment(user_id) \
@@ -1254,7 +1254,7 @@ class FusionAuthClient:
 
         Attributes:
             key_id: (Optional) The Id for the key. If not provided a secure random UUID will be generated.
-            request: The request object that contains all of the information used to create the key.
+            request: The request object that contains all the information used to create the key.
         """
         return self.start().uri('/api/key/generate') \
             .url_segment(key_id) \
@@ -1336,7 +1336,7 @@ class FusionAuthClient:
 
         Attributes:
             key_id: (Optional) The Id for the key. If not provided a secure random UUID will be generated.
-            request: The request object that contains all of the information used to create the key.
+            request: The request object that contains all the information used to create the key.
         """
         return self.start().uri('/api/key/import') \
             .url_segment(key_id) \
@@ -1479,7 +1479,7 @@ class FusionAuthClient:
         client and revoke the refresh token stored. This API takes the refresh token in the JSON body.
 
         Attributes:
-            request: The request object that contains all of the information used to logout the user.
+            request: The request object that contains all the information used to logout the user.
         """
         return self.start_anonymous().uri('/api/logout') \
             .body_handler(JSONBodyHandler(request)) \
@@ -3481,7 +3481,7 @@ class FusionAuthClient:
         Send a Two Factor authentication code to assist in setting up Two Factor authentication or disabling.
 
         Attributes:
-            request: The request object that contains all of the information used to send the code.
+            request: The request object that contains all the information used to send the code.
         """
         return self.start().uri('/api/two-factor/send') \
             .body_handler(JSONBodyHandler(request)) \
@@ -3493,7 +3493,7 @@ class FusionAuthClient:
         Send a Two Factor authentication code to assist in setting up Two Factor authentication or disabling.
 
         Attributes:
-            request: The request object that contains all of the information used to send the code.
+            request: The request object that contains all the information used to send the code.
         """
         return self.start().uri('/api/two-factor/send') \
             .body_handler(JSONBodyHandler(request)) \
@@ -3588,7 +3588,7 @@ class FusionAuthClient:
 
         Attributes:
             api_key_id: The Id of the API key to update.
-            request: The request object that contains all of the information used to create the API Key.
+            request: The request object that contains all the information used to create the API Key.
         """
         return self.start().uri('/api/api-key') \
             .url_segment(api_key_id) \
@@ -3982,7 +3982,7 @@ class FusionAuthClient:
 
         Attributes:
             entity_id: The Id of the Entity that the User/Entity is being granted access to.
-            request: The request object that contains all of the information used to create the Entity Grant.
+            request: The request object that contains all the information used to create the Entity Grant.
         """
         return self.start().uri('/api/entity') \
             .url_segment(entity_id) \
