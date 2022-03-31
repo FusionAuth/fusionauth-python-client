@@ -2072,7 +2072,7 @@ class FusionAuthClient:
 
     def retrieve_actions(self, user_id):
         """
-        Retrieves all of the actions for the user with the given Id. This will return all time based actions that are active,
+        Retrieves all the actions for the user with the given Id. This will return all time based actions that are active,
         and inactive as well as non-time based actions.
 
         Attributes:
@@ -2085,7 +2085,7 @@ class FusionAuthClient:
 
     def retrieve_actions_preventing_login(self, user_id):
         """
-        Retrieves all of the actions for the user with the given Id that are currently preventing the User from logging in.
+        Retrieves all the actions for the user with the given Id that are currently preventing the User from logging in.
 
         Attributes:
             user_id: The Id of the user to fetch the actions for.
@@ -2098,7 +2098,7 @@ class FusionAuthClient:
 
     def retrieve_active_actions(self, user_id):
         """
-        Retrieves all of the actions for the user with the given Id that are currently active.
+        Retrieves all the actions for the user with the given Id that are currently active.
         An active action means one that is time based and has not been canceled, and has not ended.
 
         Attributes:
@@ -2124,7 +2124,7 @@ class FusionAuthClient:
 
     def retrieve_applications(self):
         """
-        Retrieves all of the applications.
+        Retrieves all the applications.
 
         Attributes:
         """
@@ -2158,7 +2158,7 @@ class FusionAuthClient:
 
     def retrieve_connectors(self):
         """
-        Retrieves all of the connectors.
+        Retrieves all the connectors.
 
         Attributes:
         """
@@ -2180,7 +2180,7 @@ class FusionAuthClient:
 
     def retrieve_consents(self):
         """
-        Retrieves all of the consent.
+        Retrieves all the consent.
 
         Attributes:
         """
@@ -2233,7 +2233,7 @@ class FusionAuthClient:
 
     def retrieve_email_templates(self):
         """
-        Retrieves all of the email templates.
+        Retrieves all the email templates.
 
         Attributes:
         """
@@ -2284,7 +2284,7 @@ class FusionAuthClient:
 
     def retrieve_entity_types(self):
         """
-        Retrieves all of the Entity Types.
+        Retrieves all the Entity Types.
 
         Attributes:
         """
@@ -2306,7 +2306,7 @@ class FusionAuthClient:
 
     def retrieve_families(self, user_id):
         """
-        Retrieves all of the families that a user belongs to.
+        Retrieves all the families that a user belongs to.
 
         Attributes:
             user_id: The User's id
@@ -2318,7 +2318,7 @@ class FusionAuthClient:
 
     def retrieve_family_members_by_family_id(self, family_id):
         """
-        Retrieves all of the members of a family by the unique Family Id.
+        Retrieves all the members of a family by the unique Family Id.
 
         Attributes:
             family_id: The unique Id of the Family.
@@ -2354,7 +2354,7 @@ class FusionAuthClient:
 
     def retrieve_form_fields(self):
         """
-        Retrieves all of the forms fields
+        Retrieves all the forms fields
 
         Attributes:
         """
@@ -2364,7 +2364,7 @@ class FusionAuthClient:
 
     def retrieve_forms(self):
         """
-        Retrieves all of the forms.
+        Retrieves all the forms.
 
         Attributes:
         """
@@ -2386,7 +2386,7 @@ class FusionAuthClient:
 
     def retrieve_groups(self):
         """
-        Retrieves all of the groups.
+        Retrieves all the groups.
 
         Attributes:
         """
@@ -2434,7 +2434,7 @@ class FusionAuthClient:
 
     def retrieve_identity_providers(self):
         """
-        Retrieves all of the identity providers.
+        Retrieves all the identity providers.
 
         Attributes:
         """
@@ -2444,7 +2444,7 @@ class FusionAuthClient:
 
     def retrieve_inactive_actions(self, user_id):
         """
-        Retrieves all of the actions for the user with the given Id that are currently inactive.
+        Retrieves all the actions for the user with the given Id that are currently inactive.
         An inactive action means one that is time based and has been canceled or has expired, or is not time based.
 
         Attributes:
@@ -2458,7 +2458,7 @@ class FusionAuthClient:
 
     def retrieve_inactive_applications(self):
         """
-        Retrieves all of the applications that are currently inactive.
+        Retrieves all the applications that are currently inactive.
 
         Attributes:
         """
@@ -2469,7 +2469,7 @@ class FusionAuthClient:
 
     def retrieve_inactive_user_actions(self):
         """
-        Retrieves all of the user actions that are currently inactive.
+        Retrieves all the user actions that are currently inactive.
 
         Attributes:
         """
@@ -2546,7 +2546,7 @@ class FusionAuthClient:
 
     def retrieve_keys(self):
         """
-        Retrieves all of the keys.
+        Retrieves all the keys.
 
         Attributes:
         """
@@ -2568,7 +2568,7 @@ class FusionAuthClient:
 
     def retrieve_lambdas(self):
         """
-        Retrieves all of the lambdas.
+        Retrieves all the lambdas.
 
         Attributes:
         """
@@ -2578,7 +2578,7 @@ class FusionAuthClient:
 
     def retrieve_lambdas_by_type(self, _type):
         """
-        Retrieves all of the lambdas for the provided type.
+        Retrieves all the lambdas for the provided type.
 
         Attributes:
             _type: The type of the lambda to return.
@@ -2631,7 +2631,7 @@ class FusionAuthClient:
 
     def retrieve_message_templates(self):
         """
-        Retrieves all of the message templates.
+        Retrieves all the message templates.
 
         Attributes:
         """
@@ -2653,7 +2653,7 @@ class FusionAuthClient:
 
     def retrieve_messengers(self):
         """
-        Retrieves all of the messengers.
+        Retrieves all the messengers.
 
         Attributes:
         """
@@ -2730,7 +2730,7 @@ class FusionAuthClient:
 
     def retrieve_pending_children(self, parent_email):
         """
-        Retrieves all of the children for the given parent email address.
+        Retrieves all the children for the given parent email address.
 
         Attributes:
             parent_email: The email of the parent.
@@ -2864,7 +2864,7 @@ class FusionAuthClient:
 
     def retrieve_tenants(self):
         """
-        Retrieves all of the tenants.
+        Retrieves all the tenants.
 
         Attributes:
         """
@@ -2886,7 +2886,7 @@ class FusionAuthClient:
 
     def retrieve_themes(self):
         """
-        Retrieves all of the themes.
+        Retrieves all the themes.
 
         Attributes:
         """
@@ -2967,7 +2967,7 @@ class FusionAuthClient:
 
     def retrieve_user_actions(self):
         """
-        Retrieves all of the user actions.
+        Retrieves all the user actions.
 
         Attributes:
         """
@@ -3039,7 +3039,7 @@ class FusionAuthClient:
 
     def retrieve_user_comments(self, user_id):
         """
-        Retrieves all of the comments for the user with the given Id.
+        Retrieves all the comments for the user with the given Id.
 
         Attributes:
             user_id: The Id of the user.
@@ -3063,7 +3063,7 @@ class FusionAuthClient:
 
     def retrieve_user_consents(self, user_id):
         """
-        Retrieves all of the consents for a User.
+        Retrieves all the consents for a User.
 
         Attributes:
             user_id: The User's Id
@@ -3407,6 +3407,18 @@ class FusionAuthClient:
             request: The search criteria and pagination information.
         """
         return self.start().uri('/api/system/event-log/search') \
+            .body_handler(JSONBodyHandler(request)) \
+            .post() \
+            .go()
+
+    def search_group_members(self, request):
+        """
+        Searches group members with the specified criteria and pagination.
+
+        Attributes:
+            request: The search criteria and pagination information.
+        """
+        return self.start().uri('/api/group/member/search') \
             .body_handler(JSONBodyHandler(request)) \
             .post() \
             .go()
@@ -3803,6 +3815,18 @@ class FusionAuthClient:
         """
         return self.start().uri('/api/group') \
             .url_segment(group_id) \
+            .body_handler(JSONBodyHandler(request)) \
+            .put() \
+            .go()
+
+    def update_group_members(self, request):
+        """
+        Creates a member in a group.
+
+        Attributes:
+            request: The request object that contains all the information used to create the group member(s).
+        """
+        return self.start().uri('/api/group/member') \
             .body_handler(JSONBodyHandler(request)) \
             .put() \
             .go()
