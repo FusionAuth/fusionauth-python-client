@@ -4146,6 +4146,20 @@ class FusionAuthClient:
             .post() \
             .go()
 
+    def verify_email_address_by_user_id(self, request):
+        """
+        Administratively verify a user's email address. Use this method to bypass email verification for the user.
+        
+        The request body will contain the userId to be verified. An API key is required when sending the userId in the request body.
+
+        Attributes:
+            request: The request that contains the userId to verify.
+        """
+        return self.start().uri('/api/user/verify-email') \
+            .body_handler(JSONBodyHandler(request)) \
+            .post() \
+            .go()
+
     @deprecated("This method has been renamed to verify_user_registration and changed to take a JSON request body, use that method instead.")
     def verify_registration(self, verification_id):
         """
