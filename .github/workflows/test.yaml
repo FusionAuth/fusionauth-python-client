@@ -29,7 +29,7 @@ jobs:
           down-flags: '--volumes'
       - uses: actions/setup-python@v3
         with:
-          python-version: '3.x'
+          python-version: '3.9.x'
       - name: Install fusionauth library
         run: |
           pip3 install fusionauth-client
