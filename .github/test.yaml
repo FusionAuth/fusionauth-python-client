@@ -1,0 +1,43 @@
+name: deploy_website
+
+# Controls when the action will run. 
+on:
+  # Triggers the workflow on push or pull request events but only for the master branch
+  push:
+    branches: [ master, add-test-envt ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "deploy_website"
+  deploy_website:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    env:
+      FUSIONAUTH_URL: http://localhost:9011
+      FUSIONAUTH_API_KEY: bf69486b-4733-4470-a592-f1bfce7af580
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Setup the system with the repository code, Java, and Ruby
+      - uses: actions/checkout@v2
+      - uses: isbang/compose-action@v1.0.0
+        with:
+          compose-file: './src/test/docker/docker-compose.yml'
+          down-flags: '--volumes'
+      - uses: actions/setup-python@v3
+        with:
+          python-version: '3.x'
+      - name: Install fusionauth library
+        run: |
+          pip3 install fusionauth-client
+          pip3 install unittest2
+          python 
+        shell: bash
+      # Run the tests
+      - name: Run tests
+        run: |
+          python3 src/test/python/fusionauth/fusionauth_client_test.py
+        shell: bash
