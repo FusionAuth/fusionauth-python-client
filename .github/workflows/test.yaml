@@ -34,7 +34,8 @@ jobs:
         run: |
           pip3 install fusionauth-client
           pip3 install unittest2
-          python 
+          sleep 4
+          docker logs `docker container ls|grep fusiona|awk '{print $1}'`
         shell: bash
       # Run the tests
       - name: Run tests
