@@ -31,10 +31,7 @@ class FusionAuthClientTest(unittest2.TestCase):
     def setUp(self):
         fusionauth_url = os.getenv('FUSIONAUTH_URL') if 'FUSIONAUTH_URL' in os.environ else 'http://localhost:9011'
         fusionauth_api_key = os.getenv('FUSIONAUTH_API_KEY') if 'FUSIONAUTH_API_KEY' in os.environ else 'bf69486b-4733-4470-a592-f1bfce7af580'
-        print(fusionauth_api_key)
         self.client = FusionAuthClient(fusionauth_api_key, fusionauth_url)
-        # Uncomment and set tenant Id if running against a multi-tenant system
-        #self.client.set_tenant_id('37633362-3633-3531-3564-373335636537')
 
     def runTest(self):
         pass
@@ -42,12 +39,12 @@ class FusionAuthClientTest(unittest2.TestCase):
     def test_retrieve_applications(self):
         client_response = self.client.retrieve_applications()
         self.assertEqual(client_response.status, 200)
-        self.assertEqual(len(client_response.success_response['applications']), 1)
+        self.assertEqual(len(client_response.success_response['applications']), 2)
 
     def test_create_user_retrieve_user(self):
         # Check if the user already exists.
         get_user_response = self.client.retrieve_user_by_email('art@vandaleyindustries.com')
-        if get_user_response.status is 200:
+        if get_user_response.status == 200:
             delete_user_response = self.client.delete_user(get_user_response.success_response['user']['id'])
             self.assertEqual(delete_user_response.status, 200, delete_user_response.error_response)
         else:
