@@ -10,7 +10,6 @@
       "description": "Standard development API key"
     }
   ],
-  "licenseId": "niBFskl7ev9DfNpz1Np1bnlrN6m2n9k2NKnfCcOgL4",
   "requests": [
     {
       "method": "POST",
