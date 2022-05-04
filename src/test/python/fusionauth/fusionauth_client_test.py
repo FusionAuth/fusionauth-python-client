@@ -22,16 +22,15 @@ import unittest2
 
 from fusionauth.fusionauth_client import FusionAuthClient
 
-
 def print_json(parsed_json):
     print(json.dumps(parsed_json, indent=2, sort_keys=True))
-
 
 class FusionAuthClientTest(unittest2.TestCase):
     def setUp(self):
         fusionauth_url = os.getenv('FUSIONAUTH_URL') if 'FUSIONAUTH_URL' in os.environ else 'http://localhost:9011'
         fusionauth_api_key = os.getenv('FUSIONAUTH_API_KEY') if 'FUSIONAUTH_API_KEY' in os.environ else 'bf69486b-4733-4470-a592-f1bfce7af580'
         self.client = FusionAuthClient(fusionauth_api_key, fusionauth_url)
+        self.anonymous_client = FusionAuthClient('', fusionauth_url)
 
     def runTest(self):
         pass
@@ -78,6 +77,21 @@ class FusionAuthClientTest(unittest2.TestCase):
         self.assertEqual(client_response.status, 404)
         self.assertIsNone(client_response.success_response)
         self.assertIsNone(client_response.error_response)
+
+    def test_login_user_logout_global(self):
+        login_request = {
+            'loginId': 'admin@fusionauth.io',
+            'password': 'password',
+            'applicationId': '85a03867-dccf-4882-adde-1a79aeec50df'
+        }
+        login_response = self.client.login(login_request)
+        self.assertEqual(login_response.status, 200, login_response.error_response)
+
+        refreshToken = login_response.success_response['refreshToken']
+
+        logout_response = self.anonymous_client.logout(True, refreshToken)
+
+        self.assertEqual(logout_response.status, 200, logout_response.error_response)
 
 
 if __name__ == '__main__':
