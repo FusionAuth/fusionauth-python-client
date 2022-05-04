@@ -1,5 +1,6 @@
 name: run_tests
 
+
 # Controls when the action will run. 
 on:
   # Triggers the workflow on push or pull request events but only for the master branch
@@ -38,9 +39,8 @@ jobs:
       - name: Check to see if FusionAuth is loaded
         run: |
           imgid=`docker container ls|grep fusiona|awk '{print $1}'`
-          docker logs $imgid 2>&1|grep 'Server startup' > /dev/null
-          res=$?
-          while [[ $res != "0" ]]; do echo "waiting"; sleep 2; docker logs $imgid 2>&1|grep 'Server startup' > /dev/null; res=$?; done
+          cnt=`docker logs $imgid 2>&1|grep 'Server startup' |wc -l`
+          while [ $cnt != "1" ]; do echo "waiting $cnt $imgid"; sleep 2; cnt=`docker logs $imgid 2>&1|grep 'Server startup' |wc -l`; done
         shell: bash
       # Run the tests
       - name: Run tests
