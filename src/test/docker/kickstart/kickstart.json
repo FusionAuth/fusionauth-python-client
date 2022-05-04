@@ -2,7 +2,8 @@
   "variables": {
     "adminEmail": "admin@fusionauth.io",
     "password": "password",
-    "defaultTenantId": "30663132-6464-6665-3032-326466613934"
+    "defaultTenantId": "30663132-6464-6665-3032-326466613934",
+    "piedPiperApplicationId": "85a03867-dccf-4882-adde-1a79aeec50df"
   },
   "apiKeys": [
     {
@@ -13,7 +14,7 @@
   "requests": [
     {
       "method": "POST",
-      "url": "/api/application/85a03867-dccf-4882-adde-1a79aeec50df",
+      "url": "/api/application/#{piedPiperApplicationId}",
       "body": {
         "application": {
           "name": "Pied Piper",
@@ -27,7 +28,10 @@
             {
               "name": "intern"
             }
-          ]
+          ],
+          "loginConfiguration": {
+            "generateRefreshTokens": true
+          }
         }
       }
     },
@@ -52,6 +56,15 @@
           "roles": [
             "admin"
           ]
+        }
+      }
+    },
+    {
+      "method": "POST",
+      "url": "/api/user/registration/00000000-0000-0000-0000-000000000001",
+      "body": {
+        "registration": {
+          "applicationId": "#{piedPiperApplicationId}"
         }
       }
     },
