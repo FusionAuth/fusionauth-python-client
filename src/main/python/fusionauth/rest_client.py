@@ -123,8 +123,8 @@ class RESTClient:
             return self
 
         if self._url.endswith('/') and uri.startswith('/'):
-            self._url += uri[:1]
-        elif self._url.endswith('/') and not uri.startswith('/'):
+            self._url += uri[1:]
+        elif not self._url.endswith('/') and not uri.startswith('/'):
             self._url += "/" + uri
         else:
             self._url += uri
