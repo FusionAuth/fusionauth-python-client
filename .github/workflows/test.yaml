@@ -34,10 +34,13 @@ jobs:
         run: |
           pip3 install fusionauth-client
           pip3 install unittest2
+        shell: bash
+      - name: Check to see if FusionAuth is loaded
+        run: |
           imgid=`docker container ls|grep fusiona|awk '{print $1}'`
           docker logs $imgid 2>&1|grep 'Server startup' > /dev/null
           res=$?
-          while [[ $res != "0" ]]; do echo "waiting"; sleep 2; done
+          while [[ $res != "0" ]]; do echo "waiting"; sleep 2; docker logs $imgid 2>&1|grep 'Server startup' > /dev/null; res=$?; done
         shell: bash
       # Run the tests
       - name: Run tests
