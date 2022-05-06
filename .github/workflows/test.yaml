@@ -31,7 +31,7 @@ jobs:
           python-version: '3.9.x'
       - name: Install fusionauth library
         run: |
-          pip3 install fusionauth-client
+          pip3 install .
           pip3 install unittest2
         shell: bash
       - name: Check to see if FusionAuth is loaded
