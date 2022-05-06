@@ -42,6 +42,6 @@ jobs:
       # Run the tests
       - name: Run tests
         run: |
-          python3 src/test/python/fusionauth/fusionauth_client_test.py
           python3 src/test/python/fusionauth/rest_client_test.py 
+          python3 src/test/python/fusionauth/fusionauth_client_test.py
         shell: bash
