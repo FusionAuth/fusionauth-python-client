@@ -36,7 +36,7 @@ jobs:
         shell: bash
       - name: Check to see if FusionAuth is loaded
         run: |
-          ./src/test/docker/poll-for-kickstart-finish.sh
+          bash ./src/test/docker/poll-for-kickstart-finish.sh
         shell: bash
       # Run the tests
       - name: Run tests
