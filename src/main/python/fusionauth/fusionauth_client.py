@@ -166,7 +166,7 @@ class FusionAuthClient:
             login_id: The loginId of the User that you intend to change the password for.
         """
         return self.start().uri('/api/user/change-password') \
-            .url_parameter('username', login_id) \
+            .url_parameter('username', self.convert_true_false(login_id)) \
             .get() \
             .go()
 
@@ -640,9 +640,9 @@ class FusionAuthClient:
             user_ids: The ids of the users to deactivate.
         """
         return self.start().uri('/api/user/bulk') \
-            .url_parameter('userId', user_ids) \
-            .url_parameter('dryRun', "false") \
-            .url_parameter('hardDelete', "false") \
+            .url_parameter('userId', self.convert_true_false(user_ids)) \
+            .url_parameter('dryRun', self.convert_true_false("false")) \
+            .url_parameter('hardDelete', self.convert_true_false("false")) \
             .delete() \
             .go()
 
@@ -654,9 +654,9 @@ class FusionAuthClient:
             user_ids: The ids of the users to deactivate.
         """
         return self.start().uri('/api/user/bulk') \
-            .url_parameter('userId', user_ids) \
-            .url_parameter('dryRun', "false") \
-            .url_parameter('hardDelete', "false") \
+            .url_parameter('userId', self.convert_true_false(user_ids)) \
+            .url_parameter('dryRun', self.convert_true_false("false")) \
+            .url_parameter('hardDelete', self.convert_true_false("false")) \
             .delete() \
             .go()
 
@@ -684,7 +684,7 @@ class FusionAuthClient:
         """
         return self.start().uri('/api/application') \
             .url_segment(application_id) \
-            .url_parameter('hardDelete', "true") \
+            .url_parameter('hardDelete', self.convert_true_false("true")) \
             .delete() \
             .go()
 
@@ -764,8 +764,8 @@ class FusionAuthClient:
         return self.start().uri('/api/entity') \
             .url_segment(entity_id) \
             .url_segment("grant") \
-            .url_parameter('recipientEntityId', recipient_entity_id) \
-            .url_parameter('userId', user_id) \
+            .url_parameter('recipientEntityId', self.convert_true_false(recipient_entity_id)) \
+            .url_parameter('userId', self.convert_true_false(user_id)) \
             .delete() \
             .go()
 
@@ -970,7 +970,7 @@ class FusionAuthClient:
         """
         return self.start().uri('/api/tenant') \
             .url_segment(tenant_id) \
-            .url_parameter('async', "true") \
+            .url_parameter('async', self.convert_true_false("true")) \
             .delete() \
             .go()
 
@@ -1011,7 +1011,7 @@ class FusionAuthClient:
         """
         return self.start().uri('/api/user') \
             .url_segment(user_id) \
-            .url_parameter('hardDelete', "true") \
+            .url_parameter('hardDelete', self.convert_true_false("true")) \
             .delete() \
             .go()
 
@@ -1025,7 +1025,7 @@ class FusionAuthClient:
         """
         return self.start().uri('/api/user-action') \
             .url_segment(user_action_id) \
-            .url_parameter('hardDelete', "true") \
+            .url_parameter('hardDelete', self.convert_true_false("true")) \
             .delete() \
             .go()
 
@@ -1051,9 +1051,9 @@ class FusionAuthClient:
             user_id: The unique Id of the FusionAuth user to unlink.
         """
         return self.start().uri('/api/identity-provider/link') \
-            .url_parameter('identityProviderId', identity_provider_id) \
-            .url_parameter('identityProviderUserId', identity_provider_user_id) \
-            .url_parameter('userId', user_id) \
+            .url_parameter('identityProviderId', self.convert_true_false(identity_provider_id)) \
+            .url_parameter('identityProviderUserId', self.convert_true_false(identity_provider_user_id)) \
+            .url_parameter('userId', self.convert_true_false(user_id)) \
             .delete() \
             .go()
 
@@ -1128,8 +1128,8 @@ class FusionAuthClient:
         """
         return self.start().uri('/api/user/two-factor') \
             .url_segment(user_id) \
-            .url_parameter('methodId', method_id) \
-            .url_parameter('code', code) \
+            .url_parameter('methodId', self.convert_true_false(method_id)) \
+            .url_parameter('code', self.convert_true_false(code)) \
             .delete() \
             .go()
 
@@ -1294,8 +1294,8 @@ class FusionAuthClient:
             email: The email address of the user that needs a new verification email.
         """
         return self.start().uri('/api/user/verify-email') \
-            .url_parameter('email', email) \
-            .url_parameter('sendVerifyEmail', "false") \
+            .url_parameter('email', self.convert_true_false(email)) \
+            .url_parameter('sendVerifyEmail', self.convert_true_false("false")) \
             .put() \
             .go()
 
@@ -1323,9 +1323,9 @@ class FusionAuthClient:
             application_id: The Id of the application to be verified.
         """
         return self.start().uri('/api/user/verify-registration') \
-            .url_parameter('email', email) \
-            .url_parameter('sendVerifyPasswordEmail', "false") \
-            .url_parameter('applicationId', application_id) \
+            .url_parameter('email', self.convert_true_false(email)) \
+            .url_parameter('sendVerifyPasswordEmail', self.convert_true_false("false")) \
+            .url_parameter('applicationId', self.convert_true_false(application_id)) \
             .put() \
             .go()
 
@@ -1467,8 +1467,8 @@ class FusionAuthClient:
         """
         return self.start_anonymous().uri('/api/jwt/issue') \
             .authorization("Bearer " + encoded_jwt) \
-            .url_parameter('applicationId', application_id) \
-            .url_parameter('refreshToken', refresh_token) \
+            .url_parameter('applicationId', self.convert_true_false(application_id)) \
+            .url_parameter('refreshToken', self.convert_true_false(refresh_token)) \
             .get() \
             .go()
 
@@ -1502,7 +1502,7 @@ class FusionAuthClient:
         return self.start().uri('/api/login') \
             .url_segment(user_id) \
             .url_segment(application_id) \
-            .url_parameter('ipAddress', caller_ip_address) \
+            .url_parameter('ipAddress', self.convert_true_false(caller_ip_address)) \
             .put() \
             .go()
 
@@ -1519,8 +1519,8 @@ class FusionAuthClient:
                     If provided this takes precedence over the cookie.
         """
         return self.start_anonymous().uri('/api/logout') \
-            .url_parameter('global', _global) \
-            .url_parameter('refreshToken', refresh_token) \
+            .url_parameter('global', self.convert_true_false(_global)) \
+            .url_parameter('refreshToken', self.convert_true_false(refresh_token)) \
             .post() \
             .go()
 
@@ -1546,7 +1546,7 @@ class FusionAuthClient:
             domain: The domain or email address to lookup.
         """
         return self.start().uri('/api/identity-provider/lookup') \
-            .url_parameter('domain', domain) \
+            .url_parameter('domain', self.convert_true_false(domain)) \
             .get() \
             .go()
 
@@ -1879,7 +1879,7 @@ class FusionAuthClient:
         """
         return self.start().uri('/api/application') \
             .url_segment(application_id) \
-            .url_parameter('reactivate', "true") \
+            .url_parameter('reactivate', self.convert_true_false("true")) \
             .put() \
             .go()
 
@@ -1892,7 +1892,7 @@ class FusionAuthClient:
         """
         return self.start().uri('/api/user') \
             .url_segment(user_id) \
-            .url_parameter('reactivate', "true") \
+            .url_parameter('reactivate', self.convert_true_false("true")) \
             .put() \
             .go()
 
@@ -1905,7 +1905,7 @@ class FusionAuthClient:
         """
         return self.start().uri('/api/user-action') \
             .url_segment(user_action_id) \
-            .url_parameter('reactivate', "true") \
+            .url_parameter('reactivate', self.convert_true_false("true")) \
             .put() \
             .go()
 
@@ -2013,7 +2013,7 @@ class FusionAuthClient:
             email: The email address of the user that needs a new verification email.
         """
         return self.start().uri('/api/user/verify-email') \
-            .url_parameter('email', email) \
+            .url_parameter('email', self.convert_true_false(email)) \
             .put() \
             .go()
 
@@ -2027,8 +2027,8 @@ class FusionAuthClient:
             email: The email address of the user that needs a new verification email.
         """
         return self.start().uri('/api/user/verify-email') \
-            .url_parameter('applicationId', application_id) \
-            .url_parameter('email', email) \
+            .url_parameter('applicationId', self.convert_true_false(application_id)) \
+            .url_parameter('email', self.convert_true_false(email)) \
             .put() \
             .go()
 
@@ -2041,8 +2041,8 @@ class FusionAuthClient:
             application_id: The Id of the application to be verified.
         """
         return self.start().uri('/api/user/verify-registration') \
-            .url_parameter('email', email) \
-            .url_parameter('applicationId', application_id) \
+            .url_parameter('email', self.convert_true_false(email)) \
+            .url_parameter('applicationId', self.convert_true_false(application_id)) \
             .put() \
             .go()
 
@@ -2079,7 +2079,7 @@ class FusionAuthClient:
             user_id: The Id of the user to fetch the actions for.
         """
         return self.start().uri('/api/user/action') \
-            .url_parameter('userId', user_id) \
+            .url_parameter('userId', self.convert_true_false(user_id)) \
             .get() \
             .go()
 
@@ -2091,8 +2091,8 @@ class FusionAuthClient:
             user_id: The Id of the user to fetch the actions for.
         """
         return self.start().uri('/api/user/action') \
-            .url_parameter('userId', user_id) \
-            .url_parameter('preventingLogin', "true") \
+            .url_parameter('userId', self.convert_true_false(user_id)) \
+            .url_parameter('preventingLogin', self.convert_true_false("true")) \
             .get() \
             .go()
 
@@ -2105,8 +2105,8 @@ class FusionAuthClient:
             user_id: The Id of the user to fetch the actions for.
         """
         return self.start().uri('/api/user/action') \
-            .url_parameter('userId', user_id) \
-            .url_parameter('active', "true") \
+            .url_parameter('userId', self.convert_true_false(user_id)) \
+            .url_parameter('active', self.convert_true_false("true")) \
             .get() \
             .go()
 
@@ -2199,9 +2199,9 @@ class FusionAuthClient:
             end: The end instant as UTC milliseconds since Epoch.
         """
         return self.start().uri('/api/report/daily-active-user') \
-            .url_parameter('applicationId', application_id) \
-            .url_parameter('start', start) \
-            .url_parameter('end', end) \
+            .url_parameter('applicationId', self.convert_true_false(application_id)) \
+            .url_parameter('start', self.convert_true_false(start)) \
+            .url_parameter('end', self.convert_true_false(end)) \
             .get() \
             .go()
 
@@ -2265,8 +2265,8 @@ class FusionAuthClient:
         return self.start().uri('/api/entity') \
             .url_segment(entity_id) \
             .url_segment("grant") \
-            .url_parameter('recipientEntityId', recipient_entity_id) \
-            .url_parameter('userId', user_id) \
+            .url_parameter('recipientEntityId', self.convert_true_false(recipient_entity_id)) \
+            .url_parameter('userId', self.convert_true_false(user_id)) \
             .get() \
             .go()
 
@@ -2312,7 +2312,7 @@ class FusionAuthClient:
             user_id: The User's id
         """
         return self.start().uri('/api/user/family') \
-            .url_parameter('userId', user_id) \
+            .url_parameter('userId', self.convert_true_false(user_id)) \
             .get() \
             .go()
 
@@ -2428,7 +2428,7 @@ class FusionAuthClient:
             _type: The type of the identity provider.
         """
         return self.start().uri('/api/identity-provider') \
-            .url_parameter('type', _type) \
+            .url_parameter('type', self.convert_true_false(_type)) \
             .get() \
             .go()
 
@@ -2451,8 +2451,8 @@ class FusionAuthClient:
             user_id: The Id of the user to fetch the actions for.
         """
         return self.start().uri('/api/user/action') \
-            .url_parameter('userId', user_id) \
-            .url_parameter('active', "false") \
+            .url_parameter('userId', self.convert_true_false(user_id)) \
+            .url_parameter('active', self.convert_true_false("false")) \
             .get() \
             .go()
 
@@ -2463,7 +2463,7 @@ class FusionAuthClient:
         Attributes:
         """
         return self.start().uri('/api/application') \
-            .url_parameter('inactive', "true") \
+            .url_parameter('inactive', self.convert_true_false("true")) \
             .get() \
             .go()
 
@@ -2474,7 +2474,7 @@ class FusionAuthClient:
         Attributes:
         """
         return self.start().uri('/api/user-action') \
-            .url_parameter('inactive', "true") \
+            .url_parameter('inactive', self.convert_true_false("true")) \
             .get() \
             .go()
 
@@ -2496,7 +2496,7 @@ class FusionAuthClient:
             key_id: The Id of the public key (kid).
         """
         return self.start_anonymous().uri('/api/jwt/public-key') \
-            .url_parameter('kid', key_id) \
+            .url_parameter('kid', self.convert_true_false(key_id)) \
             .get() \
             .go()
 
@@ -2508,7 +2508,7 @@ class FusionAuthClient:
             application_id: The Id of the Application for which this key is used.
         """
         return self.start_anonymous().uri('/api/jwt/public-key') \
-            .url_parameter('applicationId', application_id) \
+            .url_parameter('applicationId', self.convert_true_false(application_id)) \
             .get() \
             .go()
 
@@ -2584,7 +2584,7 @@ class FusionAuthClient:
             _type: The type of the lambda to return.
         """
         return self.start().uri('/api/lambda') \
-            .url_parameter('type', _type) \
+            .url_parameter('type', self.convert_true_false(_type)) \
             .get() \
             .go()
 
@@ -2599,9 +2599,9 @@ class FusionAuthClient:
             end: The end instant as UTC milliseconds since Epoch.
         """
         return self.start().uri('/api/report/login') \
-            .url_parameter('applicationId', application_id) \
-            .url_parameter('start', start) \
-            .url_parameter('end', end) \
+            .url_parameter('applicationId', self.convert_true_false(application_id)) \
+            .url_parameter('start', self.convert_true_false(start)) \
+            .url_parameter('end', self.convert_true_false(end)) \
             .get() \
             .go()
 
@@ -2672,9 +2672,9 @@ class FusionAuthClient:
             end: The end instant as UTC milliseconds since Epoch.
         """
         return self.start().uri('/api/report/monthly-active-user') \
-            .url_parameter('applicationId', application_id) \
-            .url_parameter('start', start) \
-            .url_parameter('end', end) \
+            .url_parameter('applicationId', self.convert_true_false(application_id)) \
+            .url_parameter('start', self.convert_true_false(start)) \
+            .url_parameter('end', self.convert_true_false(end)) \
             .get() \
             .go()
 
@@ -2736,7 +2736,7 @@ class FusionAuthClient:
             parent_email: The email of the parent.
         """
         return self.start().uri('/api/user/family/pending') \
-            .url_parameter('parentEmail', parent_email) \
+            .url_parameter('parentEmail', self.convert_true_false(parent_email)) \
             .get() \
             .go()
 
@@ -2769,8 +2769,8 @@ class FusionAuthClient:
             limit: (Optional, defaults to 10) The number of records to retrieve.
         """
         return self.start().uri('/api/user/recent-login') \
-            .url_parameter('offset', offset) \
-            .url_parameter('limit', limit) \
+            .url_parameter('offset', self.convert_true_false(offset)) \
+            .url_parameter('limit', self.convert_true_false(limit)) \
             .get() \
             .go()
 
@@ -2794,7 +2794,7 @@ class FusionAuthClient:
             user_id: The Id of the user.
         """
         return self.start().uri('/api/jwt/refresh') \
-            .url_parameter('userId', user_id) \
+            .url_parameter('userId', self.convert_true_false(user_id)) \
             .get() \
             .go()
 
@@ -2823,9 +2823,9 @@ class FusionAuthClient:
             end: The end instant as UTC milliseconds since Epoch.
         """
         return self.start().uri('/api/report/registration') \
-            .url_parameter('applicationId', application_id) \
-            .url_parameter('start', start) \
-            .url_parameter('end', end) \
+            .url_parameter('applicationId', self.convert_true_false(application_id)) \
+            .url_parameter('start', self.convert_true_false(start)) \
+            .url_parameter('end', self.convert_true_false(end)) \
             .get() \
             .go()
 
@@ -2984,7 +2984,7 @@ class FusionAuthClient:
             change_password_id: The unique change password Id that was sent via email or returned by the Forgot Password API.
         """
         return self.start().uri('/api/user') \
-            .url_parameter('changePasswordId', change_password_id) \
+            .url_parameter('changePasswordId', self.convert_true_false(change_password_id)) \
             .get() \
             .go()
 
@@ -2996,7 +2996,7 @@ class FusionAuthClient:
             email: The email of the user.
         """
         return self.start().uri('/api/user') \
-            .url_parameter('email', email) \
+            .url_parameter('email', self.convert_true_false(email)) \
             .get() \
             .go()
 
@@ -3008,7 +3008,7 @@ class FusionAuthClient:
             login_id: The email or username of the user.
         """
         return self.start().uri('/api/user') \
-            .url_parameter('loginId', login_id) \
+            .url_parameter('loginId', self.convert_true_false(login_id)) \
             .get() \
             .go()
 
@@ -3020,7 +3020,7 @@ class FusionAuthClient:
             username: The username of the user.
         """
         return self.start().uri('/api/user') \
-            .url_parameter('username', username) \
+            .url_parameter('username', self.convert_true_false(username)) \
             .get() \
             .go()
 
@@ -3033,7 +3033,7 @@ class FusionAuthClient:
             verification_id: The unique verification Id that has been set on the user object.
         """
         return self.start().uri('/api/user') \
-            .url_parameter('verificationId', verification_id) \
+            .url_parameter('verificationId', self.convert_true_false(verification_id)) \
             .get() \
             .go()
 
@@ -3069,7 +3069,7 @@ class FusionAuthClient:
             user_id: The User's Id
         """
         return self.start().uri('/api/user/consent') \
-            .url_parameter('userId', user_id) \
+            .url_parameter('userId', self.convert_true_false(user_id)) \
             .get() \
             .go()
 
@@ -3095,9 +3095,9 @@ class FusionAuthClient:
             user_id: The unique Id of the FusionAuth user.
         """
         return self.start().uri('/api/identity-provider/link') \
-            .url_parameter('identityProviderId', identity_provider_id) \
-            .url_parameter('identityProviderUserId', identity_provider_user_id) \
-            .url_parameter('userId', user_id) \
+            .url_parameter('identityProviderId', self.convert_true_false(identity_provider_id)) \
+            .url_parameter('identityProviderUserId', self.convert_true_false(identity_provider_user_id)) \
+            .url_parameter('userId', self.convert_true_false(user_id)) \
             .get() \
             .go()
 
@@ -3110,8 +3110,8 @@ class FusionAuthClient:
             user_id: The unique Id of the user.
         """
         return self.start().uri('/api/identity-provider/link') \
-            .url_parameter('identityProviderId', identity_provider_id) \
-            .url_parameter('userId', user_id) \
+            .url_parameter('identityProviderId', self.convert_true_false(identity_provider_id)) \
+            .url_parameter('userId', self.convert_true_false(user_id)) \
             .get() \
             .go()
 
@@ -3127,10 +3127,10 @@ class FusionAuthClient:
             end: The end instant as UTC milliseconds since Epoch.
         """
         return self.start().uri('/api/report/login') \
-            .url_parameter('applicationId', application_id) \
-            .url_parameter('userId', user_id) \
-            .url_parameter('start', start) \
-            .url_parameter('end', end) \
+            .url_parameter('applicationId', self.convert_true_false(application_id)) \
+            .url_parameter('userId', self.convert_true_false(user_id)) \
+            .url_parameter('start', self.convert_true_false(start)) \
+            .url_parameter('end', self.convert_true_false(end)) \
             .get() \
             .go()
 
@@ -3146,10 +3146,10 @@ class FusionAuthClient:
             end: The end instant as UTC milliseconds since Epoch.
         """
         return self.start().uri('/api/report/login') \
-            .url_parameter('applicationId', application_id) \
-            .url_parameter('loginId', login_id) \
-            .url_parameter('start', start) \
-            .url_parameter('end', end) \
+            .url_parameter('applicationId', self.convert_true_false(application_id)) \
+            .url_parameter('loginId', self.convert_true_false(login_id)) \
+            .url_parameter('start', self.convert_true_false(start)) \
+            .url_parameter('end', self.convert_true_false(end)) \
             .get() \
             .go()
 
@@ -3163,9 +3163,9 @@ class FusionAuthClient:
             limit: (Optional, defaults to 10) The number of records to retrieve.
         """
         return self.start().uri('/api/user/recent-login') \
-            .url_parameter('userId', user_id) \
-            .url_parameter('offset', offset) \
-            .url_parameter('limit', limit) \
+            .url_parameter('userId', self.convert_true_false(user_id)) \
+            .url_parameter('offset', self.convert_true_false(offset)) \
+            .url_parameter('limit', self.convert_true_false(limit)) \
             .get() \
             .go()
 
@@ -3246,9 +3246,9 @@ class FusionAuthClient:
             application_id: (Optional) The application id of the tokens to delete.
         """
         return self.start().uri('/api/jwt/refresh') \
-            .url_parameter('token', token) \
-            .url_parameter('userId', user_id) \
-            .url_parameter('applicationId', application_id) \
+            .url_parameter('token', self.convert_true_false(token)) \
+            .url_parameter('userId', self.convert_true_false(user_id)) \
+            .url_parameter('applicationId', self.convert_true_false(application_id)) \
             .delete() \
             .go()
 
@@ -3272,7 +3272,7 @@ class FusionAuthClient:
             token: The refresh token to delete.
         """
         return self.start().uri('/api/jwt/refresh') \
-            .url_parameter('token', token) \
+            .url_parameter('token', self.convert_true_false(token)) \
             .delete() \
             .go()
 
@@ -3284,7 +3284,7 @@ class FusionAuthClient:
             application_id: The unique Id of the application that you want to delete all refresh tokens for.
         """
         return self.start().uri('/api/jwt/refresh') \
-            .url_parameter('applicationId', application_id) \
+            .url_parameter('applicationId', self.convert_true_false(application_id)) \
             .delete() \
             .go()
 
@@ -3296,7 +3296,7 @@ class FusionAuthClient:
             user_id: The unique Id of the user that you want to delete all refresh tokens for.
         """
         return self.start().uri('/api/jwt/refresh') \
-            .url_parameter('userId', user_id) \
+            .url_parameter('userId', self.convert_true_false(user_id)) \
             .delete() \
             .go()
 
@@ -3309,8 +3309,8 @@ class FusionAuthClient:
             application_id: The unique Id of the application that you want to delete refresh tokens for.
         """
         return self.start().uri('/api/jwt/refresh') \
-            .url_parameter('userId', user_id) \
-            .url_parameter('applicationId', application_id) \
+            .url_parameter('userId', self.convert_true_false(user_id)) \
+            .url_parameter('applicationId', self.convert_true_false(application_id)) \
             .delete() \
             .go()
 
@@ -3371,7 +3371,7 @@ class FusionAuthClient:
             ids: The entity ids to search for.
         """
         return self.start().uri('/api/entity/search') \
-            .url_parameter('ids', ids) \
+            .url_parameter('ids', self.convert_true_false(ids)) \
             .get() \
             .go()
 
@@ -3456,7 +3456,7 @@ class FusionAuthClient:
             ids: The user ids to search for.
         """
         return self.start().uri('/api/user/search') \
-            .url_parameter('ids', ids) \
+            .url_parameter('ids', self.convert_true_false(ids)) \
             .get() \
             .go()
 
@@ -3468,7 +3468,7 @@ class FusionAuthClient:
             ids: The user ids to search for.
         """
         return self.start().uri('/api/user/search') \
-            .url_parameter('ids', ids) \
+            .url_parameter('ids', self.convert_true_false(ids)) \
             .get() \
             .go()
 
@@ -4076,8 +4076,8 @@ class FusionAuthClient:
             client_id: The client id.
         """
         return self.start_anonymous().uri('/oauth2/device/validate') \
-            .url_parameter('user_code', user_code) \
-            .url_parameter('client_id', client_id) \
+            .url_parameter('user_code', self.convert_true_false(user_code)) \
+            .url_parameter('client_id', self.convert_true_false(client_id)) \
             .get() \
             .go()
 
@@ -4189,6 +4189,13 @@ class FusionAuthClient:
             .body_handler(JSONBodyHandler(request)) \
             .post() \
             .go()
+
+    def convert_true_false(self,val):
+        if val == True:
+            return 'true'
+        if val == False:
+            return 'false'
+        return val
 
     def start(self):
         return self.start_anonymous().authorization(self.api_key)
