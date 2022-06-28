@@ -182,6 +182,30 @@ class FusionAuthClient:
             .post() \
             .go()
 
+    def complete_web_authn_login(self, request):
+        """
+        Complete a WebAuthn authentication ceremony by validating the signature against the previously generated challenge
+
+        Attributes:
+            request: An object containing data necessary for completing the authentication ceremony
+        """
+        return self.start_anonymous().uri('/api/webauthn/login') \
+            .body_handler(JSONBodyHandler(request)) \
+            .post() \
+            .go()
+
+    def complete_web_authn_registration(self, request):
+        """
+        Complete a WebAuthn registration ceremony by validating the client request and saving the new credential
+
+        Attributes:
+            request: An object containing data necessary for completing the registration ceremony
+        """
+        return self.start().uri('/api/webauthn/complete') \
+            .body_handler(JSONBodyHandler(request)) \
+            .post() \
+            .go()
+
     def create_api_key(self, request, key_id=None):
         """
         Creates an API key. You can optionally specify a unique Id for the key, if not provided one will be generated.
@@ -3629,6 +3653,30 @@ class FusionAuthClient:
             request: The Two-Factor start request that contains all of the information used to begin the Two-Factor login request.
         """
         return self.start().uri('/api/two-factor/start') \
+            .body_handler(JSONBodyHandler(request)) \
+            .post() \
+            .go()
+
+    def start_web_authn_login(self, request):
+        """
+        Start a WebAuthn authentication ceremony by generating a new challenge for the user
+
+        Attributes:
+            request: An object containing data necessary for starting the authentication ceremony
+        """
+        return self.start().uri('/api/webauthn/start') \
+            .body_handler(JSONBodyHandler(request)) \
+            .post() \
+            .go()
+
+    def start_web_authn_registration(self, request):
+        """
+        Start a WebAuthn registration ceremony by generating a new challenge for the user
+
+        Attributes:
+            request: An object containing data necessary for starting the registration ceremony
+        """
+        return self.start().uri('/api/webauthn/register') \
             .body_handler(JSONBodyHandler(request)) \
             .post() \
             .go()
