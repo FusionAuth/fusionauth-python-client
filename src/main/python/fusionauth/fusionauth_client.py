@@ -1129,6 +1129,18 @@ class FusionAuthClient:
             .delete() \
             .go()
 
+    def delete_web_authn_credential(self, id):
+        """
+        Deletes the WebAuthn credential for the given Id.
+
+        Attributes:
+            id: The Id of the WebAuthn credential to delete.
+        """
+        return self.start().uri('/api/webauthn') \
+            .url_segment(id) \
+            .delete() \
+            .go()
+
     def delete_webhook(self, webhook_id):
         """
         Deletes the webhook for the given Id.
