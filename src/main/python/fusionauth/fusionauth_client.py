@@ -3215,6 +3215,18 @@ class FusionAuthClient:
             .get() \
             .go()
 
+    def retrieve_web_authn_credential(self, id):
+        """
+        Retrieves the WebAuthn credential for the given Id.
+
+        Attributes:
+            id: The Id of the WebAuthn credential.
+        """
+        return self.start().uri('/api/webauthn') \
+            .url_segment(id) \
+            .get() \
+            .go()
+
     def retrieve_webhook(self, webhook_id=None):
         """
         Retrieves the webhook for the given Id. If you pass in null for the id, this will return all the webhooks.
