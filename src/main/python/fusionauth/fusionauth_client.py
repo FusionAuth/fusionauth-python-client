@@ -3281,7 +3281,7 @@ class FusionAuthClient:
             user_id: The user's ID.
         """
         return self.start().uri('/api/webauthn') \
-            .url_parameter('userId', user_id) \
+            .url_parameter('userId', self.convert_true_false(user_id)) \
             .get() \
             .go()
 
