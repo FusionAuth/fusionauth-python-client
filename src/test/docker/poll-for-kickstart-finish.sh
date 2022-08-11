@@ -20,6 +20,6 @@ cnt=`docker logs $imgid 2>&1|grep 'Starting FusionAuth HTTP server' |wc -l`
 while [ $cnt != "1" ]; do
   echo "waiting $cnt $imgid";
   cnt=`docker logs $imgid 2>&1|grep 'Starting FusionAuth HTTP server' |wc -l`;
-  sleep 2;
+  sleep 5;
 done
 
