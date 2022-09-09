@@ -3457,6 +3457,18 @@ class FusionAuthClient:
             .post() \
             .go()
 
+    def search_groups(self, request):
+        """
+        Searches groups with the specified criteria and pagination.
+
+        Attributes:
+            request: The search criteria and pagination information.
+        """
+        return self.start().uri('/api/group/search') \
+            .body_handler(JSONBodyHandler(request)) \
+            .post() \
+            .go()
+
     def search_ip_access_control_lists(self, request):
         """
         Searches the IP Access Control Lists with the specified criteria and pagination.
