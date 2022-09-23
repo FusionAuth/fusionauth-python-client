@@ -1469,6 +1469,18 @@ class FusionAuthClient:
             .post() \
             .go()
 
+    def import_web_authn_credential(self, request):
+        """
+        Import a WebAuthn credential
+
+        Attributes:
+            request: An object containing data necessary for importing the credential
+        """
+        return self.start().uri('/api/webauthn/import') \
+            .body_handler(JSONBodyHandler(request)) \
+            .post() \
+            .go()
+
     def introspect_access_token(self, client_id, token):
         """
         Inspect an access token issued by FusionAuth.
