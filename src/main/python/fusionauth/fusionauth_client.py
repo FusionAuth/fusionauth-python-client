@@ -182,9 +182,21 @@ class FusionAuthClient:
             .post() \
             .go()
 
+    def complete_web_authn_assertion(self, request):
+        """
+        Complete a WebAuthn authentication ceremony by validating the signature against the previously generated challenge without logging the user in
+
+        Attributes:
+            request: An object containing data necessary for completing the authentication ceremony
+        """
+        return self.start_anonymous().uri('/api/webauthn/assertion') \
+            .body_handler(JSONBodyHandler(request)) \
+            .post() \
+            .go()
+
     def complete_web_authn_login(self, request):
         """
-        Complete a WebAuthn authentication ceremony by validating the signature against the previously generated challenge
+        Complete a WebAuthn authentication ceremony by validating the signature against the previously generated challenge and then login the user in
 
         Attributes:
             request: An object containing data necessary for completing the authentication ceremony
