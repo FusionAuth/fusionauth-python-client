@@ -209,7 +209,7 @@ class FusionAuthClient:
         Attributes:
             request: An object containing data necessary for completing the authentication ceremony
         """
-        return self.start_anonymous().uri('/api/webauthn/assertion') \
+        return self.start_anonymous().uri('/api/webauthn/assert') \
             .body_handler(JSONBodyHandler(request)) \
             .post() \
             .go()
@@ -233,7 +233,7 @@ class FusionAuthClient:
         Attributes:
             request: An object containing data necessary for completing the registration ceremony
         """
-        return self.start().uri('/api/webauthn/complete') \
+        return self.start().uri('/api/webauthn/register/complete') \
             .body_handler(JSONBodyHandler(request)) \
             .post() \
             .go()
@@ -3802,7 +3802,7 @@ class FusionAuthClient:
         Attributes:
             request: An object containing data necessary for starting the registration ceremony
         """
-        return self.start().uri('/api/webauthn/register') \
+        return self.start().uri('/api/webauthn/register/start') \
             .body_handler(JSONBodyHandler(request)) \
             .post() \
             .go()
