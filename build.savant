@@ -76,9 +76,13 @@ target(name: "test", description: "Runs the project's tests", dependsOn: ["compi
  * if you aren't virtualizing your python)
  */
 target(name: "setup-python", description: "Gets the python dependencies") {
-  def proc = "python3 -m pip install --user --upgrade setuptools wheel twine unittest2 requests deprecated".execute()
-  proc.consumeProcessOutput(System.out, System.err)
-  proc.waitFor()
+  def proc1 = "python3 -m pip install --user --upgrade setuptools".execute()
+  proc1.consumeProcessOutput(System.out, System.err)
+  proc1.waitFor()
+
+  def proc2 = "python3 -m pip install --user --upgrade wheel twine unittest2 requests deprecated".execute()
+  proc2.consumeProcessOutput(System.out, System.err)
+  proc2.waitFor()
 }
 
 /**
