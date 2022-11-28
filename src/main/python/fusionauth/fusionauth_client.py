@@ -1187,12 +1187,12 @@ class FusionAuthClient:
 
     def disable_two_factor(self, user_id, method_id, code):
         """
-        Disable Two Factor authentication for a user.
+        Disable two-factor authentication for a user.
 
         Attributes:
-            user_id: The Id of the User for which you're disabling Two Factor authentication.
+            user_id: The Id of the User for which you're disabling two-factor authentication.
             method_id: The two-factor method identifier you wish to disable
-            code: The Two Factor code used verify the the caller knows the Two Factor secret.
+            code: The two-factor code used verify the the caller knows the two-factor secret.
         """
         return self.start().uri('/api/user/two-factor') \
             .url_segment(user_id) \
@@ -1203,10 +1203,10 @@ class FusionAuthClient:
 
     def disable_two_factor_with_request(self, user_id, request):
         """
-        Disable Two Factor authentication for a user using a JSON body rather than URL parameters.
+        Disable two-factor authentication for a user using a JSON body rather than URL parameters.
 
         Attributes:
-            user_id: The Id of the User for which you're disabling Two Factor authentication.
+            user_id: The Id of the User for which you're disabling two-factor authentication.
             request: The request information that contains the code and methodId along with any event information.
         """
         return self.start().uri('/api/user/two-factor') \
@@ -1217,11 +1217,11 @@ class FusionAuthClient:
 
     def enable_two_factor(self, user_id, request):
         """
-        Enable Two Factor authentication for a user.
+        Enable two-factor authentication for a user.
 
         Attributes:
-            user_id: The Id of the user to enable Two Factor authentication.
-            request: The two factor enable request information.
+            user_id: The Id of the user to enable two-factor authentication.
+            request: The two-factor enable request information.
         """
         return self.start().uri('/api/user/two-factor') \
             .url_segment(user_id) \
@@ -1236,7 +1236,7 @@ class FusionAuthClient:
 
         Attributes:
             code: The authorization code returned on the /oauth2/authorize response.
-            client_id: The unique client identifier. The client Id is the Id of the FusionAuth Application in which you you are attempting to authenticate.
+            client_id: The unique client identifier. The client Id is the Id of the FusionAuth Application in which you are attempting to authenticate.
             client_secret: (Optional) The client secret. This value will be required if client authentication is enabled.
             redirect_uri: The URI to redirect to upon a successful request.
         """
@@ -1259,7 +1259,7 @@ class FusionAuthClient:
 
         Attributes:
             code: The authorization code returned on the /oauth2/authorize response.
-            client_id: (Optional) The unique client identifier. The client Id is the Id of the FusionAuth Application in which you you are attempting to authenticate. This parameter is optional when the Authorization header is provided.
+            client_id: (Optional) The unique client identifier. The client Id is the Id of the FusionAuth Application in which you are attempting to authenticate. This parameter is optional when the Authorization header is provided.
             client_secret: (Optional) The client secret. This value may optionally be provided in the request body instead of the Authorization header.
             redirect_uri: The URI to redirect to upon a successful request.
             code_verifier: The random string generated previously. Will be compared with the code_challenge sent previously, which allows the OAuth provider to authenticate your app.
@@ -1284,7 +1284,7 @@ class FusionAuthClient:
 
         Attributes:
             refresh_token: The refresh token that you would like to use to exchange for an access token.
-            client_id: (Optional) The unique client identifier. The client Id is the Id of the FusionAuth Application in which you you are attempting to authenticate. This parameter is optional when the Authorization header is provided.
+            client_id: (Optional) The unique client identifier. The client Id is the Id of the FusionAuth Application in which you are attempting to authenticate. This parameter is optional when the Authorization header is provided.
             client_secret: (Optional) The client secret. This value may optionally be provided in the request body instead of the Authorization header.
             scope: (Optional) This parameter is optional and if omitted, the same scope requested during the authorization request will be used. If provided the scopes must match those requested during the initial authorization request.
             user_code: (Optional) The end-user verification code. This code is required if using this endpoint to approve the Device Authorization.
@@ -1322,7 +1322,7 @@ class FusionAuthClient:
         Attributes:
             username: The login identifier of the user. The login identifier can be either the email or the username.
             password: The user’s password.
-            client_id: (Optional) The unique client identifier. The client Id is the Id of the FusionAuth Application in which you you are attempting to authenticate. This parameter is optional when the Authorization header is provided.
+            client_id: (Optional) The unique client identifier. The client Id is the Id of the FusionAuth Application in which you are attempting to authenticate. This parameter is optional when the Authorization header is provided.
             client_secret: (Optional) The client secret. This value may optionally be provided in the request body instead of the Authorization header.
             scope: (Optional) This parameter is optional and if omitted, the same scope requested during the authorization request will be used. If provided the scopes must match those requested during the initial authorization request.
             user_code: (Optional) The end-user verification code. This code is required if using this endpoint to approve the Device Authorization.
