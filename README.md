@@ -38,7 +38,7 @@ data = {
     'applicationId': My_App_ID
 }
 
-print(client.login(data).success_response )
+print(client.login(data).success_response)
 ```
 
 Each method in the client library includes documentation to describe the use and parameters. In addition to this resource, review the API documentation. https://fusionauth.io/docs/v1/tech/apis/
