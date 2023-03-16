@@ -26,6 +26,21 @@ Now you're ready to begin making requests to FusionAuth. You will need to supply
 client = FusionAuthClient('6b87a398-39f2-4692-927b-13188a81a9a3', 'http://localhost:9011')
 ```
 
+Here's an example which logs a user in:
+
+```python
+from fusionauth.fusionauth_client import FusionAuthClient
+client = FusionAuthClient(API_KEY, 'http://localhost:9011')
+
+data = {
+    'loginId': loginId,
+    'password': password,
+    'applicationId': My_App_ID
+}
+
+print(client.login(data).success_response )
+```
+
 Each method in the client library includes documentation to describe the use and parameters. In addition to this resource, review the API documentation. https://fusionauth.io/docs/v1/tech/apis/
 
 If you encounter a bug with this library, please open an issue.
