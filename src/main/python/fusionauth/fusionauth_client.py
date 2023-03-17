@@ -3477,6 +3477,18 @@ class FusionAuthClient:
             .delete() \
             .go()
 
+    def search_applications(self, request):
+        """
+        Searches applications with the specified criteria and pagination.
+
+        Attributes:
+            request: The search criteria and pagination information.
+        """
+        return self.start().uri('/api/application/search') \
+            .body_handler(JSONBodyHandler(request)) \
+            .post() \
+            .go()
+
     def search_audit_logs(self, request):
         """
         Searches the audit logs with the specified criteria and pagination.
@@ -3485,6 +3497,30 @@ class FusionAuthClient:
             request: The search criteria and pagination information.
         """
         return self.start().uri('/api/system/audit-log/search') \
+            .body_handler(JSONBodyHandler(request)) \
+            .post() \
+            .go()
+
+    def search_consents(self, request):
+        """
+        Searches consents with the specified criteria and pagination.
+
+        Attributes:
+            request: The search criteria and pagination information.
+        """
+        return self.start().uri('/api/consent/search') \
+            .body_handler(JSONBodyHandler(request)) \
+            .post() \
+            .go()
+
+    def search_email_templates(self, request):
+        """
+        Searches email templates with the specified criteria and pagination.
+
+        Attributes:
+            request: The search criteria and pagination information.
+        """
+        return self.start().uri('/api/email/template/search') \
             .body_handler(JSONBodyHandler(request)) \
             .post() \
             .go()
@@ -3585,6 +3621,42 @@ class FusionAuthClient:
             .post() \
             .go()
 
+    def search_identity_providers(self, request):
+        """
+        Searches identity providers with the specified criteria and pagination.
+
+        Attributes:
+            request: The search criteria and pagination information.
+        """
+        return self.start().uri('/api/identity-provider/search') \
+            .body_handler(JSONBodyHandler(request)) \
+            .post() \
+            .go()
+
+    def search_keys(self, request):
+        """
+        Searches keys with the specified criteria and pagination.
+
+        Attributes:
+            request: The search criteria and pagination information.
+        """
+        return self.start().uri('/api/key/search') \
+            .body_handler(JSONBodyHandler(request)) \
+            .post() \
+            .go()
+
+    def search_lambdas(self, request):
+        """
+        Searches lambdas with the specified criteria and pagination.
+
+        Attributes:
+            request: The search criteria and pagination information.
+        """
+        return self.start().uri('/api/lambda/search') \
+            .body_handler(JSONBodyHandler(request)) \
+            .post() \
+            .go()
+
     def search_login_records(self, request):
         """
         Searches the login records with the specified criteria and pagination.
@@ -3593,6 +3665,42 @@ class FusionAuthClient:
             request: The search criteria and pagination information.
         """
         return self.start().uri('/api/system/login-record/search') \
+            .body_handler(JSONBodyHandler(request)) \
+            .post() \
+            .go()
+
+    def search_tenants(self, request):
+        """
+        Searches tenants with the specified criteria and pagination.
+
+        Attributes:
+            request: The search criteria and pagination information.
+        """
+        return self.start().uri('/api/tenant/search') \
+            .body_handler(JSONBodyHandler(request)) \
+            .post() \
+            .go()
+
+    def search_themes(self, request):
+        """
+        Searches themes with the specified criteria and pagination.
+
+        Attributes:
+            request: The search criteria and pagination information.
+        """
+        return self.start().uri('/api/theme/search') \
+            .body_handler(JSONBodyHandler(request)) \
+            .post() \
+            .go()
+
+    def search_user_comments(self, request):
+        """
+        Searches user comments with the specified criteria and pagination.
+
+        Attributes:
+            request: The search criteria and pagination information.
+        """
+        return self.start().uri('/api/user/comment/search') \
             .body_handler(JSONBodyHandler(request)) \
             .post() \
             .go()
@@ -3645,6 +3753,18 @@ class FusionAuthClient:
                     and sortFields.
         """
         return self.start().uri('/api/user/search') \
+            .body_handler(JSONBodyHandler(request)) \
+            .post() \
+            .go()
+
+    def search_webhooks(self, request):
+        """
+        Searches webhooks with the specified criteria and pagination.
+
+        Attributes:
+            request: The search criteria and pagination information.
+        """
+        return self.start().uri('/api/webhook/search') \
             .body_handler(JSONBodyHandler(request)) \
             .post() \
             .go()
