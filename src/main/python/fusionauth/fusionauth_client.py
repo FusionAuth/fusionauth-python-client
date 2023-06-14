@@ -3228,7 +3228,7 @@ class FusionAuthClient:
             .get() \
             .go()
 
-    def retrieve_user_code(self, user_code):
+    def retrieve_user_code_using_api_key(self, user_code):
         """
         Retrieve a user_code that is part of an in-progress Device Authorization Grant.
         
