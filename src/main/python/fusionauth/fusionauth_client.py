@@ -1557,7 +1557,7 @@ class FusionAuthClient:
             .post() \
             .go()
 
-    def introspect_access_token(self, token):
+    def introspect_client_credentials_access_token(self, token):
         """
         Inspect an access token issued as the result of the Client Credentials Grant.
 
