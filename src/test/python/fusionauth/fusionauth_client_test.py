@@ -49,7 +49,22 @@ class FusionAuthClientTest(unittest2.TestCase):
     def test_retrieve_applications(self):
         client_response = self.client.retrieve_applications()
         self.assertEqual(client_response.status, 200)
-        self.assertEqual(len(client_response.success_response['applications']), 2)
+        self.assertEqual(len(client_response.success_response['applications']), 3)
+
+        # pick up the application that should be inactive and deactivate it.
+        should_be_inactive_app = next((application for application in client_response.success_response['applications'] if application['name'] == 'Inactive Application'))
+        self.client.deactivate_application(should_be_inactive_app['id'])
+
+        active_applications = self.client.retrieve_applications()
+        self.assertEqual(active_applications.status, 200)
+        self.assertEqual(len(active_applications.success_response['applications']), 2)
+
+        inactive_response = self.client.retrieve_applications(inactive=True)
+        self.assertEqual(inactive_response.status, 200)
+        self.assertEqual(len(inactive_response.success_response['applications']), 1)
+
+        # Reactivate the application so it don't break when we run this test again.
+        self.client.reactivate_application(should_be_inactive_app['id'])
 
     def test_create_user_retrieve_user(self):
         # Check if the user already exists.

@@ -2259,13 +2259,15 @@ class FusionAuthClient:
             .get() \
             .go()
 
-    def retrieve_applications(self):
+    def retrieve_applications(self, inactive=False):
         """
         Retrieves all the applications.
 
         Attributes:
+            inactive: (Optional) Retrieves all inactive Applications instead.
         """
-        return self.start().uri('/api/application') \
+        return self.start().uri(f'/api/application') \
+            .url_parameter('inactive', self.convert_true_false(inactive)) \
             .get() \
             .go()
 
