@@ -21,18 +21,16 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Setup the system with the repository code, Java, and Ruby
-      - uses: actions/checkout@v2
-      - uses: isbang/compose-action@v1.0.0
+      - uses: actions/checkout@v4
+      - uses: isbang/compose-action@v1.5.1
         with:
           compose-file: './src/test/docker/docker-compose.yml'
           down-flags: '--volumes'
-      - uses: actions/setup-python@v3
+      - uses: actions/setup-python@v5
         with:
-          python-version: '3.9.x'
+          python-version: '3.12.2'
       - name: Install fusionauth library
-        run: |
-          pip3 install .
-          pip3 install unittest2
+        run: pip3 install .
         shell: bash
       - name: Check to see if FusionAuth is loaded
         run: |

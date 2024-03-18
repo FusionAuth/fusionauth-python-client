@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2023, FusionAuth, All Rights Reserved
+ * Copyright (c) 2018-2024, FusionAuth, All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -80,7 +80,7 @@ target(name: "setup-python", description: "Gets the python dependencies") {
   proc1.consumeProcessOutput(System.out, System.err)
   proc1.waitFor()
 
-  def proc2 = "python3 -m pip install --user --upgrade wheel twine unittest2 requests deprecated".execute()
+  def proc2 = "python3 -m pip install --user --upgrade wheel twine requests deprecated".execute()
   proc2.consumeProcessOutput(System.out, System.err)
   proc2.waitFor()
 }
