@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2016-2018, FusionAuth, All Rights Reserved
+# Copyright (c) 2016-2024, FusionAuth, All Rights Reserved
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,14 +18,16 @@ import json
 import os
 import uuid
 
-import unittest2
+import unittest
 
 from fusionauth.rest_client import RESTClient
+
 
 def print_json(parsed_json):
     print(json.dumps(parsed_json, indent=2, sort_keys=True))
 
-class RestClientTest(unittest2.TestCase):
+
+class RestClientTest(unittest.TestCase):
     def setUp(self):
         pass
 
@@ -54,4 +56,4 @@ class RestClientTest(unittest2.TestCase):
 
 
 if __name__ == '__main__':
-    unittest2.main()
+    unittest.main()

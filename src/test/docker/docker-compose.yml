@@ -2,13 +2,18 @@ version: '3'
 
 services:
   db:
-    image: postgres:12.9
+    image: postgres:16.0-alpine
     environment:
       PGDATA: /var/lib/postgresql/data/pgdata
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
     networks:
-      - db
+      - db_net
     restart: unless-stopped
     volumes:
       - db_data:/var/lib/postgresql/data
@@ -16,7 +21,8 @@ services:
   fusionauth:
     image: fusionauth/fusionauth-app:latest
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     environment:
       DATABASE_URL: jdbc:postgresql://db:5432/fusionauth
       DATABASE_ROOT_USERNAME: postgres
@@ -25,23 +31,28 @@ services:
       DATABASE_PASSWORD: fusionauth
       FUSIONAUTH_APP_MEMORY: 512M
       FUSIONAUTH_APP_RUNTIME_MODE: development
+      FUSIONAUTH_APP_SILENT_MODE: true
       FUSIONAUTH_APP_URL: http://fusionauth:9011
-      SEARCH_TYPE: database
       FUSIONAUTH_APP_KICKSTART_FILE: /usr/local/fusionauth/kickstart/kickstart.json
-
+      SEARCH_TYPE: database
     networks:
-     - db
+      - db_net
     restart: unless-stopped
     ports:
       - 9011:9011
     volumes:
-      - fa_config:/usr/local/fusionauth/config
+      - fusionauth_config:/usr/local/fusionauth/config
       - ./kickstart:/usr/local/fusionauth/kickstart
+    healthcheck:
+      test: curl --silent --fail http://localhost:9011/api/status -o /dev/null -w "%{http_code}"
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
 networks:
-  db:
+  db_net:
     driver: bridge
 
 volumes:
   db_data:
-  fa_config:
+  fusionauth_config:

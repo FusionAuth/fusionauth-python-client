@@ -1,4 +1,4 @@
-#  Copyright (c) 2022, FusionAuth, All Rights Reserved
+#  Copyright (c) 2024, FusionAuth, All Rights Reserved
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -28,7 +28,7 @@ import json
 import os
 import uuid
 
-import unittest2
+import unittest
 
 from fusionauth.fusionauth_client import FusionAuthClient
 
@@ -36,10 +36,12 @@ from fusionauth.fusionauth_client import FusionAuthClient
 def print_json(parsed_json):
     print(json.dumps(parsed_json, indent=2, sort_keys=True))
 
-class FusionAuthClientTest(unittest2.TestCase):
+
+class FusionAuthClientTest(unittest.TestCase):
     def setUp(self):
         fusionauth_url = os.getenv('FUSIONAUTH_URL') if 'FUSIONAUTH_URL' in os.environ else 'http://localhost:9011'
-        fusionauth_api_key = os.getenv('FUSIONAUTH_API_KEY') if 'FUSIONAUTH_API_KEY' in os.environ else 'bf69486b-4733-4470-a592-f1bfce7af580'
+        fusionauth_api_key = os.getenv(
+            'FUSIONAUTH_API_KEY') if 'FUSIONAUTH_API_KEY' in os.environ else 'bf69486b-4733-4470-a592-f1bfce7af580'
         self.client = FusionAuthClient(fusionauth_api_key, fusionauth_url)
         self.anonymous_client = FusionAuthClient('', fusionauth_url)
 
@@ -53,7 +55,7 @@ class FusionAuthClientTest(unittest2.TestCase):
 
     def test_create_user_retrieve_user(self):
         # Check if the user already exists.
-        get_user_response = self.client.retrieve_user_by_email('art@vandaleyindustries.com')
+        get_user_response = self.client.retrieve_user_by_email('user@example.com')
         if get_user_response.status == 200:
             delete_user_response = self.client.delete_user(get_user_response.success_response['user']['id'])
             self.assertEqual(delete_user_response.status, 200, delete_user_response.error_response)
@@ -65,7 +67,7 @@ class FusionAuthClientTest(unittest2.TestCase):
             'sendSetPasswordEmail': False,
             'skipVerification': True,
             'user': {
-                'email': 'art@vandaleyindustries.com',
+                'email': 'user@example.com',
                 'password': 'password'
             }
         }
@@ -78,7 +80,7 @@ class FusionAuthClientTest(unittest2.TestCase):
         self.assertEqual(get_user_response.status, 200)
         self.assertIsNotNone(get_user_response.success_response)
         self.assertIsNone(get_user_response.error_response)
-        self.assertEquals(get_user_response.success_response['user']['email'], 'art@vandaleyindustries.com')
+        self.assertEqual(get_user_response.success_response['user']['email'], 'user@example.com')
         self.assertFalse('password' in get_user_response.success_response['user'])
         self.assertFalse('salt' in get_user_response.success_response['user'])
 
@@ -106,4 +108,4 @@ class FusionAuthClientTest(unittest2.TestCase):
 
 
 if __name__ == '__main__':
-    unittest2.main()
+    unittest.main()
