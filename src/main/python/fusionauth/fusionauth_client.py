@@ -552,6 +552,24 @@ class FusionAuthClient:
             .post() \
             .go()
 
+    def create_o_auth_scope(self, application_id, request, scope_id=None):
+        """
+        Creates a new custom OAuth scope for an application. You must specify the Id of the application you are creating the scope for.
+        You can optionally specify an Id for the OAuth scope on the URL, if not provided one will be generated.
+
+        Attributes:
+            application_id: The Id of the application to create the OAuth scope on.
+            scope_id: (Optional) The Id of the OAuth scope. If not provided a secure random UUID will be generated.
+            request: The request object that contains all the information used to create the OAuth OAuth scope.
+        """
+        return self.start().uri('/api/application') \
+            .url_segment(application_id) \
+            .url_segment("scope") \
+            .url_segment(scope_id) \
+            .body_handler(JSONBodyHandler(request)) \
+            .post() \
+            .go()
+
     def create_tenant(self, request, tenant_id=None):
         """
         Creates a tenant. You can optionally specify an Id for the tenant, if not provided one will be generated.
@@ -773,7 +791,7 @@ class FusionAuthClient:
         permanently removes the given role from all users that had it.
 
         Attributes:
-            application_id: The Id of the application to deactivate.
+            application_id: The Id of the application that the role belongs to.
             role_id: The Id of the role to delete.
         """
         return self.start().uri('/api/application') \
@@ -993,6 +1011,22 @@ class FusionAuthClient:
         """
         return self.start().uri('/api/messenger') \
             .url_segment(messenger_id) \
+            .delete() \
+            .go()
+
+    def delete_o_auth_scope(self, application_id, scope_id):
+        """
+        Hard deletes a custom OAuth scope.
+        OAuth workflows that are still requesting the deleted OAuth scope may fail depending on the application's unknown scope policy.
+
+        Attributes:
+            application_id: The Id of the application that the OAuth scope belongs to.
+            scope_id: The Id of the OAuth scope to delete.
+        """
+        return self.start().uri('/api/application') \
+            .url_segment(application_id) \
+            .url_segment("scope") \
+            .url_segment(scope_id) \
             .delete() \
             .go()
 
@@ -1893,6 +1927,23 @@ class FusionAuthClient:
         """
         return self.start().uri('/api/messenger') \
             .url_segment(messenger_id) \
+            .body_handler(JSONBodyHandler(request)) \
+            .patch() \
+            .go()
+
+    def patch_o_auth_scope(self, application_id, scope_id, request):
+        """
+        Updates, via PATCH, the custom OAuth scope with the given Id for the application.
+
+        Attributes:
+            application_id: The Id of the application that the OAuth scope belongs to.
+            scope_id: The Id of the OAuth scope to update.
+            request: The request that contains just the new OAuth scope information.
+        """
+        return self.start().uri('/api/application') \
+            .url_segment(application_id) \
+            .url_segment("scope") \
+            .url_segment(scope_id) \
             .body_handler(JSONBodyHandler(request)) \
             .patch() \
             .go()
@@ -2812,6 +2863,21 @@ class FusionAuthClient:
             .url_parameter('applicationId', self.convert_true_false(application_id)) \
             .url_parameter('start', self.convert_true_false(start)) \
             .url_parameter('end', self.convert_true_false(end)) \
+            .get() \
+            .go()
+
+    def retrieve_o_auth_scope(self, application_id, scope_id):
+        """
+        Retrieves a custom OAuth scope.
+
+        Attributes:
+            application_id: The Id of the application that the OAuth scope belongs to.
+            scope_id: The Id of the OAuth scope to retrieve.
+        """
+        return self.start().uri('/api/application') \
+            .url_segment(application_id) \
+            .url_segment("scope") \
+            .url_segment(scope_id) \
             .get() \
             .go()
 
@@ -4313,6 +4379,23 @@ class FusionAuthClient:
         """
         return self.start().uri('/api/messenger') \
             .url_segment(messenger_id) \
+            .body_handler(JSONBodyHandler(request)) \
+            .put() \
+            .go()
+
+    def update_o_auth_scope(self, application_id, scope_id, request):
+        """
+        Updates the OAuth scope with the given Id for the application.
+
+        Attributes:
+            application_id: The Id of the application that the OAuth scope belongs to.
+            scope_id: The Id of the OAuth scope to update.
+            request: The request that contains all the new OAuth scope information.
+        """
+        return self.start().uri('/api/application') \
+            .url_segment(application_id) \
+            .url_segment("scope") \
+            .url_segment(scope_id) \
             .body_handler(JSONBodyHandler(request)) \
             .put() \
             .go()
