@@ -1,0 +1,111 @@
+# Run locally with act:
+#
+# act pull_request [--input command=[command]] \
+#  --platform fusionauth-builder=[ecr-repo-name]/fusionauth-builder:latest] \
+#  --workflows ./.github/workflows/release.yaml \
+#  --env-file <(aws configure export-credentials --profile [aws-profile] --format env)
+
+name: Deploy
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+    inputs:
+      command:
+        type: choice
+        options:
+          - build    # build only
+          - publish  # build & publish to rubygems
+          - release  # build & release to svn
+        default: build
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    if: |
+      github.event_name == 'pull_request' ||
+      github.event_name == 'push' ||
+      github.event_name == 'workflow_dispatch' && inputs.command == 'build'
+    runs-on: fusionauth-builder
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+
+      - name: setup python
+        shell: bash -l {0}
+        run: |
+          echo 'PYTHON_VERSIONS=("3.8.13")' > ~/dev/inversoft/fusionauth/fusionauth-developer/.env
+          echo 'ACTIVE_PYTHON="3.8.13"' >> ~/dev/inversoft/fusionauth/fusionauth-developer/.env
+          ~/dev/inversoft/fusionauth/fusionauth-developer/setup.sh -o python
+
+      - name: compile
+        shell: bash -l {0}
+        run: sb compile
+
+  deploy:
+    if: |
+      github.event_name == 'workflow_dispatch' &&
+      (inputs.command == 'release' || inputs.command == 'publish')
+    runs-on: fusionauth-builder
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+
+      - name: set aws credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::752443094709:role/github-actions
+          role-session-name: aws-auth-action
+          aws-region: us-west-2
+
+      - name: get secret
+        run: |
+          while IFS=$'\t' read -r key value; do
+            echo "::add-mask::${value}"
+            echo "${key}=${value}" >> $GITHUB_ENV
+          done < <(aws secretsmanager get-secret-value \
+            --region us-west-2 \
+            --secret-id platform/pypi \
+            --query SecretString \
+            --output text | \
+            jq -r 'to_entries[] | [.key, .value] | @tsv')
+
+      - name: set pypi credentials
+        run: |
+          cat << EOF > ~/.pypirc
+          [distutils]
+            index-servers =
+              pypi
+              fusionauth-client
+          [pypi]
+            username = __token__
+            password = ${{ env.API_KEY }}
+          [fusionauth-client]
+            repository = https://upload.pypi.org/legacy/
+            username = __token__
+            password = ${{ env.API_KEY }}
+          EOF
+
+      - name: setup python
+        shell: bash -l {0}
+        run: |
+          echo 'PYTHON_VERSIONS=("3.8.13")' > ~/dev/inversoft/fusionauth/fusionauth-developer/.env
+          echo 'ACTIVE_PYTHON="3.8.13"' >> ~/dev/inversoft/fusionauth/fusionauth-developer/.env
+          ~/dev/inversoft/fusionauth/fusionauth-developer/setup.sh -o python
+
+      - name: release to svn
+        if: inputs.command == 'release'
+        shell: bash -l {0}
+        run: sb release
+
+      - name: publish to pypi
+        if: inputs.command == 'publish'
+        shell: bash -l {0}
+        run: sb publish
