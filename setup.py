@@ -6,15 +6,15 @@ with open("README.md", "r") as fh:
 setup(
     name="fusionauth-client",
     version="1.51.0",
-    author="Tyler Scott",
+    author="FusionAuth",
     author_email="dev@fusionauth.io",
     description="A client library for FusionAuth",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/FusionAuth/fusionauth-python-client",
-    packages=find_packages(where='src/main/python'),
+    packages=find_packages(where="src/main/python"),
     namespace_packages=["fusionauth"],
-    package_dir={'': 'src/main/python'},
+    package_dir={"": "src/main/python"},
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: Apache Software License",
@@ -22,6 +22,7 @@ setup(
         "Topic :: Software Development :: Libraries",
     ],
     install_requires=[
-        'deprecated', 'requests',
-    ]
+        "deprecated",
+        "requests",
+    ],
 )
