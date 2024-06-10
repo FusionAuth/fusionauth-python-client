@@ -2,7 +2,7 @@
 #
 # act pull_request [--input command=[command]] \
 #  --platform fusionauth-builder=[ecr-repo-name]/fusionauth-builder:latest] \
-#  --workflows ./.github/workflows/release.yaml \
+#  --workflows ./.github/workflows/deploy.yaml \
 #  --env-file <(aws configure export-credentials --profile [aws-profile] --format env)
 
 name: Deploy

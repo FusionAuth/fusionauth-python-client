@@ -1,45 +1,43 @@
-name: run_tests
+# Run locally with act:
+#
+# act pull_request \
+#  --platform fusionauth-builder=752443094709.dkr.ecr.us-west-2.amazonaws.com/gha-runner-fusionauth-builder:latest \
+#  --workflows ./.github/workflows/test.yaml
 
+name: Test
 
-# Controls when the action will run. 
 on:
   push:
-    branches: [ "master" ]
+    branches:
+      - main
   pull_request:
-    branches: [ "master" ]
+    branches:
+      - main
   workflow_dispatch:
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "run_tests"
   run_tests:
-    # The type of runner that the job will run on
-    runs-on: ubuntu-latest
+    runs-on: fusionauth-builder
     env:
       FUSIONAUTH_URL: http://localhost:9011
       FUSIONAUTH_API_KEY: bf69486b-4733-4470-a592-f1bfce7af580
-
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      # Setup the system with the repository code, Java, and Ruby
       - uses: actions/checkout@v4
-      - uses: isbang/compose-action@v1.5.1
-        with:
-          compose-file: './src/test/docker/docker-compose.yml'
-          down-flags: '--volumes'
-      - uses: actions/setup-python@v5
-        with:
-          python-version: '3.12.2'
+
+      - name: Set up FusionAuth
+        working-directory: src/test/docker
+        run: docker compose up -d
+
       - name: Install fusionauth library
+        shell: bash -l {0}
         run: pip3 install .
-        shell: bash
+
       - name: Check to see if FusionAuth is loaded
         run: |
           bash ./src/test/docker/poll-for-kickstart-finish.sh
-        shell: bash
-      # Run the tests
+
       - name: Run tests
+        shell: bash -l {0}
         run: |
           python3 src/test/python/fusionauth/rest_client_test.py 
           python3 src/test/python/fusionauth/fusionauth_client_test.py
-        shell: bash
