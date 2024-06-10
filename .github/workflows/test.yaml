@@ -1,7 +1,7 @@
 # Run locally with act:
 #
 # act pull_request \
-#  --platform fusionauth-builder=752443094709.dkr.ecr.us-west-2.amazonaws.com/gha-runner-fusionauth-builder:latest \
+#  --platform fusionauth-builder=[ecr-repo-name]/fusionauth-builder:latest] \
 #  --workflows ./.github/workflows/test.yaml
 
 name: Test
