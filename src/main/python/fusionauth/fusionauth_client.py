@@ -3067,6 +3067,36 @@ class FusionAuthClient:
             .get() \
             .go()
 
+    def retrieve_system_health(self):
+        """
+        Retrieves the FusionAuth system health. This API will return 200 if the system is healthy, and 500 if the system is un-healthy.
+
+        Attributes:
+        """
+        return self.start_anonymous().uri('/api/health') \
+            .get() \
+            .go()
+
+    def retrieve_system_status(self):
+        """
+        Retrieves the FusionAuth system status. This request is anonymous and does not require an API key. When an API key is not provided the response will contain a single value in the JSON response indicating the current health check.
+
+        Attributes:
+        """
+        return self.start_anonymous().uri('/api/status') \
+            .get() \
+            .go()
+
+    def retrieve_system_status_using_api_key(self):
+        """
+        Retrieves the FusionAuth system status using an API key. Using an API key will cause the response to include the product version, health checks and various runtime metrics.
+
+        Attributes:
+        """
+        return self.start().uri('/api/status') \
+            .get() \
+            .go()
+
     def retrieve_tenant(self, tenant_id):
         """
         Retrieves the tenant for the given Id.
