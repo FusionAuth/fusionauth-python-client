@@ -1,7 +1,7 @@
 # Run locally with act:
 #
 # act pull_request [--input command=[command]] \
-#  --platform fusionauth-builder=[ecr-repo-name]/fusionauth-builder:latest] \
+#  --platform fusionauth-standard=[ecr-repo-name]/fusionauth-standard:latest] \
 #  --workflows ./.github/workflows/deploy.yaml \
 #  --env-file <(aws configure export-credentials --profile [aws-profile] --format env)
 
