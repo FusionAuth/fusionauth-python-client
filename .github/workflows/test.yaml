@@ -17,7 +17,7 @@ on:
 
 jobs:
   run_tests:
-    runs-on: fusionauth-builder
+    runs-on: fusionauth-standard
     env:
       FUSIONAUTH_URL: http://localhost:9011
       FUSIONAUTH_API_KEY: bf69486b-4733-4470-a592-f1bfce7af580
