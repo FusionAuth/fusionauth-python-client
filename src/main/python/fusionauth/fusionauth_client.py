@@ -3533,6 +3533,30 @@ class FusionAuthClient:
             .get() \
             .go()
 
+    def retrieve_webhook_attempt_log(self, webhook_attempt_log_id):
+        """
+        Retrieves a single webhook attempt log for the given Id.
+
+        Attributes:
+            webhook_attempt_log_id: The Id of the webhook attempt log to retrieve.
+        """
+        return self.start().uri('/api/system/webhook-attempt-log') \
+            .url_segment(webhook_attempt_log_id) \
+            .get() \
+            .go()
+
+    def retrieve_webhook_event_log(self, webhook_event_log_id):
+        """
+        Retrieves a single webhook event log for the given Id.
+
+        Attributes:
+            webhook_event_log_id: The Id of the webhook event log to retrieve.
+        """
+        return self.start().uri('/api/system/webhook-event-log') \
+            .url_segment(webhook_event_log_id) \
+            .get() \
+            .go()
+
     def retrieve_webhooks(self):
         """
         Retrieves all the webhooks.
@@ -3945,6 +3969,18 @@ class FusionAuthClient:
                     and sortFields.
         """
         return self.start().uri('/api/user/search') \
+            .body_handler(JSONBodyHandler(request)) \
+            .post() \
+            .go()
+
+    def search_webhook_event_logs(self, request):
+        """
+        Searches the webhook event logs with the specified criteria and pagination.
+
+        Attributes:
+            request: The search criteria and pagination information.
+        """
+        return self.start().uri('/api/system/webhook-event-log/search') \
             .body_handler(JSONBodyHandler(request)) \
             .post() \
             .go()
