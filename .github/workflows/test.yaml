@@ -1,8 +1,6 @@
 # Run locally with act:
 #
-# act pull_request \
-#  --platform fusionauth-standard=[ecr-repo-name]/fusionauth-standard:latest] \
-#  --workflows ./.github/workflows/test.yaml
+# act pull_request --workflows .github/workflows/test.yaml
 
 name: Test
 
@@ -10,27 +8,37 @@ on:
   push:
     branches:
       - main
+      - develop
   pull_request:
     branches:
       - main
+      - develop
   workflow_dispatch:
 
 jobs:
   run_tests:
-    runs-on: fusionauth-standard
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        version:
+          - '3.8'
+          - '3.9'
+          - '3.10'
+          - '3.11'
+          - '3.12'
     env:
       FUSIONAUTH_URL: http://localhost:9011
       FUSIONAUTH_API_KEY: bf69486b-4733-4470-a592-f1bfce7af580
     steps:
       - uses: actions/checkout@v4
 
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.version }}
+
       - name: Set up FusionAuth
         working-directory: src/test/docker
         run: docker compose up -d
-
-      - name: Install fusionauth library
-        shell: bash -l {0}
-        run: pip3 install .
 
       - name: Check to see if FusionAuth is loaded
         run: |
@@ -39,5 +47,12 @@ jobs:
       - name: Run tests
         shell: bash -l {0}
         run: |
-          python3 src/test/python/fusionauth/rest_client_test.py 
-          python3 src/test/python/fusionauth/fusionauth_client_test.py
+          python3 -m venv .venv
+          source .venv/bin/activate
+          echo -e "\nUsing $(python --version) in $(which python)\n"
+          pip install -e .
+          echo ""
+          pip list
+          echo ""
+          python src/test/python/fusionauth/rest_client_test.py
+          python src/test/python/fusionauth/fusionauth_client_test.py
