@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setup(
     name="fusionauth-client",
-    version="1.53.2",
+    version="1.53.3",
     author="FusionAuth",
     author_email="dev@fusionauth.io",
     description="A client library for FusionAuth",
