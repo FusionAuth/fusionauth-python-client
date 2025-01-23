@@ -225,6 +225,18 @@ class FusionAuthClient:
             .post() \
             .go()
 
+    def complete_verify_identity(self, request):
+        """
+        Completes verification of an identity using verification codes from the Verify Start API.
+
+        Attributes:
+            request: The identity verify complete request that contains all the information used to verify the identity.
+        """
+        return self.start().uri('/api/identity/verify/complete') \
+            .body_handler(JSONBodyHandler(request)) \
+            .post() \
+            .go()
+
     def complete_web_authn_assertion(self, request):
         """
         Complete a WebAuthn authentication ceremony by validating the signature against the previously generated challenge without logging the user in
@@ -4088,6 +4100,18 @@ class FusionAuthClient:
             .post() \
             .go()
 
+    def send_verify_identity(self, request):
+        """
+        Send a verification code using the appropriate transport for the identity type being verified.
+
+        Attributes:
+            request: The identity verify send request that contains all the information used send the code.
+        """
+        return self.start().uri('/api/identity/verify/send') \
+            .body_handler(JSONBodyHandler(request)) \
+            .post() \
+            .go()
+
     def start_identity_provider_login(self, request):
         """
         Begins a login request for a 3rd party login that requires user interaction such as HYPR.
@@ -4127,6 +4151,19 @@ class FusionAuthClient:
             request: The Two-Factor start request that contains all the information used to begin the Two-Factor login request.
         """
         return self.start().uri('/api/two-factor/start') \
+            .body_handler(JSONBodyHandler(request)) \
+            .post() \
+            .go()
+
+    def start_verify_identity(self, request):
+        """
+        Start a verification of an identity by generating a code. This code can be sent to the User using the Verify Send API
+        Verification Code API or using a mechanism outside of FusionAuth. The verification is completed by using the Verify Complete API with this code.
+
+        Attributes:
+            request: The identity verify start request that contains all the information used to begin the request.
+        """
+        return self.start().uri('/api/identity/verify/start') \
             .body_handler(JSONBodyHandler(request)) \
             .post() \
             .go()
