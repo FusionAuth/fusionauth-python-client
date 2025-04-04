@@ -1835,6 +1835,20 @@ class FusionAuthClient:
             .patch() \
             .go()
 
+    def patch_entity(self, entity_id, request):
+        """
+        Updates, via PATCH, the Entity with the given Id.
+
+        Attributes:
+            entity_id: The Id of the Entity Type to update.
+            request: The request that contains just the new Entity information.
+        """
+        return self.start().uri('/api/entity') \
+            .url_segment(entity_id) \
+            .body_handler(JSONBodyHandler(request)) \
+            .patch() \
+            .go()
+
     def patch_entity_type(self, entity_type_id, request):
         """
         Updates, via PATCH, the Entity Type with the given Id.
@@ -1849,6 +1863,51 @@ class FusionAuthClient:
             .patch() \
             .go()
 
+    def patch_entity_type_permission(self, entity_type_id, permission_id, request):
+        """
+        Patches the permission with the given Id for the entity type.
+
+        Attributes:
+            entity_type_id: The Id of the entityType that the permission belongs to.
+            permission_id: The Id of the permission to patch.
+            request: The request that contains the new permission information.
+        """
+        return self.start().uri('/api/entity/type') \
+            .url_segment(entity_type_id) \
+            .url_segment("permission") \
+            .url_segment(permission_id) \
+            .body_handler(JSONBodyHandler(request)) \
+            .patch() \
+            .go()
+
+    def patch_form(self, form_id, request):
+        """
+        Patches the form with the given Id.
+
+        Attributes:
+            form_id: The Id of the form to patch.
+            request: The request object that contains the new form information.
+        """
+        return self.start().uri('/api/form') \
+            .url_segment(form_id) \
+            .body_handler(JSONBodyHandler(request)) \
+            .patch() \
+            .go()
+
+    def patch_form_field(self, field_id, request):
+        """
+        Patches the form field with the given Id.
+
+        Attributes:
+            field_id: The Id of the form field to patch.
+            request: The request object that contains the new form field information.
+        """
+        return self.start().uri('/api/form/field') \
+            .url_segment(field_id) \
+            .body_handler(JSONBodyHandler(request)) \
+            .patch() \
+            .go()
+
     def patch_group(self, group_id, request):
         """
         Updates, via PATCH, the group with the given Id.
@@ -1859,6 +1918,20 @@ class FusionAuthClient:
         """
         return self.start().uri('/api/group') \
             .url_segment(group_id) \
+            .body_handler(JSONBodyHandler(request)) \
+            .patch() \
+            .go()
+
+    def patch_ip_access_control_list(self, access_control_list_id, request):
+        """
+        Update the IP Access Control List with the given Id.
+
+        Attributes:
+            access_control_list_id: The Id of the IP Access Control List to patch.
+            request: The request that contains the new IP Access Control List information.
+        """
+        return self.start().uri('/api/ip-acl') \
+            .url_segment(access_control_list_id) \
             .body_handler(JSONBodyHandler(request)) \
             .patch() \
             .go()
@@ -2054,6 +2127,20 @@ class FusionAuthClient:
         """
         return self.start().uri('/api/user/consent') \
             .url_segment(user_consent_id) \
+            .body_handler(JSONBodyHandler(request)) \
+            .patch() \
+            .go()
+
+    def patch_webhook(self, webhook_id, request):
+        """
+        Patches the webhook with the given Id.
+
+        Attributes:
+            webhook_id: The Id of the webhook to update.
+            request: The request that contains the new webhook information.
+        """
+        return self.start().uri('/api/webhook') \
+            .url_segment(webhook_id) \
             .body_handler(JSONBodyHandler(request)) \
             .patch() \
             .go()
@@ -4295,6 +4382,20 @@ class FusionAuthClient:
             .url_segment(entity_type_id) \
             .url_segment("permission") \
             .url_segment(permission_id) \
+            .body_handler(JSONBodyHandler(request)) \
+            .put() \
+            .go()
+
+    def update_family(self, family_id, request):
+        """
+        Updates a family with a given Id.
+
+        Attributes:
+            family_id: The Id of the family to update.
+            request: The request object that contains all the new family information.
+        """
+        return self.start().uri('/api/user/family') \
+            .url_segment(family_id) \
             .body_handler(JSONBodyHandler(request)) \
             .put() \
             .go()
