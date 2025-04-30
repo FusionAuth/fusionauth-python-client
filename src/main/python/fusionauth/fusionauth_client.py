@@ -3377,6 +3377,20 @@ class FusionAuthClient:
             .get() \
             .go()
 
+    def retrieve_user_by_login_id(self, login_id, login_id_types):
+        """
+        Retrieves the user for the loginId for specific loginIdTypes.
+
+        Attributes:
+            login_id: The email or username of the user.
+            login_id_types: The identity types that FusionAuth will compare the loginId to.
+        """
+        return self.start().uri('/api/user') \
+            .url_parameter('loginId', self.convert_true_false(login_id)) \
+            .url_parameter('loginIdTypes', self.convert_true_false(login_id_types)) \
+            .get() \
+            .go()
+
     def retrieve_user_by_username(self, username):
         """
         Retrieves the user for the given username.
@@ -3553,6 +3567,27 @@ class FusionAuthClient:
         return self.start().uri('/api/report/login') \
             .url_parameter('applicationId', self.convert_true_false(application_id)) \
             .url_parameter('loginId', self.convert_true_false(login_id)) \
+            .url_parameter('start', self.convert_true_false(start)) \
+            .url_parameter('end', self.convert_true_false(end)) \
+            .get() \
+            .go()
+
+    def retrieve_user_login_report_by_login_id(self, login_id, login_id_types, start, end, application_id=None):
+        """
+        Retrieves the login report between the two instants for a particular user by login Id. If you specify an application id, it will only return the
+        login counts for that application.
+
+        Attributes:
+            application_id: (Optional) The application id.
+            login_id: The userId id.
+            login_id_types: The identity types that FusionAuth will compare the loginId to.
+            start: The start instant as UTC milliseconds since Epoch.
+            end: The end instant as UTC milliseconds since Epoch.
+        """
+        return self.start().uri('/api/report/login') \
+            .url_parameter('applicationId', self.convert_true_false(application_id)) \
+            .url_parameter('loginId', self.convert_true_false(login_id)) \
+            .url_parameter('loginIdTypes', self.convert_true_false(login_id_types)) \
             .url_parameter('start', self.convert_true_false(start)) \
             .url_parameter('end', self.convert_true_false(end)) \
             .get() \
