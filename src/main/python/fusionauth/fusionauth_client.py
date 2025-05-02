@@ -3365,15 +3365,17 @@ class FusionAuthClient:
             .get() \
             .go()
 
-    def retrieve_user_by_login_id(self, login_id):
+    def retrieve_user_by_login_id(self, login_id, login_id_types=None):
         """
-        Retrieves the user for the loginId. The loginId can be either the username or the email.
+        Retrieves the user for the loginId, using specific loginIdTypes.
 
         Attributes:
             login_id: The email or username of the user.
+            login_id_types: (Optional) the identity types that FusionAuth will compare the loginId to. Defaults to [email, username]
         """
         return self.start().uri('/api/user') \
             .url_parameter('loginId', self.convert_true_false(login_id)) \
+            .url_parameter('loginIdTypes', self.convert_true_false(login_id_types)) \
             .get() \
             .go()
 

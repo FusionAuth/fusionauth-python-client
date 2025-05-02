@@ -84,6 +84,25 @@ class FusionAuthClientTest(unittest.TestCase):
         self.assertFalse('password' in get_user_response.success_response['user'])
         self.assertFalse('salt' in get_user_response.success_response['user'])
 
+        # Retrieve the user via loginId
+        get_user_response = self.client.retrieve_user_by_login_id('user@example.com')
+        self.assertEqual(get_user_response.status, 200)
+        self.assertIsNotNone(get_user_response.success_response)
+        self.assertIsNone(get_user_response.error_response)
+        self.assertEqual(get_user_response.success_response['user']['email'], 'user@example.com')
+
+        # Explicit loginIdType
+        get_user_response = self.client.retrieve_user_by_login_id('user@example.com', ['email'])
+        self.assertEqual(get_user_response.status, 200)
+        self.assertIsNotNone(get_user_response.success_response)
+        self.assertIsNone(get_user_response.error_response)
+        self.assertEqual(get_user_response.success_response['user']['email'], 'user@example.com')
+
+# TODO: Once issue 1 is released, this test should pass
+#        # wrong loginIdType
+#         get_user_response = self.client.retrieve_user_by_login_id('user@example.com', ['phoneNumber'])
+#         self.assertEqual(get_user_response.status, 404)
+
     def test_retrieve_user_missing(self):
         user_id = uuid.uuid4()
         client_response = self.client.retrieve_user(user_id)
