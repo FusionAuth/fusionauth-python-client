@@ -3541,9 +3541,9 @@ class FusionAuthClient:
             .get() \
             .go()
 
-    def retrieve_user_login_report_by_login_id(self, login_id, start, end, application_id=None):
+    def retrieve_user_login_report_by_login_id(self, login_id, start, end, application_id=None, login_id_types=None):
         """
-        Retrieves the login report between the two instants for a particular user by login Id. If you specify an application id, it will only return the
+        Retrieves the login report between the two instants for a particular user by login Id, using specific loginIdTypes. If you specify an application id, it will only return the
         login counts for that application.
 
         Attributes:
@@ -3551,12 +3551,14 @@ class FusionAuthClient:
             login_id: The userId id.
             start: The start instant as UTC milliseconds since Epoch.
             end: The end instant as UTC milliseconds since Epoch.
+            login_id_types: (Optional) the identity types that FusionAuth will compare the loginId to. Defaults to [email, username]
         """
         return self.start().uri('/api/report/login') \
             .url_parameter('applicationId', self.convert_true_false(application_id)) \
             .url_parameter('loginId', self.convert_true_false(login_id)) \
             .url_parameter('start', self.convert_true_false(start)) \
             .url_parameter('end', self.convert_true_false(end)) \
+            .url_parameter('loginIdTypes', self.convert_true_false(login_id_types)) \
             .get() \
             .go()
 
