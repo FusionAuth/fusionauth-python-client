@@ -3365,7 +3365,19 @@ class FusionAuthClient:
             .get() \
             .go()
 
-    def retrieve_user_by_login_id(self, login_id, login_id_types=None):
+    def retrieve_user_by_login_id(self, login_id):
+        """
+        Retrieves the user for the loginId. The loginId can be either the username or the email.
+
+        Attributes:
+            login_id: The email or username of the user.
+        """
+        return self.start().uri('/api/user') \
+            .url_parameter('loginId', self.convert_true_false(login_id)) \
+            .get() \
+            .go()
+
+    def retrieve_user_by_login_id_with_login_id_types(self, login_id, login_id_types=None):
         """
         Retrieves the user for the loginId, using specific loginIdTypes.
 
@@ -3541,7 +3553,26 @@ class FusionAuthClient:
             .get() \
             .go()
 
-    def retrieve_user_login_report_by_login_id(self, login_id, start, end, application_id=None, login_id_types=None):
+    def retrieve_user_login_report_by_login_id(self, login_id, start, end, application_id=None):
+        """
+        Retrieves the login report between the two instants for a particular user by login Id. If you specify an application id, it will only return the
+        login counts for that application.
+
+        Attributes:
+            application_id: (Optional) The application id.
+            login_id: The userId id.
+            start: The start instant as UTC milliseconds since Epoch.
+            end: The end instant as UTC milliseconds since Epoch.
+        """
+        return self.start().uri('/api/report/login') \
+            .url_parameter('applicationId', self.convert_true_false(application_id)) \
+            .url_parameter('loginId', self.convert_true_false(login_id)) \
+            .url_parameter('start', self.convert_true_false(start)) \
+            .url_parameter('end', self.convert_true_false(end)) \
+            .get() \
+            .go()
+
+    def retrieve_user_login_report_by_login_id_and_login_id_types(self, login_id, start, end, application_id=None, login_id_types=None):
         """
         Retrieves the login report between the two instants for a particular user by login Id, using specific loginIdTypes. If you specify an application id, it will only return the
         login counts for that application.
