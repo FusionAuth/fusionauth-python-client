@@ -3377,13 +3377,13 @@ class FusionAuthClient:
             .get() \
             .go()
 
-    def retrieve_user_by_login_id_with_login_id_types(self, login_id, login_id_types=None):
+    def retrieve_user_by_login_id_with_login_id_types(self, login_id, login_id_types):
         """
         Retrieves the user for the loginId, using specific loginIdTypes.
 
         Attributes:
             login_id: The email or username of the user.
-            login_id_types: (Optional) the identity types that FusionAuth will compare the loginId to. Defaults to [email, username]
+            login_id_types: the identity types that FusionAuth will compare the loginId to. Defaults to [email, username]
         """
         return self.start().uri('/api/user') \
             .url_parameter('loginId', self.convert_true_false(login_id)) \
@@ -3572,7 +3572,7 @@ class FusionAuthClient:
             .get() \
             .go()
 
-    def retrieve_user_login_report_by_login_id_and_login_id_types(self, login_id, start, end, application_id=None, login_id_types=None):
+    def retrieve_user_login_report_by_login_id_and_login_id_types(self, login_id, start, end, login_id_types, application_id=None):
         """
         Retrieves the login report between the two instants for a particular user by login Id, using specific loginIdTypes. If you specify an application id, it will only return the
         login counts for that application.
@@ -3582,7 +3582,7 @@ class FusionAuthClient:
             login_id: The userId id.
             start: The start instant as UTC milliseconds since Epoch.
             end: The end instant as UTC milliseconds since Epoch.
-            login_id_types: (Optional) the identity types that FusionAuth will compare the loginId to. Defaults to [email, username]
+            login_id_types: the identity types that FusionAuth will compare the loginId to. Defaults to [email, username]
         """
         return self.start().uri('/api/report/login') \
             .url_parameter('applicationId', self.convert_true_false(application_id)) \
