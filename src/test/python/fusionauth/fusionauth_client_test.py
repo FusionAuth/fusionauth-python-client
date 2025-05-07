@@ -1,4 +1,16 @@
-#  Copyright (c) 2024, FusionAuth, All Rights Reserved
+#  Copyright (c) 2024-2025, FusionAuth, All Rights Reserved
+#
+#  Licensed under the Apache License, Version 2.0 (the "License");
+#  you may not use this file except in compliance with the License.
+#  You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+#  Unless required by applicable law or agreed to in writing,
+#  software distributed under the License is distributed on an
+#  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+#  either express or implied. See the License for the specific
+#  language governing permissions and limitations under the License.
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -26,9 +38,8 @@
 
 import json
 import os
-import uuid
-
 import unittest
+import uuid
 
 from fusionauth.fusionauth_client import FusionAuthClient
 
@@ -83,6 +94,25 @@ class FusionAuthClientTest(unittest.TestCase):
         self.assertEqual(get_user_response.success_response['user']['email'], 'user@example.com')
         self.assertFalse('password' in get_user_response.success_response['user'])
         self.assertFalse('salt' in get_user_response.success_response['user'])
+
+        # Retrieve the user via loginId
+        get_user_response = self.client.retrieve_user_by_login_id('user@example.com')
+        self.assertEqual(get_user_response.status, 200)
+        self.assertIsNotNone(get_user_response.success_response)
+        self.assertIsNone(get_user_response.error_response)
+        self.assertEqual(get_user_response.success_response['user']['email'], 'user@example.com')
+
+        # Explicit loginIdType
+        get_user_response = self.client.retrieve_user_by_login_id_with_login_id_types('user@example.com', ['email'])
+        self.assertEqual(get_user_response.status, 200)
+        self.assertIsNotNone(get_user_response.success_response)
+        self.assertIsNone(get_user_response.error_response)
+        self.assertEqual(get_user_response.success_response['user']['email'], 'user@example.com')
+
+    # TODO: Once issue 1 is released, this test should pass
+    #        # wrong loginIdType
+    #         get_user_response = self.client.retrieve_user_by_login_id_with_login_id_types('user@example.com', ['phoneNumber'])
+    #         self.assertEqual(get_user_response.status, 404)
 
     def test_retrieve_user_missing(self):
         user_id = uuid.uuid4()
