@@ -4872,6 +4872,18 @@ class FusionAuthClient:
             .post() \
             .go()
 
+    def verify_identity(self, request):
+        """
+        Administratively verify a user identity.
+
+        Attributes:
+            request: The identity verify request that contains information to verify the identity.
+        """
+        return self.start().uri('/api/identity/verify') \
+            .body_handler(JSONBodyHandler(request)) \
+            .post() \
+            .go()
+
     @deprecated("This method has been renamed to verify_user_registration and changed to take a JSON request body, use that method instead.")
     def verify_registration(self, verification_id):
         """
