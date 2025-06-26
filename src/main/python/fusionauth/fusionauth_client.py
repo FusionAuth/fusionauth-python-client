@@ -615,6 +615,21 @@ class FusionAuthClient:
             .post() \
             .go()
 
+    def create_universal_application_tenants(self, application_id, request):
+        """
+        Adds the application tenants for universal applications.
+
+        Attributes:
+            application_id: The Id of the application that the role belongs to.
+            request: The request object that contains all the information used to create the Entity.
+        """
+        return self.start().uri('/api/application') \
+            .url_segment(application_id) \
+            .url_segment("application-tenant") \
+            .body_handler(JSONBodyHandler(request)) \
+            .post() \
+            .go()
+
     def create_user(self, request, user_id=None):
         """
         Creates a user. You can optionally specify an Id for the user, if not provided one will be generated.
@@ -1128,6 +1143,36 @@ class FusionAuthClient:
         """
         return self.start().uri('/api/theme') \
             .url_segment(theme_id) \
+            .delete() \
+            .go()
+
+    def delete_universal_application_tenant(self, application_id, tenant_id):
+        """
+        Removes the specified tenant from the universal application tenants list.
+
+        Attributes:
+            application_id: The Id of the application that the role belongs to.
+            tenant_id: The Id of the tenant to delete from the universal application tenants list.
+        """
+        return self.start().uri('/api/application') \
+            .url_segment(application_id) \
+            .url_segment("application-tenant") \
+            .url_segment(tenant_id) \
+            .delete() \
+            .go()
+
+    def delete_universal_application_tenants(self, application_id, tenant_ids):
+        """
+        Removes the specified tenants from the universal application tenants list.
+
+        Attributes:
+            application_id: The Id of the universal application that the tenants are linked to.
+            tenant_ids: The Ids of the tenants to delete from the universal application tenants list.
+        """
+        return self.start().uri('/api/application') \
+            .url_segment(application_id) \
+            .url_segment("application-tenant") \
+            .url_parameter('tenantIds', self.convert_true_false(tenant_ids)) \
             .delete() \
             .go()
 
@@ -3284,6 +3329,19 @@ class FusionAuthClient:
             .url_parameter('userId', self.convert_true_false(user_id)) \
             .url_parameter('applicationId', self.convert_true_false(application_id)) \
             .url_segment(two_factor_trust_id) \
+            .get() \
+            .go()
+
+    def retrieve_universal_application_tenants(self, application_id):
+        """
+        Retrieves the application tenants for universal applications.
+
+        Attributes:
+            application_id: The Id of the application that the role belongs to.
+        """
+        return self.start().uri('/api/application') \
+            .url_segment(application_id) \
+            .url_segment("application-tenant") \
             .get() \
             .go()
 
