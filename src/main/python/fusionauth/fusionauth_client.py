@@ -615,17 +615,19 @@ class FusionAuthClient:
             .post() \
             .go()
 
-    def create_universal_application_tenants(self, application_id, request):
+    def create_universal_application_tenant(self, application_id, request, universal_application_tenant_id=None):
         """
         Adds the application tenants for universal applications.
 
         Attributes:
-            application_id: The Id of the application that the role belongs to.
-            request: The request object that contains all the information used to create the Entity.
+            application_id: The Id of the application that the universal application tenant belongs to.
+            universal_application_tenant_id: (Optional) The Id of the universal application tenant.
+            request: The request object that contains all the information used to create the UniversalApplicationTenants.
         """
         return self.start().uri('/api/application') \
             .url_segment(application_id) \
-            .url_segment("application-tenant") \
+            .url_segment("universal-application-tenant") \
+            .url_segment(universal_application_tenant_id) \
             .body_handler(JSONBodyHandler(request)) \
             .post() \
             .go()
@@ -1146,18 +1148,18 @@ class FusionAuthClient:
             .delete() \
             .go()
 
-    def delete_universal_application_tenant(self, application_id, tenant_id):
+    def delete_universal_application_tenant(self, application_id, universal_application_tenant_id):
         """
-        Removes the specified tenant from the universal application tenants list.
+        Deletes the universal application tenant.
 
         Attributes:
-            application_id: The Id of the application that the role belongs to.
-            tenant_id: The Id of the tenant to delete from the universal application tenants list.
+            application_id: The Id of the application that the UniversalApplicationTenant belongs to.
+            universal_application_tenant_id: The Id of the UniversalApplicationTenant to delete.
         """
         return self.start().uri('/api/application') \
             .url_segment(application_id) \
-            .url_segment("application-tenant") \
-            .url_segment(tenant_id) \
+            .url_segment("universal-application-tenant") \
+            .url_segment(universal_application_tenant_id) \
             .delete() \
             .go()
 
@@ -3332,16 +3334,18 @@ class FusionAuthClient:
             .get() \
             .go()
 
-    def retrieve_universal_application_tenants(self, application_id):
+    def retrieve_universal_application_tenant(self, application_id, universal_application_tenant_id):
         """
-        Retrieves the application tenants for universal applications.
+        Retrieves the universal application tenant.
 
         Attributes:
-            application_id: The Id of the application that the role belongs to.
+            application_id: The Id of the universal application that tenant is mapped to
+            universal_application_tenant_id: The Id of the universal application tenant.
         """
         return self.start().uri('/api/application') \
             .url_segment(application_id) \
             .url_segment("application-tenant") \
+            .url_segment(universal_application_tenant_id) \
             .get() \
             .go()
 
@@ -4071,6 +4075,20 @@ class FusionAuthClient:
             .post() \
             .go()
 
+    def search_universal_application_tenants(self, request):
+        """
+        Searches universal application tenants for the specified applicationId and with the specified criteria and pagination.
+
+        Attributes:
+            request: The search criteria and pagination information.
+        """
+        return self.start().uri('/api/application') \
+            .url_segment("universal-application-tenant") \
+            .url_segment("search") \
+            .body_handler(JSONBodyHandler(request)) \
+            .post() \
+            .go()
+
     def search_user_comments(self, request):
         """
         Searches user comments with the specified criteria and pagination.
@@ -4692,6 +4710,23 @@ class FusionAuthClient:
         """
         return self.start().uri('/api/theme') \
             .url_segment(theme_id) \
+            .body_handler(JSONBodyHandler(request)) \
+            .put() \
+            .go()
+
+    def update_universal_application_tenant(self, application_id, universal_application_tenant_id, request):
+        """
+        Adds the application tenants for universal applications.
+
+        Attributes:
+            application_id: The Id of the application that the UniversalApplicationTenant belongs to.
+            universal_application_tenant_id: The Id of the universal application tenant.
+            request: The request object that contains all the information used to create the UniversalApplicationTenant.
+        """
+        return self.start().uri('/api/application') \
+            .url_segment(application_id) \
+            .url_segment("universal-application-tenant") \
+            .url_segment(universal_application_tenant_id) \
             .body_handler(JSONBodyHandler(request)) \
             .put() \
             .go()
