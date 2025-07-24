@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2018-2023, FusionAuth, All Rights Reserved
+# Copyright (c) 2018-2025, FusionAuth, All Rights Reserved
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -129,6 +129,7 @@ class FusionAuthClient:
             .post() \
             .go()
 
+    @deprecated("This method has been renamed to change_password_using_jwt, use that method instead.")
     def change_password_by_jwt(self, encoded_jwt, request):
         """
         Changes a user's password using their access token (JWT) instead of the changePasswordId
@@ -156,6 +157,23 @@ class FusionAuthClient:
             request: The change password request that contains all the information used to change the password.
         """
         return self.start().uri('/api/user/change-password') \
+            .body_handler(JSONBodyHandler(request)) \
+            .post() \
+            .go()
+
+    def change_password_using_jwt(self, encoded_jwt, request):
+        """
+        Changes a user's password using their access token (JWT) instead of the changePasswordId
+        A common use case for this method will be if you want to allow the user to change their own password.
+        
+        Remember to send refreshToken in the request body if you want to get a new refresh token when login using the returned oneTimePassword.
+
+        Attributes:
+            encoded_jwt: The encoded JWT (access token).
+            request: The change password request that contains all the information used to change the password.
+        """
+        return self.start_anonymous().uri('/api/user/change-password') \
+            .authorization("Bearer " + encoded_jwt) \
             .body_handler(JSONBodyHandler(request)) \
             .post() \
             .go()
@@ -760,7 +778,7 @@ class FusionAuthClient:
     @deprecated("This method has been renamed to deactivate_users_by_ids, use that method instead.")
     def deactivate_users(self, user_ids):
         """
-        Deactivates the users with the given ids.
+        Deactivates the users with the given Ids.
 
         Attributes:
             user_ids: The ids of the users to deactivate.
@@ -774,7 +792,7 @@ class FusionAuthClient:
 
     def deactivate_users_by_ids(self, user_ids):
         """
-        Deactivates the users with the given ids.
+        Deactivates the users with the given Ids.
 
         Attributes:
             user_ids: The ids of the users to deactivate.
@@ -1217,8 +1235,8 @@ class FusionAuthClient:
     @deprecated("This method has been renamed to delete_users_by_query, use that method instead.")
     def delete_users(self, request):
         """
-        Deletes the users with the given ids, or users matching the provided JSON query or queryString.
-        The order of preference is ids, query and then queryString, it is recommended to only provide one of the three for the request.
+        Deletes the users with the given Ids, or users matching the provided JSON query or queryString.
+        The order of preference is Ids, query and then queryString, it is recommended to only provide one of the three for the request.
         
         This method can be used to deactivate or permanently delete (hard-delete) users based upon the hardDelete boolean in the request body.
         Using the dryRun parameter you may also request the result of the action without actually deleting or deactivating any users.
@@ -1233,8 +1251,8 @@ class FusionAuthClient:
 
     def delete_users_by_query(self, request):
         """
-        Deletes the users with the given ids, or users matching the provided JSON query or queryString.
-        The order of preference is ids, query and then queryString, it is recommended to only provide one of the three for the request.
+        Deletes the users with the given Ids, or users matching the provided JSON query or queryString.
+        The order of preference is Ids, query and then queryString, it is recommended to only provide one of the three for the request.
         
         This method can be used to deactivate or permanently delete (hard-delete) users based upon the hardDelete boolean in the request body.
         Using the dryRun parameter you may also request the result of the action without actually deleting or deactivating any users.
@@ -1756,7 +1774,7 @@ class FusionAuthClient:
         action.
 
         Attributes:
-            action_id: The Id of the action to modify. This is technically the user action log id.
+            action_id: The Id of the action to modify. This is technically the user action log Id.
             request: The request that contains all the information about the modification.
         """
         return self.start().uri('/api/user/action') \
@@ -1779,16 +1797,16 @@ class FusionAuthClient:
 
     def patch_api_key(self, key_id, request):
         """
-        Updates an authentication API key by given id
+        Updates an API key with the given Id.
 
         Attributes:
-            key_id: The Id of the authentication key. If not provided a secure random api key will be generated.
-            request: The request object that contains all the information needed to create the APIKey.
+            key_id: The Id of the API key. If not provided a secure random api key will be generated.
+            request: The request object that contains all the information needed to create the API key.
         """
         return self.start().uri('/api/api-key') \
             .url_segment(key_id) \
             .body_handler(JSONBodyHandler(request)) \
-            .post() \
+            .patch() \
             .go()
 
     def patch_application(self, application_id, request):
@@ -2297,7 +2315,7 @@ class FusionAuthClient:
 
     def remove_user_from_family(self, family_id, user_id):
         """
-        Removes a user from the family with the given id.
+        Removes a user from the family with the given Id.
 
         Attributes:
             family_id: The Id of the family to remove the user from.
@@ -2352,7 +2370,7 @@ class FusionAuthClient:
 
     def retrieve_api_key(self, key_id):
         """
-        Retrieves an authentication API key for the given id
+        Retrieves an authentication API key for the given Id.
 
         Attributes:
             key_id: The Id of the API key to retrieve.
@@ -2419,7 +2437,7 @@ class FusionAuthClient:
         Retrieves the application for the given Id or all the applications if the Id is null.
 
         Attributes:
-            application_id: (Optional) The application id.
+            application_id: (Optional) The application Id.
         """
         return self.start().uri('/api/application') \
             .url_segment(application_id) \
@@ -2494,11 +2512,11 @@ class FusionAuthClient:
 
     def retrieve_daily_active_report(self, start, end, application_id=None):
         """
-        Retrieves the daily active user report between the two instants. If you specify an application id, it will only
+        Retrieves the daily active user report between the two instants. If you specify an application Id, it will only
         return the daily active counts for that application.
 
         Attributes:
-            application_id: (Optional) The application id.
+            application_id: (Optional) The application Id.
             start: The start instant as UTC milliseconds since Epoch.
             end: The end instant as UTC milliseconds since Epoch.
         """
@@ -2511,7 +2529,7 @@ class FusionAuthClient:
 
     def retrieve_email_template(self, email_template_id=None):
         """
-        Retrieves the email template for the given Id. If you don't specify the id, this will return all the email templates.
+        Retrieves the email template for the given Id. If you don't specify the Id, this will return all the email templates.
 
         Attributes:
             email_template_id: (Optional) The Id of the email template.
@@ -2894,11 +2912,11 @@ class FusionAuthClient:
 
     def retrieve_login_report(self, start, end, application_id=None):
         """
-        Retrieves the login report between the two instants. If you specify an application id, it will only return the
+        Retrieves the login report between the two instants. If you specify an application Id, it will only return the
         login counts for that application.
 
         Attributes:
-            application_id: (Optional) The application id.
+            application_id: (Optional) The application Id.
             start: The start instant as UTC milliseconds since Epoch.
             end: The end instant as UTC milliseconds since Epoch.
         """
@@ -2911,7 +2929,7 @@ class FusionAuthClient:
 
     def retrieve_message_template(self, message_template_id=None):
         """
-        Retrieves the message template for the given Id. If you don't specify the id, this will return all the message templates.
+        Retrieves the message template for the given Id. If you don't specify the Id, this will return all the message templates.
 
         Attributes:
             message_template_id: (Optional) The Id of the message template.
@@ -2967,11 +2985,11 @@ class FusionAuthClient:
 
     def retrieve_monthly_active_report(self, start, end, application_id=None):
         """
-        Retrieves the monthly active user report between the two instants. If you specify an application id, it will only
+        Retrieves the monthly active user report between the two instants. If you specify an application Id, it will only
         return the monthly active counts for that application.
 
         Attributes:
-            application_id: (Optional) The application id.
+            application_id: (Optional) The application Id.
             start: The start instant as UTC milliseconds since Epoch.
             end: The end instant as UTC milliseconds since Epoch.
         """
@@ -3133,7 +3151,7 @@ class FusionAuthClient:
 
     def retrieve_registration(self, user_id, application_id):
         """
-        Retrieves the user registration for the user with the given Id and the given application id.
+        Retrieves the user registration for the user with the given Id and the given application Id.
 
         Attributes:
             user_id: The Id of the user.
@@ -3147,11 +3165,11 @@ class FusionAuthClient:
 
     def retrieve_registration_report(self, start, end, application_id=None):
         """
-        Retrieves the registration report between the two instants. If you specify an application id, it will only return
+        Retrieves the registration report between the two instants. If you specify an application Id, it will only return
         the registration counts for that application.
 
         Attributes:
-            application_id: (Optional) The application id.
+            application_id: (Optional) The application Id.
             start: The start instant as UTC milliseconds since Epoch.
             end: The end instant as UTC milliseconds since Epoch.
         """
@@ -3313,7 +3331,7 @@ class FusionAuthClient:
 
     def retrieve_user_action(self, user_action_id=None):
         """
-        Retrieves the user action for the given Id. If you pass in null for the id, this will return all the user
+        Retrieves the user action for the given Id. If you pass in null for the Id, this will return all the user
         actions.
 
         Attributes:
@@ -3326,7 +3344,7 @@ class FusionAuthClient:
 
     def retrieve_user_action_reason(self, user_action_reason_id=None):
         """
-        Retrieves the user action reason for the given Id. If you pass in null for the id, this will return all the user
+        Retrieves the user action reason for the given Id. If you pass in null for the Id, this will return all the user
         action reasons.
 
         Attributes:
@@ -3440,8 +3458,8 @@ class FusionAuthClient:
         This API is useful if you want to build your own login workflow to complete a device grant.
 
         Attributes:
-            client_id: The client id.
-            client_secret: The client id.
+            client_id: The client Id.
+            client_secret: The client Id.
             user_code: The end-user verification code.
         """
         body = {
@@ -3553,12 +3571,12 @@ class FusionAuthClient:
 
     def retrieve_user_login_report(self, user_id, start, end, application_id=None):
         """
-        Retrieves the login report between the two instants for a particular user by Id. If you specify an application id, it will only return the
+        Retrieves the login report between the two instants for a particular user by Id. If you specify an application Id, it will only return the
         login counts for that application.
 
         Attributes:
-            application_id: (Optional) The application id.
-            user_id: The userId id.
+            application_id: (Optional) The application Id.
+            user_id: The userId Id.
             start: The start instant as UTC milliseconds since Epoch.
             end: The end instant as UTC milliseconds since Epoch.
         """
@@ -3572,12 +3590,12 @@ class FusionAuthClient:
 
     def retrieve_user_login_report_by_login_id(self, login_id, start, end, application_id=None):
         """
-        Retrieves the login report between the two instants for a particular user by login Id. If you specify an application id, it will only return the
+        Retrieves the login report between the two instants for a particular user by login Id. If you specify an application Id, it will only return the
         login counts for that application.
 
         Attributes:
-            application_id: (Optional) The application id.
-            login_id: The userId id.
+            application_id: (Optional) The application Id.
+            login_id: The userId Id.
             start: The start instant as UTC milliseconds since Epoch.
             end: The end instant as UTC milliseconds since Epoch.
         """
@@ -3674,7 +3692,7 @@ class FusionAuthClient:
 
     def retrieve_webhook(self, webhook_id=None):
         """
-        Retrieves the webhook for the given Id. If you pass in null for the id, this will return all the webhooks.
+        Retrieves the webhook for the given Id. If you pass in null for the Id, this will return all the webhooks.
 
         Attributes:
             webhook_id: (Optional) The Id of the webhook.
@@ -3906,7 +3924,7 @@ class FusionAuthClient:
 
     def search_entities_by_ids(self, ids):
         """
-        Retrieves the entities for the given ids. If any Id is invalid, it is ignored.
+        Retrieves the entities for the given Ids. If any Id is invalid, it is ignored.
 
         Attributes:
             ids: The entity ids to search for.
@@ -4075,7 +4093,7 @@ class FusionAuthClient:
     @deprecated("This method has been renamed to search_users_by_ids, use that method instead.")
     def search_users(self, ids):
         """
-        Retrieves the users for the given ids. If any Id is invalid, it is ignored.
+        Retrieves the users for the given Ids. If any Id is invalid, it is ignored.
 
         Attributes:
             ids: The user ids to search for.
@@ -4087,10 +4105,10 @@ class FusionAuthClient:
 
     def search_users_by_ids(self, ids):
         """
-        Retrieves the users for the given ids. If any Id is invalid, it is ignored.
+        Retrieves the users for the given Ids. If any Id is invalid, it is ignored.
 
         Attributes:
-            ids: The user ids to search for.
+            ids: The user Ids to search for.
         """
         return self.start().uri('/api/user/search') \
             .url_parameter('ids', self.convert_true_false(ids)) \
@@ -4150,7 +4168,7 @@ class FusionAuthClient:
 
     def send_email(self, email_template_id, request):
         """
-        Send an email using an email template id. You can optionally provide <code>requestData</code> to access key value
+        Send an email using an email template Id. You can optionally provide <code>requestData</code> to access key value
         pairs in the email template.
 
         Attributes:
@@ -4343,16 +4361,16 @@ class FusionAuthClient:
             .post() \
             .go()
 
-    def update_api_key(self, api_key_id, request):
+    def update_api_key(self, key_id, request):
         """
-        Updates an API key by given id
+        Updates an API key with the given Id.
 
         Attributes:
-            api_key_id: The Id of the API key to update.
-            request: The request object that contains all the information used to create the API Key.
+            key_id: The Id of the API key to update.
+            request: The request that contains all the new API key information.
         """
         return self.start().uri('/api/api-key') \
-            .url_segment(api_key_id) \
+            .url_segment(key_id) \
             .body_handler(JSONBodyHandler(request)) \
             .put() \
             .go()
@@ -4802,7 +4820,7 @@ class FusionAuthClient:
 
         Attributes:
             user_code: The end-user verification code.
-            client_id: The client id.
+            client_id: The client Id.
         """
         return self.start_anonymous().uri('/oauth2/device/validate') \
             .url_parameter('user_code', self.convert_true_false(user_code)) \
