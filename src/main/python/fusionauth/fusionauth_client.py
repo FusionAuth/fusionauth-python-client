@@ -129,6 +129,7 @@ class FusionAuthClient:
             .post() \
             .go()
 
+    @deprecated("This method has been renamed to change_password_using_jwt, use that method instead.")
     def change_password_by_jwt(self, encoded_jwt, request):
         """
         Changes a user's password using their access token (JWT) instead of the changePasswordId
@@ -156,6 +157,23 @@ class FusionAuthClient:
             request: The change password request that contains all the information used to change the password.
         """
         return self.start().uri('/api/user/change-password') \
+            .body_handler(JSONBodyHandler(request)) \
+            .post() \
+            .go()
+
+    def change_password_using_jwt(self, encoded_jwt, request):
+        """
+        Changes a user's password using their access token (JWT) instead of the changePasswordId
+        A common use case for this method will be if you want to allow the user to change their own password.
+        
+        Remember to send refreshToken in the request body if you want to get a new refresh token when login using the returned oneTimePassword.
+
+        Attributes:
+            encoded_jwt: The encoded JWT (access token).
+            request: The change password request that contains all the information used to change the password.
+        """
+        return self.start_anonymous().uri('/api/user/change-password') \
+            .authorization("Bearer " + encoded_jwt) \
             .body_handler(JSONBodyHandler(request)) \
             .post() \
             .go()
