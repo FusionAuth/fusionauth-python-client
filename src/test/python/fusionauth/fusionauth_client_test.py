@@ -35,6 +35,18 @@
 #  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
 #  either express or implied. See the License for the specific
 #  language governing permissions and limitations under the License.
+#
+#  Licensed under the Apache License, Version 2.0 (the "License");
+#  you may not use this file except in compliance with the License.
+#  You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+#  Unless required by applicable law or agreed to in writing,
+#  software distributed under the License is distributed on an
+#  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+#  either express or implied. See the License for the specific
+#  language governing permissions and limitations under the License.
 
 import json
 import os
@@ -62,7 +74,8 @@ class FusionAuthClientTest(unittest.TestCase):
     def test_retrieve_applications(self):
         client_response = self.client.retrieve_applications()
         self.assertEqual(client_response.status, 200)
-        self.assertEqual(len(client_response.success_response['applications']), 2)
+        # tnent manager is 1 application, admin is another, Pied piper in the kickstart is the 3rd.
+        self.assertEqual(len(client_response.success_response['applications']), 3)
 
     def test_create_user_retrieve_user(self):
         # Check if the user already exists.
