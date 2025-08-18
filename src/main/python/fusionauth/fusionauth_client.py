@@ -260,6 +260,18 @@ class FusionAuthClient:
             .post() \
             .go()
 
+    def complete_verify_identity(self, request):
+        """
+        Completes verification of an identity using verification codes from the Verify Start API.
+
+        Attributes:
+            request: The identity verify complete request that contains all the information used to verify the identity.
+        """
+        return self.start().uri('/api/identity/verify/complete') \
+            .body_handler(JSONBodyHandler(request)) \
+            .post() \
+            .go()
+
     def complete_web_authn_assertion(self, request):
         """
         Complete a WebAuthn authentication ceremony by validating the signature against the previously generated challenge without logging the user in
@@ -3400,6 +3412,20 @@ class FusionAuthClient:
             .get() \
             .go()
 
+    def retrieve_user_by_login_id_with_login_id_types(self, login_id, login_id_types):
+        """
+        Retrieves the user for the loginId, using specific loginIdTypes.
+
+        Attributes:
+            login_id: The email or username of the user.
+            login_id_types: the identity types that FusionAuth will compare the loginId to.
+        """
+        return self.start().uri('/api/user') \
+            .url_parameter('loginId', self.convert_true_false(login_id)) \
+            .url_parameter('loginIdTypes', self.convert_true_false(login_id_types)) \
+            .get() \
+            .go()
+
     def retrieve_user_by_username(self, username):
         """
         Retrieves the user for the given username.
@@ -3578,6 +3604,27 @@ class FusionAuthClient:
             .url_parameter('loginId', self.convert_true_false(login_id)) \
             .url_parameter('start', self.convert_true_false(start)) \
             .url_parameter('end', self.convert_true_false(end)) \
+            .get() \
+            .go()
+
+    def retrieve_user_login_report_by_login_id_and_login_id_types(self, login_id, start, end, login_id_types, application_id=None):
+        """
+        Retrieves the login report between the two instants for a particular user by login Id, using specific loginIdTypes. If you specify an application id, it will only return the
+        login counts for that application.
+
+        Attributes:
+            application_id: (Optional) The application id.
+            login_id: The userId id.
+            start: The start instant as UTC milliseconds since Epoch.
+            end: The end instant as UTC milliseconds since Epoch.
+            login_id_types: the identity types that FusionAuth will compare the loginId to.
+        """
+        return self.start().uri('/api/report/login') \
+            .url_parameter('applicationId', self.convert_true_false(application_id)) \
+            .url_parameter('loginId', self.convert_true_false(login_id)) \
+            .url_parameter('start', self.convert_true_false(start)) \
+            .url_parameter('end', self.convert_true_false(end)) \
+            .url_parameter('loginIdTypes', self.convert_true_false(login_id_types)) \
             .get() \
             .go()
 
@@ -4210,6 +4257,18 @@ class FusionAuthClient:
             .post() \
             .go()
 
+    def send_verify_identity(self, request):
+        """
+        Send a verification code using the appropriate transport for the identity type being verified.
+
+        Attributes:
+            request: The identity verify send request that contains all the information used send the code.
+        """
+        return self.start().uri('/api/identity/verify/send') \
+            .body_handler(JSONBodyHandler(request)) \
+            .post() \
+            .go()
+
     def start_identity_provider_login(self, request):
         """
         Begins a login request for a 3rd party login that requires user interaction such as HYPR.
@@ -4249,6 +4308,19 @@ class FusionAuthClient:
             request: The Two-Factor start request that contains all the information used to begin the Two-Factor login request.
         """
         return self.start().uri('/api/two-factor/start') \
+            .body_handler(JSONBodyHandler(request)) \
+            .post() \
+            .go()
+
+    def start_verify_identity(self, request):
+        """
+        Start a verification of an identity by generating a code. This code can be sent to the User using the Verify Send API
+        Verification Code API or using a mechanism outside of FusionAuth. The verification is completed by using the Verify Complete API with this code.
+
+        Attributes:
+            request: The identity verify start request that contains all the information used to begin the request.
+        """
+        return self.start().uri('/api/identity/verify/start') \
             .body_handler(JSONBodyHandler(request)) \
             .post() \
             .go()
@@ -4831,6 +4903,18 @@ class FusionAuthClient:
             request: The request that contains the userId to verify.
         """
         return self.start().uri('/api/user/verify-email') \
+            .body_handler(JSONBodyHandler(request)) \
+            .post() \
+            .go()
+
+    def verify_identity(self, request):
+        """
+        Administratively verify a user identity.
+
+        Attributes:
+            request: The identity verify request that contains information to verify the identity.
+        """
+        return self.start().uri('/api/identity/verify') \
             .body_handler(JSONBodyHandler(request)) \
             .post() \
             .go()
