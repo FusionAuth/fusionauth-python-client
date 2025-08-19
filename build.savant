@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2024, FusionAuth, All Rights Reserved
+ * Copyright (c) 2018-2025, FusionAuth, All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
  * language governing permissions and limitations under the License.
  */
 
-project(group: "io.fusionauth", name: "fusionauth-python-client", version: "1.58.0", licenses: ["ApacheV2_0"]) {
+project(group: "io.fusionauth", name: "fusionauth-python-client", version: "1.60.0", licenses: ["ApacheV2_0"]) {
   workflow {
     fetch {
       cache()
@@ -50,7 +50,7 @@ target(name: "clean", description: "Cleans the build directory") {
 target(name: "compile", description: "Builds archives of the source and compiled versions of the code.", dependsOn: ["setup-python"]) {
   def proc = "python3 setup.py sdist bdist_wheel".execute()
   proc.consumeProcessOutput(System.out, System.err)
-  proc.waitFor()
+  assert proc.waitFor() == 0
 }
 
 target(name: "int", description: "Releases a local integration build of the project", dependsOn: ["compile"]) {
@@ -78,11 +78,11 @@ target(name: "test", description: "Runs the project's tests", dependsOn: ["compi
 target(name: "setup-python", description: "Gets the python dependencies") {
   def proc1 = "python3 -m pip install --user --upgrade setuptools".execute()
   proc1.consumeProcessOutput(System.out, System.err)
-  proc1.waitFor()
+  assert proc1.waitFor() == 0
 
   def proc2 = "python3 -m pip install --user --upgrade wheel twine requests deprecated".execute()
   proc2.consumeProcessOutput(System.out, System.err)
-  proc2.waitFor()
+  assert proc2.waitFor() == 0
 }
 
 /**
@@ -104,8 +104,7 @@ target(name: "publish", description: "Publishes source and built versions of the
 
   def process = pb.start()
   process.consumeProcessOutput(System.out, System.err)
-  process.waitFor()
-  return process.exitValue() == 0
+  assert process.waitFor() == 0
 }
 
 target(name: "release", description: "Releases a full version of the project", dependsOn: ["int"]) {
