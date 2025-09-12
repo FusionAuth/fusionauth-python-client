@@ -219,10 +219,28 @@ class FusionAuthClient:
         An HTTP status code of 400 with a general error code of [TrustTokenRequired] indicates that a Trust Token is required to make a POST request to this API.
 
         Attributes:
-            login_id: The loginId of the User that you intend to change the password for.
+            login_id: The loginId (email or username) of the User that you intend to change the password for.
         """
         return self.start().uri('/api/user/change-password') \
-            .url_parameter('username', self.convert_true_false(login_id)) \
+            .url_parameter('loginId', self.convert_true_false(login_id)) \
+            .get() \
+            .go()
+
+    def check_change_password_using_login_id_and_login_id_types(self, login_id, login_id_types):
+        """
+        Check to see if the user must obtain a Trust Request Id in order to complete a change password request.
+        When a user has enabled Two-Factor authentication, before you are allowed to use the Change Password API to change
+        your password, you must obtain a Trust Request Id by completing a Two-Factor Step-Up authentication.
+        
+        An HTTP status code of 400 with a general error code of [TrustTokenRequired] indicates that a Trust Token is required to make a POST request to this API.
+
+        Attributes:
+            login_id: The loginId of the User that you intend to change the password for.
+            login_id_types: the identity types that FusionAuth will compare the loginId to.
+        """
+        return self.start().uri('/api/user/change-password') \
+            .url_parameter('loginId', self.convert_true_false(login_id)) \
+            .url_parameter('loginIdTypes', self.convert_true_false(login_id_types)) \
             .get() \
             .go()
 
