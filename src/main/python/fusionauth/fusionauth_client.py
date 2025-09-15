@@ -236,7 +236,7 @@ class FusionAuthClient:
 
         Attributes:
             login_id: The loginId of the User that you intend to change the password for.
-            login_id_types: the identity types that FusionAuth will compare the loginId to.
+            login_id_types: The identity types that FusionAuth will compare the loginId to.
         """
         return self.start().uri('/api/user/change-password') \
             .url_parameter('loginId', self.convert_true_false(login_id)) \
@@ -3436,7 +3436,7 @@ class FusionAuthClient:
 
         Attributes:
             login_id: The email or username of the user.
-            login_id_types: the identity types that FusionAuth will compare the loginId to.
+            login_id_types: The identity types that FusionAuth will compare the loginId to.
         """
         return self.start().uri('/api/user') \
             .url_parameter('loginId', self.convert_true_false(login_id)) \
@@ -3635,7 +3635,7 @@ class FusionAuthClient:
             login_id: The userId id.
             start: The start instant as UTC milliseconds since Epoch.
             end: The end instant as UTC milliseconds since Epoch.
-            login_id_types: the identity types that FusionAuth will compare the loginId to.
+            login_id_types: The identity types that FusionAuth will compare the loginId to.
         """
         return self.start().uri('/api/report/login') \
             .url_parameter('applicationId', self.convert_true_false(application_id)) \
