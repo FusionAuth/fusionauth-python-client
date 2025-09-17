@@ -76,7 +76,7 @@ class FusionAuthClient:
             .put() \
             .go()
 
-    def approve_device(self, token, user_code, client_id=None, client_secret=None):
+    def approve_device(self, token, user_code, client_id=None, client_secret=None, tenant_id=None):
         """
         Approve a device grant.
 
@@ -85,12 +85,14 @@ class FusionAuthClient:
             client_secret: (Optional) The client secret. This value will be required if client authentication is enabled.
             token: The access token used to identify the user.
             user_code: The end-user verification code.
+            tenant_id: (Optional) The Id of the tenant to use for this request.
         """
         body = {
             "client_id": client_id,
             "client_secret": client_secret,
             "token": token,
             "user_code": user_code,
+            "tenantId": tenantId,
         }
         return self.start().uri('/oauth2/device/approve') \
             .body_handler(FormDataBodyHandler(body)) \
@@ -226,7 +228,7 @@ class FusionAuthClient:
             .get() \
             .go()
 
-    def client_credentials_grant(self, client_id=None, client_secret=None, scope=None):
+    def client_credentials_grant(self, client_id=None, client_secret=None, scope=None, tenant_id=None):
         """
         Make a Client Credentials grant request to obtain an access token.
 
@@ -236,12 +238,14 @@ class FusionAuthClient:
             client_secret: (Optional) The client secret used to authenticate this request.
                     This parameter is optional when Basic Authorization is used to authenticate this request.
             scope: (Optional) This parameter is used to indicate which target entity you are requesting access. To request access to an entity, use the format target-entity:&lt;target-entity-id&gt;:&lt;roles&gt;. Roles are an optional comma separated list.
+            tenant_id: (Optional) The Id of the tenant to use for this request.
         """
         body = {
             "client_id": client_id,
             "client_secret": client_secret,
             "grant_type": "client_credentials",
             "scope": scope,
+            "tenantId": tenantId,
         }
         return self.start_anonymous().uri('/oauth2/token') \
             .body_handler(FormDataBodyHandler(body)) \
@@ -1333,7 +1337,7 @@ class FusionAuthClient:
             .post() \
             .go()
 
-    def exchange_o_auth_code_for_access_token(self, code, redirect_uri, client_id=None, client_secret=None):
+    def exchange_o_auth_code_for_access_token(self, code, redirect_uri, client_id=None, client_secret=None, tenant_id=None):
         """
         Exchanges an OAuth authorization code for an access token.
         Makes a request to the Token endpoint to exchange the authorization code returned from the Authorize endpoint for an access token.
@@ -1344,6 +1348,7 @@ class FusionAuthClient:
                     This parameter is optional when Basic Authorization is used to authenticate this request.
             client_secret: (Optional) The client secret. This value will be required if client authentication is enabled.
             redirect_uri: The URI to redirect to upon a successful request.
+            tenant_id: (Optional) The Id of the tenant to use for this request.
         """
         body = {
             "code": code,
@@ -1351,13 +1356,14 @@ class FusionAuthClient:
             "client_secret": client_secret,
             "grant_type": "authorization_code",
             "redirect_uri": redirect_uri,
+            "tenantId": tenantId,
         }
         return self.start_anonymous().uri('/oauth2/token') \
             .body_handler(FormDataBodyHandler(body)) \
             .post() \
             .go()
 
-    def exchange_o_auth_code_for_access_token_using_pkce(self, code, redirect_uri, code_verifier, client_id=None, client_secret=None):
+    def exchange_o_auth_code_for_access_token_using_pkce(self, code, redirect_uri, code_verifier, client_id=None, client_secret=None, tenant_id=None):
         """
         Exchanges an OAuth authorization code and code_verifier for an access token.
         Makes a request to the Token endpoint to exchange the authorization code returned from the Authorize endpoint and a code_verifier for an access token.
@@ -1369,6 +1375,7 @@ class FusionAuthClient:
             client_secret: (Optional) The client secret. This value may optionally be provided in the request body instead of the Authorization header.
             redirect_uri: The URI to redirect to upon a successful request.
             code_verifier: The random string generated previously. Will be compared with the code_challenge sent previously, which allows the OAuth provider to authenticate your app.
+            tenant_id: (Optional) The Id of the tenant to use for this request.
         """
         body = {
             "code": code,
@@ -1377,13 +1384,14 @@ class FusionAuthClient:
             "grant_type": "authorization_code",
             "redirect_uri": redirect_uri,
             "code_verifier": code_verifier,
+            "tenantId": tenantId,
         }
         return self.start_anonymous().uri('/oauth2/token') \
             .body_handler(FormDataBodyHandler(body)) \
             .post() \
             .go()
 
-    def exchange_refresh_token_for_access_token(self, refresh_token, client_id=None, client_secret=None, scope=None, user_code=None):
+    def exchange_refresh_token_for_access_token(self, refresh_token, client_id=None, client_secret=None, scope=None, user_code=None, tenant_id=None):
         """
         Exchange a Refresh Token for an Access Token.
         If you will be using the Refresh Token Grant, you will make a request to the Token endpoint to exchange the user’s refresh token for an access token.
@@ -1395,6 +1403,7 @@ class FusionAuthClient:
             client_secret: (Optional) The client secret. This value may optionally be provided in the request body instead of the Authorization header.
             scope: (Optional) This parameter is optional and if omitted, the same scope requested during the authorization request will be used. If provided the scopes must match those requested during the initial authorization request.
             user_code: (Optional) The end-user verification code. This code is required if using this endpoint to approve the Device Authorization.
+            tenant_id: (Optional) The Id of the tenant to use for this request. Required if the request is for a universal application.
         """
         body = {
             "refresh_token": refresh_token,
@@ -1403,6 +1412,7 @@ class FusionAuthClient:
             "grant_type": "refresh_token",
             "scope": scope,
             "user_code": user_code,
+            "tenantId": tenantId,
         }
         return self.start_anonymous().uri('/oauth2/token') \
             .body_handler(FormDataBodyHandler(body)) \
@@ -1421,7 +1431,7 @@ class FusionAuthClient:
             .post() \
             .go()
 
-    def exchange_user_credentials_for_access_token(self, username, password, client_id=None, client_secret=None, scope=None, user_code=None):
+    def exchange_user_credentials_for_access_token(self, username, password, client_id=None, client_secret=None, scope=None, user_code=None, tenant_id=None):
         """
         Exchange User Credentials for a Token.
         If you will be using the Resource Owner Password Credential Grant, you will make a request to the Token endpoint to exchange the user’s email and password for an access token.
@@ -1434,6 +1444,7 @@ class FusionAuthClient:
             client_secret: (Optional) The client secret. This value may optionally be provided in the request body instead of the Authorization header.
             scope: (Optional) This parameter is optional and if omitted, the same scope requested during the authorization request will be used. If provided the scopes must match those requested during the initial authorization request.
             user_code: (Optional) The end-user verification code. This code is required if using this endpoint to approve the Device Authorization.
+            tenant_id: (Optional) The Id of the tenant to use for this request.
         """
         body = {
             "username": username,
@@ -1443,6 +1454,7 @@ class FusionAuthClient:
             "grant_type": "password",
             "scope": scope,
             "user_code": user_code,
+            "tenantId": tenantId,
         }
         return self.start_anonymous().uri('/oauth2/token') \
             .body_handler(FormDataBodyHandler(body)) \
@@ -1621,32 +1633,36 @@ class FusionAuthClient:
             .post() \
             .go()
 
-    def introspect_access_token(self, client_id, token):
+    def introspect_access_token(self, client_id, token, tenant_id=None):
         """
         Inspect an access token issued as the result of the User based grant such as the Authorization Code Grant, Implicit Grant, the User Credentials Grant or the Refresh Grant.
 
         Attributes:
             client_id: The unique client identifier. The client Id is the Id of the FusionAuth Application for which this token was generated.
             token: The access token returned by this OAuth provider as the result of a successful client credentials grant.
+            tenant_id: (Optional) The Id of the tenant to use for this request.
         """
         body = {
             "client_id": client_id,
             "token": token,
+            "tenantId": tenantId,
         }
         return self.start_anonymous().uri('/oauth2/introspect') \
             .body_handler(FormDataBodyHandler(body)) \
             .post() \
             .go()
 
-    def introspect_client_credentials_access_token(self, token):
+    def introspect_client_credentials_access_token(self, token, tenant_id=None):
         """
         Inspect an access token issued as the result of the Client Credentials Grant.
 
         Attributes:
             token: The access token returned by this OAuth provider as the result of a successful client credentials grant.
+            tenant_id: (Optional) The Id of the tenant to use for this request.
         """
         body = {
             "token": token,
+            "tenantId": tenantId,
         }
         return self.start_anonymous().uri('/oauth2/introspect') \
             .body_handler(FormDataBodyHandler(body)) \
@@ -3451,7 +3467,7 @@ class FusionAuthClient:
             .get() \
             .go()
 
-    def retrieve_user_code(self, client_id, client_secret, user_code):
+    def retrieve_user_code(self, client_id, client_secret, user_code, tenant_id=None):
         """
         Retrieve a user_code that is part of an in-progress Device Authorization Grant.
         
@@ -3461,6 +3477,7 @@ class FusionAuthClient:
             client_id: The client Id.
             client_secret: The client Id.
             user_code: The end-user verification code.
+            tenant_id: (Optional) The Id of the tenant to use for this request.
         """
         body = {
             "client_id": client_id,
@@ -3468,11 +3485,12 @@ class FusionAuthClient:
             "user_code": user_code,
         }
         return self.start_anonymous().uri('/oauth2/device/user-code') \
+            .url_parameter('tenantId', self.convert_true_false(tenant_id)) \
             .body_handler(FormDataBodyHandler(body)) \
             .get() \
             .go()
 
-    def retrieve_user_code_using_api_key(self, user_code):
+    def retrieve_user_code_using_api_key(self, user_code, tenant_id=None):
         """
         Retrieve a user_code that is part of an in-progress Device Authorization Grant.
         
@@ -3482,11 +3500,13 @@ class FusionAuthClient:
 
         Attributes:
             user_code: The end-user verification code.
+            tenant_id: (Optional) The Id of the tenant to use for this request.
         """
         body = {
             "user_code": user_code,
         }
         return self.start_anonymous().uri('/oauth2/device/user-code') \
+            .url_parameter('tenantId', self.convert_true_false(tenant_id)) \
             .body_handler(FormDataBodyHandler(body)) \
             .get() \
             .go()
@@ -3527,15 +3547,17 @@ class FusionAuthClient:
             .get() \
             .go()
 
-    def retrieve_user_info_from_access_token(self, encoded_jwt):
+    def retrieve_user_info_from_access_token(self, encoded_jwt, tenant_id=None):
         """
         Call the UserInfo endpoint to retrieve User Claims from the access token issued by FusionAuth.
 
         Attributes:
             encoded_jwt: The encoded JWT (access token).
+            tenant_id: (Optional) The Id of the tenant to use for this request.
         """
         return self.start_anonymous().uri('/oauth2/userinfo') \
             .authorization("Bearer " + encoded_jwt) \
+            .url_parameter('tenantId', self.convert_true_false(tenant_id)) \
             .get() \
             .go()
 
@@ -4813,7 +4835,7 @@ class FusionAuthClient:
             .post() \
             .go()
 
-    def validate_device(self, user_code, client_id):
+    def validate_device(self, user_code, client_id, tenant_id=None):
         """
         Validates the end-user provided user_code from the user-interaction of the Device Authorization Grant.
         If you build your own activation form you should validate the user provided code prior to beginning the Authorization grant.
@@ -4821,10 +4843,12 @@ class FusionAuthClient:
         Attributes:
             user_code: The end-user verification code.
             client_id: The client Id.
+            tenant_id: (Optional) The Id of the tenant to use for this request.
         """
         return self.start_anonymous().uri('/oauth2/device/validate') \
             .url_parameter('user_code', self.convert_true_false(user_code)) \
             .url_parameter('client_id', self.convert_true_false(client_id)) \
+            .url_parameter('tenantId', self.convert_true_false(tenant_id)) \
             .get() \
             .go()
 
