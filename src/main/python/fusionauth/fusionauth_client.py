@@ -3688,17 +3688,15 @@ class FusionAuthClient:
             .get() \
             .go()
 
-    def retrieve_user_info_from_access_token(self, encoded_jwt, tenant_id=None):
+    def retrieve_user_info_from_access_token(self, encoded_jwt):
         """
         Call the UserInfo endpoint to retrieve User Claims from the access token issued by FusionAuth.
 
         Attributes:
             encoded_jwt: The encoded JWT (access token).
-            tenant_id: (Optional) The Id of the tenant to use for this request.
         """
         return self.start_anonymous().uri('/oauth2/userinfo') \
             .authorization("Bearer " + encoded_jwt) \
-            .url_parameter('tenantId', self.convert_true_false(tenant_id)) \
             .get() \
             .go()
 
