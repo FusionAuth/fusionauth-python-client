@@ -3335,7 +3335,7 @@ class FusionAuthClient:
             .get() \
             .go()
 
-    def retrieve_two_factor_status_body(self, request):
+    def retrieve_two_factor_status_using(self, request):
         """
         Retrieve a user's two-factor status.
         
