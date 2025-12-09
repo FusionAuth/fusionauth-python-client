@@ -3335,6 +3335,22 @@ class FusionAuthClient:
             .get() \
             .go()
 
+    def retrieve_two_factor_status_using(self, request):
+        """
+        Retrieve a user's two-factor status.
+        
+        This can be used to see if a user will need to complete a two-factor challenge to complete a login,
+        and optionally identify the state of the two-factor trust across various applications. This operation
+        provides more payload options than retrieveTwoFactorStatus.
+
+        Attributes:
+            request: The request object that contains all the information used to check the status.
+        """
+        return self.start().uri('/api/two-factor/status') \
+            .body_handler(JSONBodyHandler(request)) \
+            .post() \
+            .go()
+
     def retrieve_user(self, user_id):
         """
         Retrieves the user for the given Id.
