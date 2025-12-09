@@ -228,7 +228,7 @@ class FusionAuthClient:
             .get() \
             .go()
 
-    def check_change_password_using_jwt(self, encoded_jwt, ip_address=None):
+    def check_change_password_using_jwt_and_ip_address(self, encoded_jwt, ip_address=None):
         """
         Check to see if the user must obtain a Trust Token Id in order to complete a change password request.
         When a user has enabled Two-Factor authentication, before you are allowed to use the Change Password API to change
@@ -262,7 +262,7 @@ class FusionAuthClient:
             .get() \
             .go()
 
-    def check_change_password_using_login_id(self, login_id, ip_address=None):
+    def check_change_password_using_login_id_and_ip_address(self, login_id, ip_address=None):
         """
         Check to see if the user must obtain a Trust Request Id in order to complete a change password request.
         When a user has enabled Two-Factor authentication, before you are allowed to use the Change Password API to change
@@ -298,7 +298,7 @@ class FusionAuthClient:
             .get() \
             .go()
 
-    def check_change_password_using_login_id_and_login_id_types(self, login_id, login_id_types, ip_address=None):
+    def check_change_password_using_login_id_and_login_id_types_and_ip_address(self, login_id, login_id_types, ip_address=None):
         """
         Check to see if the user must obtain a Trust Request Id in order to complete a change password request.
         When a user has enabled Two-Factor authentication, before you are allowed to use the Change Password API to change
