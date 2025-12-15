@@ -3304,6 +3304,18 @@ class FusionAuthClient:
             .get() \
             .go()
 
+    def retrieve_total_report_with_excludes(self, excludes):
+        """
+        Retrieves the totals report. This allows excluding applicationTotals from the report. An empty list will include the applicationTotals.
+
+        Attributes:
+            excludes: List of fields to exclude in the response. Currently only allows applicationTotals.
+        """
+        return self.start().uri('/api/report/totals') \
+            .url_parameter('excludes', self.convert_true_false(excludes)) \
+            .get() \
+            .go()
+
     def retrieve_two_factor_recovery_codes(self, user_id):
         """
         Retrieve two-factor recovery codes for a user.
