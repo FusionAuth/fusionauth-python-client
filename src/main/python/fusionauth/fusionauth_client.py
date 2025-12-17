@@ -104,8 +104,15 @@ class FusionAuthClient:
         Attributes:
             request: The request object containing the device approval information and optional tenantId.
         """
+        body = {
+            "client_id": request.client_id,
+            "client_secret": request.client_secret,
+            "tenantId": str(request.tenantId) if request.tenantId is not None else None,
+            "token": request.token,
+            "user_code": request.user_code,
+        }
         return self.start().uri('/oauth2/device/approve') \
-            .body_handler(JSONBodyHandler(request)) \
+            .body_handler(FormDataBodyHandler(body)) \
             .post() \
             .go()
 
@@ -285,8 +292,15 @@ class FusionAuthClient:
         Attributes:
             request: The client credentials grant request containing client authentication, scope and optional tenantId.
         """
+        body = {
+            "client_id": request.client_id,
+            "client_secret": request.client_secret,
+            "grant_type": request.grant_type,
+            "scope": request.scope,
+            "tenantId": request.tenantId,
+        }
         return self.start_anonymous().uri('/oauth2/token') \
-            .body_handler(JSONBodyHandler(request)) \
+            .body_handler(FormDataBodyHandler(body)) \
             .post() \
             .go()
 
@@ -1357,8 +1371,14 @@ class FusionAuthClient:
         Attributes:
             request: The device authorization request containing client authentication, scope, and optional device metadata.
         """
+        body = {
+            "client_id": request.client_id,
+            "client_secret": request.client_secret,
+            "scope": request.scope,
+            "tenantId": str(request.tenantId) if request.tenantId is not None else None,
+        }
         return self.start_anonymous().uri('/oauth2/device_authorize') \
-            .body_handler(JSONBodyHandler(request)) \
+            .body_handler(FormDataBodyHandler(body)) \
             .post() \
             .go()
 
@@ -1464,8 +1484,17 @@ class FusionAuthClient:
         Attributes:
             request: The PKCE OAuth code access token exchange request.
         """
+        body = {
+            "client_id": request.client_id,
+            "client_secret": request.client_secret,
+            "code": request.code,
+            "code_verifier": request.code_verifier,
+            "grant_type": request.grant_type,
+            "redirect_uri": request.redirect_uri,
+            "tenantId": str(request.tenantId) if request.tenantId is not None else None,
+        }
         return self.start_anonymous().uri('/oauth2/token') \
-            .body_handler(JSONBodyHandler(request)) \
+            .body_handler(FormDataBodyHandler(body)) \
             .post() \
             .go()
 
@@ -1477,8 +1506,16 @@ class FusionAuthClient:
         Attributes:
             request: The OAuth code access token exchange request.
         """
+        body = {
+            "client_id": request.client_id,
+            "client_secret": request.client_secret,
+            "code": request.code,
+            "grant_type": request.grant_type,
+            "redirect_uri": request.redirect_uri,
+            "tenantId": request.tenantId,
+        }
         return self.start_anonymous().uri('/oauth2/token') \
-            .body_handler(JSONBodyHandler(request)) \
+            .body_handler(FormDataBodyHandler(body)) \
             .post() \
             .go()
 
@@ -1516,8 +1553,17 @@ class FusionAuthClient:
         Attributes:
             request: The refresh token access token exchange request.
         """
+        body = {
+            "client_id": request.client_id,
+            "client_secret": request.client_secret,
+            "grant_type": request.grant_type,
+            "refresh_token": request.refresh_token,
+            "scope": request.scope,
+            "tenantId": str(request.tenantId) if request.tenantId is not None else None,
+            "user_code": request.user_code,
+        }
         return self.start_anonymous().uri('/oauth2/token') \
-            .body_handler(JSONBodyHandler(request)) \
+            .body_handler(FormDataBodyHandler(body)) \
             .post() \
             .go()
 
@@ -1569,8 +1615,18 @@ class FusionAuthClient:
         Attributes:
             request: The user credentials access token exchange request.
         """
+        body = {
+            "client_id": request.client_id,
+            "client_secret": request.client_secret,
+            "grant_type": request.grant_type,
+            "password": request.password,
+            "scope": request.scope,
+            "tenantId": request.tenantId,
+            "user_code": request.user_code,
+            "username": request.username,
+        }
         return self.start_anonymous().uri('/oauth2/token') \
-            .body_handler(JSONBodyHandler(request)) \
+            .body_handler(FormDataBodyHandler(body)) \
             .post() \
             .go()
 
@@ -1770,8 +1826,13 @@ class FusionAuthClient:
         Attributes:
             request: The access token introspection request.
         """
+        body = {
+            "client_id": request.client_id,
+            "tenantId": request.tenantId,
+            "token": request.token,
+        }
         return self.start_anonymous().uri('/oauth2/introspect') \
-            .body_handler(JSONBodyHandler(request)) \
+            .body_handler(FormDataBodyHandler(body)) \
             .post() \
             .go()
 
@@ -1797,8 +1858,12 @@ class FusionAuthClient:
         Attributes:
             request: The client credentials access token.
         """
+        body = {
+            "tenantId": request.tenantId,
+            "token": request.token,
+        }
         return self.start_anonymous().uri('/oauth2/introspect') \
-            .body_handler(JSONBodyHandler(request)) \
+            .body_handler(FormDataBodyHandler(body)) \
             .post() \
             .go()
 
@@ -3663,8 +3728,12 @@ class FusionAuthClient:
         Attributes:
             request: The user code retrieval request including optional tenantId.
         """
+        body = {
+            "tenantId": str(request.tenantId) if request.tenantId is not None else None,
+            "user_code": request.user_code,
+        }
         return self.start_anonymous().uri('/oauth2/device/user-code') \
-            .body_handler(JSONBodyHandler(request)) \
+            .body_handler(FormDataBodyHandler(body)) \
             .post() \
             .go()
 
@@ -3677,8 +3746,14 @@ class FusionAuthClient:
         Attributes:
             request: The user code retrieval request.
         """
+        body = {
+            "client_id": request.client_id,
+            "client_secret": request.client_secret,
+            "tenantId": str(request.tenantId) if request.tenantId is not None else None,
+            "user_code": request.user_code,
+        }
         return self.start_anonymous().uri('/oauth2/device/user-code') \
-            .body_handler(JSONBodyHandler(request)) \
+            .body_handler(FormDataBodyHandler(body)) \
             .post() \
             .go()
 
@@ -5027,8 +5102,13 @@ class FusionAuthClient:
         Attributes:
             request: The device validation request.
         """
+        body = {
+            "client_id": request.client_id,
+            "tenantId": str(request.tenantId) if request.tenantId is not None else None,
+            "user_code": request.user_code,
+        }
         return self.start_anonymous().uri('/oauth2/device/validate') \
-            .body_handler(JSONBodyHandler(request)) \
+            .body_handler(FormDataBodyHandler(body)) \
             .post() \
             .go()
 
