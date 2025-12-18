@@ -5192,14 +5192,11 @@ class FusionAuthClient:
         Attributes:
             request: The device validation request.
         """
-        body = {
-            "client_id": request.client_id,
-            "tenantId": str(request.tenantId) if request.tenantId is not None else None,
-            "user_code": request.user_code,
-        }
         return self.start_anonymous().uri('/oauth2/device/validate') \
-            .body_handler(FormDataBodyHandler(body)) \
-            .post() \
+            .url_parameter('client_id', request.client_id) \
+            .url_parameter('tenantId', str(request.tenantId) if request.tenantId is not None else None) \
+            .url_parameter('user_code', request.user_code) \
+            .get() \
             .go()
 
     def validate_jwt(self, encoded_jwt):
