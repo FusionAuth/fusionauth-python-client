@@ -4000,18 +4000,6 @@ class FusionAuthClient:
             .get() \
             .go()
 
-    def retrieve_user_using_jwt(self, encoded_jwt):
-        """
-        Retrieves the user for the given Id. This method does not use an API key, instead it uses a JSON Web Token (JWT) for authentication.
-
-        Attributes:
-            encoded_jwt: The encoded JWT (access token).
-        """
-        return self.start_anonymous().uri('/api/user') \
-            .authorization("Bearer " + encoded_jwt) \
-            .get() \
-            .go()
-
     def retrieve_version(self):
         """
         Retrieves the FusionAuth version string.
