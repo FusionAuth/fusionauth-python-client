@@ -2422,6 +2422,20 @@ class FusionAuthClient:
             .patch() \
             .go()
 
+    def patch_tenant_manager_identity_provider_type_configuration(self, _type, request):
+        """
+        Patches the tenant manager identity provider type configuration for the given identity provider type.
+
+        Attributes:
+            _type: The type of the identity provider.
+            request: The request object that contains the new tenant manager identity provider type configuration information.
+        """
+        return self.start().uri('/api/tenant-manager/identity-provider') \
+            .url_segment(_type) \
+            .body_handler(JSONBodyHandler(request)) \
+            .patch() \
+            .go()
+
     def patch_theme(self, theme_id, request):
         """
         Updates, via PATCH, the theme with the given Id.
