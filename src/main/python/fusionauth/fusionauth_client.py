@@ -761,6 +761,20 @@ class FusionAuthClient:
             .post() \
             .go()
 
+    def create_tenant_manager_identity_provider_type_configuration(self, _type, request):
+        """
+        Creates a tenant manager identity provider type configuration for the given identity provider type.
+
+        Attributes:
+            _type: The type of the identity provider.
+            request: The request object that contains all the information used to create the tenant manager identity provider type configuration.
+        """
+        return self.start().uri('/api/tenant-manager/identity-provider') \
+            .url_segment(_type) \
+            .body_handler(JSONBodyHandler(request)) \
+            .post() \
+            .go()
+
     def create_theme(self, request, theme_id=None):
         """
         Creates a Theme. You can optionally specify an Id for the theme, if not provided one will be generated.
@@ -1261,6 +1275,18 @@ class FusionAuthClient:
         return self.start().uri('/api/tenant') \
             .url_segment(tenant_id) \
             .url_parameter('async', self.convert_true_false("true")) \
+            .delete() \
+            .go()
+
+    def delete_tenant_manager_identity_provider_type_configuration(self, _type):
+        """
+        Deletes the tenant manager identity provider type configuration for the given identity provider type.
+
+        Attributes:
+            _type: The type of the identity provider.
+        """
+        return self.start().uri('/api/tenant-manager/identity-provider') \
+            .url_segment(_type) \
             .delete() \
             .go()
 
@@ -2392,6 +2418,20 @@ class FusionAuthClient:
         """
         return self.start().uri('/api/tenant') \
             .url_segment(tenant_id) \
+            .body_handler(JSONBodyHandler(request)) \
+            .patch() \
+            .go()
+
+    def patch_tenant_manager_identity_provider_type_configuration(self, _type, request):
+        """
+        Patches the tenant manager identity provider type configuration for the given identity provider type.
+
+        Attributes:
+            _type: The type of the identity provider.
+            request: The request object that contains the new tenant manager identity provider type configuration information.
+        """
+        return self.start().uri('/api/tenant-manager/identity-provider') \
+            .url_segment(_type) \
             .body_handler(JSONBodyHandler(request)) \
             .patch() \
             .go()
@@ -5066,6 +5106,20 @@ class FusionAuthClient:
         """
         return self.start().uri('/api/tenant') \
             .url_segment(tenant_id) \
+            .body_handler(JSONBodyHandler(request)) \
+            .put() \
+            .go()
+
+    def update_tenant_manager_identity_provider_type_configuration(self, _type, request):
+        """
+        Updates the tenant manager identity provider type configuration for the given identity provider type.
+
+        Attributes:
+            _type: The type of the identity provider.
+            request: The request object that contains the updated tenant manager identity provider type configuration.
+        """
+        return self.start().uri('/api/tenant-manager/identity-provider') \
+            .url_segment(_type) \
             .body_handler(JSONBodyHandler(request)) \
             .put() \
             .go()
