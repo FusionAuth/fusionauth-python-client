@@ -1407,6 +1407,18 @@ class FusionAuthClient:
             .delete() \
             .go()
 
+    def delete_web_authn_credentials_for_user(self, user_id):
+        """
+        Deletes all of the WebAuthn credentials for the given User Id.
+
+        Attributes:
+            user_id: The unique Id of the User to delete WebAuthn passkeys for.
+        """
+        return self.start().uri('/api/webauthn') \
+            .url_parameter('userId', self.convert_true_false(user_id)) \
+            .delete() \
+            .go()
+
     def delete_webhook(self, webhook_id):
         """
         Deletes the webhook for the given Id.
@@ -2045,7 +2057,7 @@ class FusionAuthClient:
 
     def lookup_identity_provider(self, domain):
         """
-        Retrieves the identity provider for the given domain. A 200 response code indicates the domain is managed
+        Retrieves any global identity providers for the given domain. A 200 response code indicates the domain is managed
         by a registered identity provider. A 404 indicates the domain is not managed.
 
         Attributes:
@@ -2053,6 +2065,22 @@ class FusionAuthClient:
         """
         return self.start().uri('/api/identity-provider/lookup') \
             .url_parameter('domain', self.convert_true_false(domain)) \
+            .get() \
+            .go()
+
+    def lookup_identity_provider_by_tenant_id(self, domain, tenant_id):
+        """
+        Retrieves the identity provider for the given domain and tenantId. A 200 response code indicates the domain is managed
+        by a registered identity provider. A 404 indicates the domain is not managed.
+
+        Attributes:
+            domain: The domain or email address to lookup.
+            tenant_id: If provided, the API searches for an identity provider scoped to the corresponding tenant that manages the requested domain.
+                    If no result is found, the API then searches for global identity providers.
+        """
+        return self.start().uri('/api/identity-provider/lookup') \
+            .url_parameter('domain', self.convert_true_false(domain)) \
+            .url_parameter('tenantId', self.convert_true_false(tenant_id)) \
             .get() \
             .go()
 
