@@ -4,12 +4,13 @@ name: Deploy
 on:
   workflow_dispatch:
     inputs:
-      command:
+      command:  # be careful when editing these, fusionauth-app expects certain commands
         type: choice
         options:
+          - build    # build only
           - publish  # build & publish to pypi
           - release  # build & release to svn
-        default: publish
+        default: build
 
 permissions:
   contents: read
@@ -49,7 +50,10 @@ jobs:
           21=${JAVA_HOME}
           EOF
 
+      ### Everything below this line will only run on a workflow_dispatch publish or release
+
       - name: set aws credentials
+        if: inputs.command == 'release' || inputs.command == 'publish'
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: arn:aws:iam::752443094709:role/gha-fusionauth-python-client
@@ -57,6 +61,7 @@ jobs:
           aws-region: us-west-2
 
       - name: get secret
+        if: inputs.command == 'release' || inputs.command == 'publish'
         run: |
           while IFS=$'\t' read -r key value; do
             echo "::add-mask::${value}"
@@ -69,6 +74,7 @@ jobs:
             jq -r 'to_entries[] | [.key, .value] | @tsv')
 
       - name: set pypi credentials
+        if: inputs.command == 'publish'
         run: |
           cat << EOF > ~/.pypirc
           [distutils]
