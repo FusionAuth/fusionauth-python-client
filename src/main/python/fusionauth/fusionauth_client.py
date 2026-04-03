@@ -1916,6 +1916,7 @@ class FusionAuthClient:
             "client_id": request.client_id,
             "tenantId": request.tenantId,
             "token": request.token,
+            "token_type_hint": request.token_type_hint,
         }
         return self.start_anonymous().uri('/oauth2/introspect') \
             .body_handler(FormDataBodyHandler(body)) \
