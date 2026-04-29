@@ -761,6 +761,20 @@ class FusionAuthClient:
             .post() \
             .go()
 
+    def create_tenant_manager_identity_provider_type_configuration(self, _type, request):
+        """
+        Creates a tenant manager identity provider type configuration for the given identity provider type.
+
+        Attributes:
+            _type: The type of the identity provider.
+            request: The request object that contains all the information used to create the tenant manager identity provider type configuration.
+        """
+        return self.start().uri('/api/tenant-manager/identity-provider') \
+            .url_segment(_type) \
+            .body_handler(JSONBodyHandler(request)) \
+            .post() \
+            .go()
+
     def create_theme(self, request, theme_id=None):
         """
         Creates a Theme. You can optionally specify an Id for the theme, if not provided one will be generated.
@@ -1261,6 +1275,18 @@ class FusionAuthClient:
         return self.start().uri('/api/tenant') \
             .url_segment(tenant_id) \
             .url_parameter('async', self.convert_true_false("true")) \
+            .delete() \
+            .go()
+
+    def delete_tenant_manager_identity_provider_type_configuration(self, _type):
+        """
+        Deletes the tenant manager identity provider type configuration for the given identity provider type.
+
+        Attributes:
+            _type: The type of the identity provider.
+        """
+        return self.start().uri('/api/tenant-manager/identity-provider') \
+            .url_segment(_type) \
             .delete() \
             .go()
 
@@ -2425,6 +2451,32 @@ class FusionAuthClient:
             .patch() \
             .go()
 
+    def patch_tenant_manager_configuration(self, request):
+        """
+        Updates, via PATCH, the Tenant Manager configuration.
+
+        Attributes:
+            request: The request that contains just the new Tenant Manager configuration information.
+        """
+        return self.start().uri('/api/tenant-manager') \
+            .body_handler(JSONBodyHandler(request)) \
+            .patch() \
+            .go()
+
+    def patch_tenant_manager_identity_provider_type_configuration(self, _type, request):
+        """
+        Patches the tenant manager identity provider type configuration for the given identity provider type.
+
+        Attributes:
+            _type: The type of the identity provider.
+            request: The request object that contains the new tenant manager identity provider type configuration information.
+        """
+        return self.start().uri('/api/tenant-manager/identity-provider') \
+            .url_segment(_type) \
+            .body_handler(JSONBodyHandler(request)) \
+            .patch() \
+            .go()
+
     def patch_theme(self, theme_id, request):
         """
         Updates, via PATCH, the theme with the given Id.
@@ -3071,6 +3123,18 @@ class FusionAuthClient:
             .get() \
             .go()
 
+    def retrieve_identity_provider_connection_test_results(self, connection_test_id):
+        """
+        Retrieves the results for an identity provider connection test.
+
+        Attributes:
+            connection_test_id: The connection test id to retrieve results for.
+        """
+        return self.start().uri('/api/identity-provider/test') \
+            .url_parameter('connectionTestId', self.convert_true_false(connection_test_id)) \
+            .get() \
+            .go()
+
     def retrieve_identity_providers(self):
         """
         Retrieves all the identity providers.
@@ -3557,6 +3621,16 @@ class FusionAuthClient:
         """
         return self.start().uri('/api/tenant') \
             .url_segment(tenant_id) \
+            .get() \
+            .go()
+
+    def retrieve_tenant_manager_configuration(self):
+        """
+        Retrieves the Tenant Manager configuration.
+
+        Attributes:
+        """
+        return self.start().uri('/api/tenant-manager') \
             .get() \
             .go()
 
@@ -4642,6 +4716,18 @@ class FusionAuthClient:
             .post() \
             .go()
 
+    def start_identity_provider_connection_test(self, request):
+        """
+        Begins an identity provider connection test.
+
+        Attributes:
+            request: The request that contains information on the connection test.
+        """
+        return self.start().uri('/api/identity-provider/test') \
+            .body_handler(JSONBodyHandler(request)) \
+            .post() \
+            .go()
+
     def start_identity_provider_login(self, request):
         """
         Begins a login request for a 3rd party login that requires user interaction such as HYPR.
@@ -5083,6 +5169,32 @@ class FusionAuthClient:
         """
         return self.start().uri('/api/tenant') \
             .url_segment(tenant_id) \
+            .body_handler(JSONBodyHandler(request)) \
+            .put() \
+            .go()
+
+    def update_tenant_manager_configuration(self, request):
+        """
+        Updates the Tenant Manager configuration.
+
+        Attributes:
+            request: The request that contains all the new Tenant Manager configuration information.
+        """
+        return self.start().uri('/api/tenant-manager') \
+            .body_handler(JSONBodyHandler(request)) \
+            .put() \
+            .go()
+
+    def update_tenant_manager_identity_provider_type_configuration(self, _type, request):
+        """
+        Updates the tenant manager identity provider type configuration for the given identity provider type.
+
+        Attributes:
+            _type: The type of the identity provider.
+            request: The request object that contains the updated tenant manager identity provider type configuration.
+        """
+        return self.start().uri('/api/tenant-manager/identity-provider') \
+            .url_segment(_type) \
             .body_handler(JSONBodyHandler(request)) \
             .put() \
             .go()
