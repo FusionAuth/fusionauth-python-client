@@ -5213,6 +5213,20 @@ class FusionAuthClient:
             .put() \
             .go()
 
+    def update_two_factor(self, user_id, request):
+        """
+        Updates the two-factor method for the given user using a JSON body.
+
+        Attributes:
+            user_id: The Id of the user to update.
+            request: The request information that contains the name and methodId along with any event information.
+        """
+        return self.start().uri('/api/user/two-factor') \
+            .url_segment(user_id) \
+            .body_handler(JSONBodyHandler(request)) \
+            .put() \
+            .go()
+
     def update_user(self, user_id, request):
         """
         Updates the user with the given Id.
