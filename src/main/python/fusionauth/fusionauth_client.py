@@ -3870,46 +3870,6 @@ class FusionAuthClient:
             .get() \
             .go()
 
-    def retrieve_user_code(self, client_id, client_secret, user_code):
-        """
-        Retrieve a user_code that is part of an in-progress Device Authorization Grant.
-        
-        This API is useful if you want to build your own login workflow to complete a device grant.
-
-        Attributes:
-            client_id: The client Id.
-            client_secret: The client Id.
-            user_code: The end-user verification code.
-        """
-        body = {
-            "client_id": client_id,
-            "client_secret": client_secret,
-            "user_code": user_code,
-        }
-        return self.start_anonymous().uri('/oauth2/device/user-code') \
-            .body_handler(FormDataBodyHandler(body)) \
-            .get() \
-            .go()
-
-    def retrieve_user_code_using_api_key(self, user_code):
-        """
-        Retrieve a user_code that is part of an in-progress Device Authorization Grant.
-        
-        This API is useful if you want to build your own login workflow to complete a device grant.
-        
-        This request will require an API key.
-
-        Attributes:
-            user_code: The end-user verification code.
-        """
-        body = {
-            "user_code": user_code,
-        }
-        return self.start_anonymous().uri('/oauth2/device/user-code') \
-            .body_handler(FormDataBodyHandler(body)) \
-            .get() \
-            .go()
-
     def retrieve_user_code_using_api_key_with_request(self, request):
         """
         Retrieve a user_code that is part of an in-progress Device Authorization Grant.
@@ -4345,6 +4305,24 @@ class FusionAuthClient:
             .post() \
             .go()
 
+    def search_consents_by_parameters(self, name=None, number_of_results=None, order_by=None, start_row=None):
+        """
+        Searches consents with the specified criteria and pagination.
+
+        Attributes:
+            name: (Optional) The name of the consent to search for. Supports wildcard search using *.
+            number_of_results: (Optional) The number of results to return. Defaults to 25.
+            order_by: (Optional) The field to order the results by. Supported values: id, insertInstant, name.
+            start_row: (Optional) The offset into the total results. Defaults to 0.
+        """
+        return self.start().uri('/api/consent/search') \
+            .url_parameter('name', self.convert_true_false(name)) \
+            .url_parameter('numberOfResults', self.convert_true_false(number_of_results)) \
+            .url_parameter('orderBy', self.convert_true_false(order_by)) \
+            .url_parameter('startRow', self.convert_true_false(start_row)) \
+            .get() \
+            .go()
+
     def search_email_templates(self, request):
         """
         Searches email templates with the specified criteria and pagination.
@@ -4393,6 +4371,28 @@ class FusionAuthClient:
             .post() \
             .go()
 
+    def search_entity_grants_by_parameters(self, entity_id=None, name=None, user_id=None, number_of_results=None, order_by=None, start_row=None):
+        """
+        Searches entity grants with the specified criteria and pagination.
+
+        Attributes:
+            entity_id: (Optional) The entity Id to search for grants on.
+            name: (Optional) The name of the entity grant to search for. Supports wildcard search using *.
+            user_id: (Optional) The user Id to search for grants on.
+            number_of_results: (Optional) The number of results to return. Defaults to 25.
+            order_by: (Optional) The field to order the results by.
+            start_row: (Optional) The offset into the total results. Defaults to 0.
+        """
+        return self.start().uri('/api/entity/grant/search') \
+            .url_parameter('entityId', self.convert_true_false(entity_id)) \
+            .url_parameter('name', self.convert_true_false(name)) \
+            .url_parameter('userId', self.convert_true_false(user_id)) \
+            .url_parameter('numberOfResults', self.convert_true_false(number_of_results)) \
+            .url_parameter('orderBy', self.convert_true_false(order_by)) \
+            .url_parameter('startRow', self.convert_true_false(start_row)) \
+            .get() \
+            .go()
+
     def search_entity_types(self, request):
         """
         Searches the entity types with the specified criteria and pagination.
@@ -4403,6 +4403,24 @@ class FusionAuthClient:
         return self.start().uri('/api/entity/type/search') \
             .body_handler(JSONBodyHandler(request)) \
             .post() \
+            .go()
+
+    def search_entity_types_by_parameters(self, name, number_of_results=None, order_by=None, start_row=None):
+        """
+        Searches entity types with the specified criteria and pagination.
+
+        Attributes:
+            name: The name of the entity type to search for. Use * to return all entity types.
+            number_of_results: (Optional) The number of results to return. Defaults to 25.
+            order_by: (Optional) The field to order the results by. Supported values: insertInstant, lastUpdateInstant, name.
+            start_row: (Optional) The offset into the total results. Defaults to 0.
+        """
+        return self.start().uri('/api/entity/type/search') \
+            .url_parameter('name', self.convert_true_false(name)) \
+            .url_parameter('numberOfResults', self.convert_true_false(number_of_results)) \
+            .url_parameter('orderBy', self.convert_true_false(order_by)) \
+            .url_parameter('startRow', self.convert_true_false(start_row)) \
+            .get() \
             .go()
 
     def search_event_logs(self, request):
@@ -4453,6 +4471,24 @@ class FusionAuthClient:
             .post() \
             .go()
 
+    def search_ip_access_control_lists_by_parameters(self, name=None, number_of_results=None, order_by=None, start_row=None):
+        """
+        Searches IP access control lists with the specified criteria and pagination.
+
+        Attributes:
+            name: (Optional) The name of the IP access control list to search for. Supports wildcard search using *.
+            number_of_results: (Optional) The number of results to return. Defaults to 25.
+            order_by: (Optional) The field to order the results by. Supported values: id, insertInstant, lastUpdateInstant, name.
+            start_row: (Optional) The offset into the total results. Defaults to 0.
+        """
+        return self.start().uri('/api/ip-acl/search') \
+            .url_parameter('name', self.convert_true_false(name)) \
+            .url_parameter('numberOfResults', self.convert_true_false(number_of_results)) \
+            .url_parameter('orderBy', self.convert_true_false(order_by)) \
+            .url_parameter('startRow', self.convert_true_false(start_row)) \
+            .get() \
+            .go()
+
     def search_identity_providers(self, request):
         """
         Searches identity providers with the specified criteria and pagination.
@@ -4465,6 +4501,30 @@ class FusionAuthClient:
             .post() \
             .go()
 
+    def search_identity_providers_by_parameters(self, application_id=None, name=None, number_of_results=None, order_by=None, start_row=None, tenant_id=None, _type=None):
+        """
+        Searches identity providers with the specified criteria and pagination.
+
+        Attributes:
+            application_id: (Optional) The application Id to search for identity providers.
+            name: (Optional) The name of the identity provider to search for. Supports wildcard search using *.
+            number_of_results: (Optional) The number of results to return. Defaults to 25.
+            order_by: (Optional) The field to order the results by. Supported values: enabled, id, insertInstant, name, type.
+            start_row: (Optional) The offset into the total results. Defaults to 0.
+            tenant_id: (Optional) The tenant Id to restrict the results to.
+            _type: (Optional) The type of identity provider to search for.
+        """
+        return self.start().uri('/api/identity-provider/search') \
+            .url_parameter('applicationId', self.convert_true_false(application_id)) \
+            .url_parameter('name', self.convert_true_false(name)) \
+            .url_parameter('numberOfResults', self.convert_true_false(number_of_results)) \
+            .url_parameter('orderBy', self.convert_true_false(order_by)) \
+            .url_parameter('startRow', self.convert_true_false(start_row)) \
+            .url_parameter('tenantId', self.convert_true_false(tenant_id)) \
+            .url_parameter('type', self.convert_true_false(_type)) \
+            .get() \
+            .go()
+
     def search_keys(self, request):
         """
         Searches keys with the specified criteria and pagination.
@@ -4475,6 +4535,28 @@ class FusionAuthClient:
         return self.start().uri('/api/key/search') \
             .body_handler(JSONBodyHandler(request)) \
             .post() \
+            .go()
+
+    def search_keys_by_parameters(self, algorithm=None, name=None, number_of_results=None, order_by=None, start_row=None, _type=None):
+        """
+        Searches keys with the specified criteria and pagination.
+
+        Attributes:
+            algorithm: (Optional) The algorithm of the key to search for.
+            name: (Optional) The name of the key to search for. Supports wildcard search using *.
+            number_of_results: (Optional) The number of results to return. Defaults to 25.
+            order_by: (Optional) The field to order the results by. Supported values: algorithm, expiration, id, insertInstant, name, type.
+            start_row: (Optional) The offset into the total results. Defaults to 0.
+            _type: (Optional) The type of key to search for. Supported values: EC, HMAC, OKP, RSA.
+        """
+        return self.start().uri('/api/key/search') \
+            .url_parameter('algorithm', self.convert_true_false(algorithm)) \
+            .url_parameter('name', self.convert_true_false(name)) \
+            .url_parameter('numberOfResults', self.convert_true_false(number_of_results)) \
+            .url_parameter('orderBy', self.convert_true_false(order_by)) \
+            .url_parameter('startRow', self.convert_true_false(start_row)) \
+            .url_parameter('type', self.convert_true_false(_type)) \
+            .get() \
             .go()
 
     def search_lambdas(self, request):
@@ -4611,6 +4693,28 @@ class FusionAuthClient:
         return self.start().uri('/api/webhook/search') \
             .body_handler(JSONBodyHandler(request)) \
             .post() \
+            .go()
+
+    def search_webhooks_by_parameters(self, description=None, number_of_results=None, order_by=None, start_row=None, tenant_id=None, url=None):
+        """
+        Searches webhooks with the specified criteria and pagination.
+
+        Attributes:
+            description: (Optional) The description of the webhook to search for. Supports wildcard search using *.
+            number_of_results: (Optional) The number of results to return. Defaults to 25.
+            order_by: (Optional) The field to order the results by. Supported values: description, id, insertInstant, url.
+            start_row: (Optional) The offset into the total results. Defaults to 0.
+            tenant_id: (Optional) The tenant Id to restrict the results to.
+            url: (Optional) The URL of the webhook to search for. Supports wildcard search using *.
+        """
+        return self.start().uri('/api/webhook/search') \
+            .url_parameter('description', self.convert_true_false(description)) \
+            .url_parameter('numberOfResults', self.convert_true_false(number_of_results)) \
+            .url_parameter('orderBy', self.convert_true_false(order_by)) \
+            .url_parameter('startRow', self.convert_true_false(start_row)) \
+            .url_parameter('tenantId', self.convert_true_false(tenant_id)) \
+            .url_parameter('url', self.convert_true_false(url)) \
+            .get() \
             .go()
 
     def send_email(self, email_template_id, request):
