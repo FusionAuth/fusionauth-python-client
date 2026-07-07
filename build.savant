@@ -63,9 +63,15 @@ target(name: "int", description: "Releases a local integration build of the proj
 }
 
 target(name: "test", description: "Runs the project's tests", dependsOn: ["compile"]) {
-  def pb = new ProcessBuilder("python3", "src/test/python/fusionauth/fusionauth_client_test.py")
+  def pb = new ProcessBuilder("python3", "src/test/python/fusionauth/rest_client_test.py")
   pb.environment().put("PYTHONPATH", "src/main/python")
   if (pb.inheritIO().start().waitFor() != 0) {
+    fail("Tests failed")
+  }
+
+  def pb2 = new ProcessBuilder("python3", "src/test/python/fusionauth/fusionauth_client_test.py")
+  pb2.environment().put("PYTHONPATH", "src/main/python")
+  if (pb2.inheritIO().start().waitFor() != 0) {
     fail("Tests failed")
   }
 }
@@ -83,6 +89,10 @@ target(name: "setup-python", description: "Gets the python dependencies") {
   def proc2 = "python3 -m pip install --user --upgrade wheel twine requests deprecated".execute()
   proc2.consumeProcessOutput(System.out, System.err)
   assert proc2.waitFor() == 0
+
+  def proc3 = "pip3 install .".execute()
+  proc3.consumeProcessOutput(System.out, System.err)
+  assert proc3.waitFor() == 0
 }
 
 /**
