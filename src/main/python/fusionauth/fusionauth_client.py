@@ -502,6 +502,38 @@ class FusionAuthClient:
             .post() \
             .go()
 
+    def create_cimd_domain(self, request, domain_id=None):
+        """
+        Creates a CIMD domain. You can optionally provide an Id for the CIMD domain, if not provided one will be generated.
+
+        Attributes:
+            domain_id: (Optional) The Id to use for the CIMD domain. If not provided a secure random UUID will be generated.
+            request: The request object that contains all the information used to create the CIMD domain.
+        """
+        return self.start().uri('/api/cimd/domain') \
+            .url_segment(domain_id) \
+            .body_handler(JSONBodyHandler(request)) \
+            .post() \
+            .go()
+
+    def create_cimd_domain_o_auth_scope(self, domain_id, request, scope_id=None):
+        """
+        Creates a new custom OAuth scope for a CIMD Domain. You must specify the Id of the CIMD domain you are creating the scope for.
+        You can optionally specify an Id for the OAuth scope on the URL, if not provided one will be generated.
+
+        Attributes:
+            domain_id: The Id of the CIMD domain to create the OAuth scope on.
+            scope_id: (Optional) The Id of the OAuth scope. If not provided a secure random UUID will be generated.
+            request: The request object that contains all the information used to create the OAuth scope.
+        """
+        return self.start().uri('/api/cimd/domain') \
+            .url_segment(domain_id) \
+            .url_segment("scope") \
+            .url_segment(scope_id) \
+            .body_handler(JSONBodyHandler(request)) \
+            .post() \
+            .go()
+
     def create_connector(self, request, connector_id=None):
         """
         Creates a connector.  You can optionally specify an Id for the connector, if not provided one will be generated.
@@ -737,7 +769,7 @@ class FusionAuthClient:
         Attributes:
             application_id: The Id of the application to create the OAuth scope on.
             scope_id: (Optional) The Id of the OAuth scope. If not provided a secure random UUID will be generated.
-            request: The request object that contains all the information used to create the OAuth OAuth scope.
+            request: The request object that contains all the information used to create the OAuth scope.
         """
         return self.start().uri('/api/application') \
             .url_segment(application_id) \
@@ -989,6 +1021,46 @@ class FusionAuthClient:
             .url_segment(application_id) \
             .url_segment("role") \
             .url_segment(role_id) \
+            .delete() \
+            .go()
+
+    def delete_cimd_client_registration(self, registration_id):
+        """
+        Deletes the CIMD client registration for the given Id, along with its refresh tokens.
+
+        Attributes:
+            registration_id: The Id of the CIMD client registration to delete.
+        """
+        return self.start().uri('/api/cimd/registration') \
+            .url_segment(registration_id) \
+            .delete() \
+            .go()
+
+    def delete_cimd_domain(self, domain_id):
+        """
+        Deletes the CIMD domain for the given Id.
+
+        Attributes:
+            domain_id: The Id of the CIMD domain to delete.
+        """
+        return self.start().uri('/api/cimd/domain') \
+            .url_segment(domain_id) \
+            .delete() \
+            .go()
+
+    def delete_cimd_domain_o_auth_scope(self, domain_id, scope_id):
+        """
+        Hard deletes a custom OAuth scope for a CIMD Domain.
+        OAuth workflows that are still requesting the deleted OAuth scope may fail depending on the CIMD domain's unknown scope policy.
+
+        Attributes:
+            domain_id: The Id of the CIMD domain that the OAuth scope belongs to.
+            scope_id: The Id of the OAuth scope to delete.
+        """
+        return self.start().uri('/api/cimd/domain') \
+            .url_segment(domain_id) \
+            .url_segment("scope") \
+            .url_segment(scope_id) \
             .delete() \
             .go()
 
@@ -2183,6 +2255,37 @@ class FusionAuthClient:
             .patch() \
             .go()
 
+    def patch_cimd_domain(self, domain_id, request):
+        """
+        Updates, via PATCH, the CIMD domain with the given Id.
+
+        Attributes:
+            domain_id: The Id of the CIMD domain to update.
+            request: The request that contains just the new CIMD domain information.
+        """
+        return self.start().uri('/api/cimd/domain') \
+            .url_segment(domain_id) \
+            .body_handler(JSONBodyHandler(request)) \
+            .patch() \
+            .go()
+
+    def patch_cimd_domain_o_auth_scope(self, domain_id, scope_id, request):
+        """
+        Updates, via PATCH, the custom OAuth scope with the given Id for the CIMD domain.
+
+        Attributes:
+            domain_id: The Id of the CIMD domain that the OAuth scope belongs to.
+            scope_id: The Id of the OAuth scope to update.
+            request: The request that contains just the new OAuth scope information.
+        """
+        return self.start().uri('/api/cimd/domain') \
+            .url_segment(domain_id) \
+            .url_segment("scope") \
+            .url_segment(scope_id) \
+            .body_handler(JSONBodyHandler(request)) \
+            .patch() \
+            .go()
+
     def patch_connector(self, connector_id, request):
         """
         Updates, via PATCH, the connector with the given Id.
@@ -2832,6 +2935,55 @@ class FusionAuthClient:
         """
         return self.start().uri('/api/system/audit-log') \
             .url_segment(audit_log_id) \
+            .get() \
+            .go()
+
+    def retrieve_cimd_client_registration(self, registration_id):
+        """
+        Retrieves the CIMD client registration for the given Id.
+
+        Attributes:
+            registration_id: The Id of the CIMD client registration.
+        """
+        return self.start().uri('/api/cimd/registration') \
+            .url_segment(registration_id) \
+            .get() \
+            .go()
+
+    def retrieve_cimd_domain(self, domain_id):
+        """
+        Retrieves the CIMD domain for the given Id.
+
+        Attributes:
+            domain_id: The Id of the CIMD domain.
+        """
+        return self.start().uri('/api/cimd/domain') \
+            .url_segment(domain_id) \
+            .get() \
+            .go()
+
+    def retrieve_cimd_domain_o_auth_scope(self, domain_id, scope_id):
+        """
+        Retrieves a custom OAuth scope for a CIMD Domain.
+
+        Attributes:
+            domain_id: The Id of the CIMD domain that the OAuth scope belongs to.
+            scope_id: The Id of the OAuth scope to retrieve.
+        """
+        return self.start().uri('/api/cimd/domain') \
+            .url_segment(domain_id) \
+            .url_segment("scope") \
+            .url_segment(scope_id) \
+            .get() \
+            .go()
+
+    def retrieve_cimd_domains(self):
+        """
+        Retrieves all the CIMD domains for the tenant in context.
+
+        Attributes:
+        """
+        return self.start().uri('/api/cimd/domain') \
             .get() \
             .go()
 
@@ -4293,6 +4445,30 @@ class FusionAuthClient:
             .post() \
             .go()
 
+    def search_cimd_client_registrations(self, request):
+        """
+        Searches the CIMD client registrations with the specified criteria and pagination.
+
+        Attributes:
+            request: The search criteria and pagination information.
+        """
+        return self.start().uri('/api/cimd/registration/search') \
+            .body_handler(JSONBodyHandler(request)) \
+            .post() \
+            .go()
+
+    def search_cimd_domains(self, request):
+        """
+        Searches the CIMD domains with the specified criteria and pagination.
+
+        Attributes:
+            request: The search criteria and pagination information.
+        """
+        return self.start().uri('/api/cimd/domain/search') \
+            .body_handler(JSONBodyHandler(request)) \
+            .post() \
+            .go()
+
     def search_consents(self, request):
         """
         Searches consents with the specified criteria and pagination.
@@ -4965,6 +5141,37 @@ class FusionAuthClient:
             .url_segment(application_id) \
             .url_segment("role") \
             .url_segment(role_id) \
+            .body_handler(JSONBodyHandler(request)) \
+            .put() \
+            .go()
+
+    def update_cimd_domain(self, domain_id, request):
+        """
+        Updates the CIMD domain with the given Id.
+
+        Attributes:
+            domain_id: The Id of the CIMD domain to update.
+            request: The request that contains all the new CIMD domain information.
+        """
+        return self.start().uri('/api/cimd/domain') \
+            .url_segment(domain_id) \
+            .body_handler(JSONBodyHandler(request)) \
+            .put() \
+            .go()
+
+    def update_cimd_domain_o_auth_scope(self, domain_id, scope_id, request):
+        """
+        Updates the OAuth scope with the given Id for the CIMD domain.
+
+        Attributes:
+            domain_id: The Id of the CIMD domain that the OAuth scope belongs to.
+            scope_id: The Id of the OAuth scope to update.
+            request: The request that contains all the new OAuth scope information.
+        """
+        return self.start().uri('/api/cimd/domain') \
+            .url_segment(domain_id) \
+            .url_segment("scope") \
+            .url_segment(scope_id) \
             .body_handler(JSONBodyHandler(request)) \
             .put() \
             .go()
