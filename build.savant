@@ -1,17 +1,5 @@
 /*
- * Copyright (c) 2018-2025, FusionAuth, All Rights Reserved
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *   http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
- * either express or implied. See the License for the specific
- * language governing permissions and limitations under the License.
+ * Copyright (c) 2018-2026, FusionAuth, All Rights Reserved
  */
 
 project(group: "io.fusionauth", name: "fusionauth-python-client", version: "1.71.0", licenses: ["ApacheV2_0"]) {
@@ -48,7 +36,7 @@ target(name: "clean", description: "Cleans the build directory") {
 }
 
 target(name: "compile", description: "Builds archives of the source and compiled versions of the code.", dependsOn: ["setup-python"]) {
-  def proc = "python3 setup.py sdist bdist_wheel".execute()
+  def proc = "python setup.py sdist bdist_wheel".execute()
   proc.consumeProcessOutput(System.out, System.err)
   assert proc.waitFor() == 0
 }
@@ -63,13 +51,13 @@ target(name: "int", description: "Releases a local integration build of the proj
 }
 
 target(name: "test", description: "Runs the project's tests", dependsOn: ["compile"]) {
-  def pb = new ProcessBuilder("python3", "src/test/python/fusionauth/rest_client_test.py")
+  def pb = new ProcessBuilder("python", "src/test/python/fusionauth/rest_client_test.py")
   pb.environment().put("PYTHONPATH", "src/main/python")
   if (pb.inheritIO().start().waitFor() != 0) {
     fail("Tests failed")
   }
 
-  def pb2 = new ProcessBuilder("python3", "src/test/python/fusionauth/fusionauth_client_test.py")
+  def pb2 = new ProcessBuilder("python", "src/test/python/fusionauth/fusionauth_client_test.py")
   pb2.environment().put("PYTHONPATH", "src/main/python")
   if (pb2.inheritIO().start().waitFor() != 0) {
     fail("Tests failed")
@@ -82,15 +70,17 @@ target(name: "test", description: "Runs the project's tests", dependsOn: ["compi
  * if you aren't virtualizing your python)
  */
 target(name: "setup-python", description: "Gets the python dependencies") {
-  def proc1 = "python3 -m pip install --user --upgrade setuptools".execute()
+  output.infoln("Running with Python version [${"python --version".execute().text.trim()}]")
+
+  def proc1 = "pip install --upgrade setuptools".execute()
   proc1.consumeProcessOutput(System.out, System.err)
   assert proc1.waitFor() == 0
 
-  def proc2 = "python3 -m pip install --user --upgrade wheel twine requests deprecated".execute()
+  def proc2 = "pip install --upgrade wheel twine requests deprecated".execute()
   proc2.consumeProcessOutput(System.out, System.err)
   assert proc2.waitFor() == 0
 
-  def proc3 = "pip3 install .".execute()
+  def proc3 = "pip install .".execute()
   proc3.consumeProcessOutput(System.out, System.err)
   assert proc3.waitFor() == 0
 }
@@ -108,7 +98,7 @@ target(name: "setup-python", description: "Gets the python dependencies") {
  */
 target(name: "publish", description: "Publishes source and built versions of the packages to PyPi", dependsOn: ["clean", "compile"]) {
   ProcessBuilder pb = new ProcessBuilder(
-      "python3", "-m", "twine", "upload", "dist/*", "--verbose")
+      "python", "-m", "twine", "upload", "dist/*", "--verbose")
       .inheritIO()
       .directory(new File('.'))
 

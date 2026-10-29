@@ -1,0 +1,6 @@
+[tools]
+# Not locking because we run with different versions in tests that we don't want to have to lock
+python = "3.15.2"
+
+[env]
+_.python.venv = { path = ".venv", create = true }

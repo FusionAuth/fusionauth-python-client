@@ -18,20 +18,21 @@ jobs:
     strategy:
       matrix:
         version:
-          - '3.8'
-          - '3.9'
           - '3.10'
           - '3.11'
           - '3.12'
     env:
       FUSIONAUTH_URL: http://localhost:9011
       FUSIONAUTH_API_KEY: bf69486b-4733-4470-a592-f1bfce7af580
+      MISE_PYTHON_VERSION: ${{ matrix.version }}
     steps:
       - uses: actions/checkout@v6
 
-      - uses: actions/setup-python@v5
+      - name: setup mise
+        uses: jdx/mise-action@6be3c7ed4c21d4f76b208d351d95aac273ebb76d # v5.2.4
         with:
-          python-version: ${{ matrix.version }}
+          version: 2026.10.4
+          cache_key: "{{default}}-python${{ matrix.version }}"
 
       - name: Set up FusionAuth
         working-directory: src/test/docker
@@ -44,8 +45,6 @@ jobs:
       - name: Run tests
         shell: bash -l {0}
         run: |
-          python3 -m venv .venv
-          source .venv/bin/activate
           echo -e "\nUsing $(python --version) in $(which python)\n"
           pip install -e .
           echo ""

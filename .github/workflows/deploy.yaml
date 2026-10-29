@@ -26,10 +26,10 @@ jobs:
       - name: checkout
         uses: actions/checkout@v6
 
-      - name: setup python
-        uses: actions/setup-python@v5
+      - name: setup mise
+        uses: jdx/mise-action@6be3c7ed4c21d4f76b208d351d95aac273ebb76d # v5.2.4
         with:
-          python-version: 3.12.6
+          version: 2026.10.4
 
       - name: setup java
         uses: actions/setup-java@v5
